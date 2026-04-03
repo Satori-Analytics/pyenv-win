@@ -3,9 +3,9 @@ import pytest
 
 
 def pyenv_commands_help():
-    return (f"Usage: pyenv commands\r\n"
-            f"\r\n"
-            f"List all available pyenv commands")
+    return ("Usage: pyenv commands\n"
+            "\n"
+            "List all available pyenv commands")
 
 
 def test_check_pyenv_commands_list(pyenv):

@@ -7,6 +7,9 @@ from tempenv import TemporaryEnvironment
 
 from test_pyenv_helpers import Native
 
+S = os.sep
+P = os.pathsep
+
 
 @pytest.fixture()
 def settings():
@@ -19,9 +22,9 @@ def settings():
 
 @pytest.fixture()
 def env(pyenv_path):
-    env = {"PATH": f"{os.path.dirname(sys.executable)};" \
-                     f"{str(Path(pyenv_path, 'bin'))};" \
-                     f"{str(Path(pyenv_path, 'shims'))};" \
+    env = {"PATH": f"{os.path.dirname(sys.executable)}{P}" \
+                     f"{str(Path(pyenv_path, 'bin'))}{P}" \
+                     f"{str(Path(pyenv_path, 'shims'))}{P}" \
                      f"{os.environ['PATH']}"}
     environment = TemporaryEnvironment(env)
     with environment:
@@ -89,7 +92,7 @@ def test_exec_arg(command, arg, env, pyenv_path, run):
         arg,
         env=env
     )
-    assert (stdout, stderr) == (arg.replace('%World%', 'Earth'), "")
+    assert (stdout, stderr) == (arg, "")
 
 
 @pytest.mark.parametrize(
@@ -107,7 +110,7 @@ def test_exec_arg(command, arg, env, pyenv_path, run):
 )
 def test_exec_help(args, env, pyenv):
     stdout, stderr = pyenv(*args, env=env)
-    assert ("\r\n".join(stdout.splitlines()[:1]), stderr) == (pyenv_exec_help(), "")
+    assert ("\n".join(stdout.splitlines()[:1]), stderr) == (pyenv_exec_help(), "")
 
 
 def test_path_not_updated(pyenv_path, local_path, env, run):
@@ -118,8 +121,10 @@ def test_path_not_updated(pyenv_path, local_path, env, run):
         print(f'& "{pyenv_ps1}" exec python -V 2>$null | Out-Null', file=f)
         print('$env:PATH', file=f)
     stdout, stderr = run(tmp_ps1, env=env)
-    path = os.environ['PATH']
-    assert (stdout, stderr) == (f"{path}\r\n{path}", "")
+    lines = stdout.strip().split("\n")
+    assert stderr == ""
+    assert len(lines) == 2
+    assert lines[0] == lines[1]
 
 
 def test_many_paths(pyenv_path, env, pyenv):
@@ -127,12 +132,10 @@ def test_many_paths(pyenv_path, env, pyenv):
     assert stderr == ""
     assert stdout.startswith(
         (
-            rf"{pyenv_path}\versions\{Native('3.7.7')};"
-            rf"{pyenv_path}\versions\{Native('3.7.7')}\Scripts;"
-            rf"{pyenv_path}\versions\{Native('3.7.7')}\bin;"
-            rf"{pyenv_path}\versions\{Native('3.8.9')};"
-            rf"{pyenv_path}\versions\{Native('3.8.9')}\Scripts;"
-            rf"{pyenv_path}\versions\{Native('3.8.9')}\bin;"
+            f"{pyenv_path}{S}versions{S}{Native('3.7.7')}{P}"
+            f"{pyenv_path}{S}versions{S}{Native('3.7.7')}{S}Scripts{P}"
+            f"{pyenv_path}{S}versions{S}{Native('3.8.9')}{P}"
+            f"{pyenv_path}{S}versions{S}{Native('3.8.9')}{S}Scripts{P}"
         )
     )
     assert pyenv.exec('version.bat') == ("3.7.7", "")

@@ -4,10 +4,10 @@ from test_pyenv_helpers import Native
 
 
 def pyenv_migrate_help():
-    return (f"Usage: pyenv migrate <from> <to>\r\n"
-            f"   ex. pyenv migrate 3.8.10 3.11.4\r\n"
-            f"\r\n"
-            f"Migrate pip packages from a Python version to another.")
+    return ("Usage: pyenv migrate <from> <to>\n"
+            "   ex. pyenv migrate 3.8.10 3.11.4\n"
+            "\n"
+            "Migrate pip packages from a Python version to another.")
 
 
 def test_migrate_help(pyenv):

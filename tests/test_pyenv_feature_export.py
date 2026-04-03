@@ -6,13 +6,13 @@ from pathlib import Path
 
 
 def pyenv_export_help():
-    return (f"Usage: pyenv export <available_environment> <destination>\r\n"
-            f"\r\n"
-            f"Export your environment.\r\n"
-            f"\r\n"
-            f"ex.) pyenv export 3.5.3 ./vendor/python\r\n"
-            f"\r\n"
-            f"To use when you want to build application-specific environment.")
+    return ("Usage: pyenv export <available_environment> <destination>\n"
+            "\n"
+            "Export your environment.\n"
+            "\n"
+            "ex.) pyenv export 3.5.3 ./vendor/python\n"
+            "\n"
+            "To use when you want to build application-specific environment.")
 
 
 def test_export_help(pyenv):

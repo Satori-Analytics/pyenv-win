@@ -14,8 +14,8 @@ def shell(request):
 
 
 def pyenv_shell_help():
-    return (f"Usage: pyenv shell <version>\r\n"
-            f"       pyenv shell --unset")
+    return ("Usage: pyenv shell <version>\n"
+            "       pyenv shell --unset")
 
 
 def test_shell_help(pyenv):
@@ -25,7 +25,7 @@ def test_shell_help(pyenv):
         ["shell", "--help"],
     ]:
         stdout, stderr = pyenv(*args)
-        assert ("\r\n".join(stdout.splitlines()[:2]), stderr) == (pyenv_shell_help(), "")
+        assert ("\n".join(stdout.splitlines()[:2]), stderr) == (pyenv_shell_help(), "")
 
 
 def test_no_shell_version(pyenv):

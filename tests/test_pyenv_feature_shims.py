@@ -4,9 +4,9 @@ from test_pyenv_helpers import Native
 
 
 def pyenv_shims_help():
-    return (f"Usage: pyenv shims [--short]\r\n"
-            f"\r\n"
-            f"List existing pyenv shims")
+    return ("Usage: pyenv shims [--short]\n"
+            "\n"
+            "List existing pyenv shims")
 
 
 def test_shims_help(pyenv):

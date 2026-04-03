@@ -4,8 +4,8 @@ from test_pyenv_helpers import not_installed_output, global_python_versions, Nat
 
 
 def pyenv_global_help():
-    return (f"Usage: pyenv global <version>\r\n"
-            f"       pyenv global --unset")
+    return ("Usage: pyenv global <version>\n"
+            "       pyenv global --unset")
 
 
 def test_global_help(pyenv):
@@ -15,7 +15,7 @@ def test_global_help(pyenv):
         ["global", "--help"],
     ]:
         stdout, stderr = pyenv(*args)
-        assert ("\r\n".join(stdout.splitlines()[:2]), stderr) == (pyenv_global_help(), "")
+        assert ("\n".join(stdout.splitlines()[:2]), stderr) == (pyenv_global_help(), "")
 
 
 def test_global_no_version(pyenv):
@@ -77,4 +77,4 @@ def test_global_set_many_versions_one_not_installed(pyenv):
 
 @pytest.mark.parametrize('settings', [lambda: {'global_ver': [Native('3.7.7'), Native('3.8.9')]}])
 def test_global_many_versions_defined(pyenv):
-    assert pyenv('global') == ("\r\n".join([Native('3.7.7'), Native('3.8.9')]), "")
+    assert pyenv('global') == ("\n".join([Native('3.7.7'), Native('3.8.9')]), "")

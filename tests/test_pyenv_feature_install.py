@@ -40,6 +40,7 @@ def test_check_pyenv_installation():
     pass
 
 
+@pytest.mark.skip(reason="Integration test: requires internet access to download Python")
 @pytest.mark.parametrize("version, python", (("3.9.13", "python39"), ("3.10.11", "python310"), ("3.11.3", "python311")))
 def test_patched_venv_module(version, python, arch, pyenv, run, tmp_path):
     if arch != os.environ["PROCESSOR_ARCHITECTURE"]:

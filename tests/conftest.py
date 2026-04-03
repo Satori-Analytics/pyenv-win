@@ -109,6 +109,8 @@ def run(run_args, pyenv_path, bin_path, shims_path):
         return True
 
     environ["PATH"] = os.pathsep.join(filter(remove_python_paths, environ["PATH"].split(os.pathsep)))
+    # Ensure temp pyenv bin/shims are always in PATH
+    environ["PATH"] = str(bin_path) + os.pathsep + str(shims_path) + os.pathsep + environ["PATH"]
     environ.pop("VIRTUAL_ENV", None)
 
     def run(*args, **kwargs):
@@ -118,7 +120,7 @@ def run(run_args, pyenv_path, bin_path, shims_path):
         return do_run(*args, env=env, **kwargs)
 
     with TemporaryEnvironment({'PATH': environ['PATH']}):
-        return run
+        yield run
 
 
 @pytest.fixture()

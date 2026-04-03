@@ -53,4 +53,4 @@ def test_local_set_many_versions_one_not_installed(pyenv):
 
 @pytest.mark.parametrize('settings', [lambda: {'local_ver': [Native('3.7.7'), Native('3.8.9')]}])
 def test_local_many_versions_defined(pyenv):
-    assert pyenv.local() == ("\r\n".join([Native('3.7.7'), Native('3.8.9')]), "")
+    assert pyenv.local() == ("\n".join([Native('3.7.7'), Native('3.8.9')]), "")

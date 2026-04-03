@@ -7,14 +7,14 @@ from pathlib import Path
 
 
 def pyenv_duplicate_help():
-    return (f"Usage: pyenv duplicate <available_environment> <new_environment>\r\n"
-            f"\r\n"
-            f"Duplicate your environment.\r\n"
-            f"\r\n"
-            f"ex.) pyenv duplicate 3.5.3 myapp_env\r\n"
-            f"\r\n"
-            f"To use when you want to create a sandbox and\r\n"
-            f"the environment when building application-specific environment.")
+    return ("Usage: pyenv duplicate <available_environment> <new_environment>\n"
+            "\n"
+            "Duplicate your environment.\n"
+            "\n"
+            "ex.) pyenv duplicate 3.5.3 myapp_env\n"
+            "\n"
+            "To use when you want to create a sandbox and\n"
+            "the environment when building application-specific environment.")
 
 
 def test_check_pyenv_duplicate_help(pyenv):
