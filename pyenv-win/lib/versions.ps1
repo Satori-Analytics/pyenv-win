@@ -14,7 +14,7 @@ function Get-CurrentVersionsGlobal {
         }
     }
 
-    if ($versions.Count -gt 0) { return $versions }
+    if ($versions.Count -gt 0) { return , $versions }
     return $null
 }
 
@@ -35,7 +35,7 @@ function Get-CurrentVersionsLocal {
                     $versions += , @($line, $fname)
                 }
             }
-            if ($versions.Count -gt 0) { return $versions }
+            if ($versions.Count -gt 0) { return , $versions }
             break
         }
         $parent = Split-Path $SearchPath -Parent
@@ -57,7 +57,7 @@ function Get-CurrentVersionsShell {
         }
     }
 
-    if ($versions.Count -gt 0) { return $versions }
+    if ($versions.Count -gt 0) { return , $versions }
     return $null
 }
 
