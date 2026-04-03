@@ -52,24 +52,26 @@ def pyenv_setup(settings):
     if isinstance(local_ver, list):
         local_ver = '\n'.join(local_ver)
     src_path = Path(__file__).resolve().parents[1].joinpath('pyenv-win')
-    dirs = [r'bin', r'bin\WiX', r'libexec\libs', r'shims', r'versions']
+    dirs = [r'bin', r'lib', r'libexec', r'shims', r'versions']
     for d in dirs:
-        os.makedirs(Path(pyenv_path, d))
+        os.makedirs(Path(pyenv_path, d), exist_ok=True)
+    # Copy lib/*.ps1 (core libraries)
+    _, _, lib_files = next(os.walk(src_path.joinpath('lib')))
+    for f in lib_files:
+        if f.endswith('.ps1'):
+            shutil.copy(Path(src_path, 'lib', f), Path(pyenv_path, 'lib', f))
+    # Copy libexec/*.ps1 (command scripts)
     _, _, libexec_files = next(os.walk(src_path.joinpath('libexec')))
     for f in libexec_files:
-        shutil.copy(Path(src_path, 'libexec', f), Path(pyenv_path, 'libexec', f))
-    _, _, libexec_files = next(os.walk(src_path.joinpath(r'bin\WiX')))
-    for f in libexec_files:
-        shutil.copy(Path(src_path, r'bin\WiX', f), Path(pyenv_path, r'bin\WiX', f))
+        if f.endswith('.ps1'):
+            shutil.copy(Path(src_path, 'libexec', f), Path(pyenv_path, 'libexec', f))
     files = [r'.versions_cache.xml',
              r'..\.version',
-             r'bin\pyenv.bat',
-             r'bin\pyenv.ps1',
-             r'libexec\pyenv-shell.bat',
-             r'libexec\libs\pyenv-install-lib.vbs',
-             r'libexec\libs\pyenv-lib.vbs']
+             r'bin\pyenv.ps1']
     for f in files:
-        shutil.copy(src_path.joinpath(f), Path(pyenv_path, f))
+        src = src_path.joinpath(f)
+        if src.exists():
+            shutil.copy(src, Path(pyenv_path, f))
     versions_dir = Path(pyenv_path, r'versions')
 
     def create_pythons(path):

@@ -75,6 +75,7 @@ def test_many_local_versions(local_path, pyenv):
 def test_bad_path(local_path, pyenv_path, pyenv):
     touch(Path(local_path, 'python.exe'))
     touch(Path(pyenv_path, r'shims\python.bat'))
+    touch(Path(pyenv_path, r'shims\python'))
     env = {"PATH": f"{local_path};{os.environ['PATH']}"}
     stdout, stderr = pyenv.version(env=env)
     expected = (f'\x1b[91mFATAL: Found \x1b[95m{local_path}\\python.exe\x1b[91m version '

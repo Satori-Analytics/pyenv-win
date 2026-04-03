@@ -1,7 +1,8 @@
 import pytest
 
 import os
-from test_pyenv_helpers import Native
+import subprocess
+from test_pyenv_helpers import Native, do_run
 
 
 def test_check_pyenv_install_list(pyenv):
@@ -47,6 +48,6 @@ def test_patched_venv_module(version, python, arch, pyenv, run, tmp_path):
     pyenv.rehash(check=True)
     pyenv("global", Native(version), check=True)
     pyenv.exec(python, "-m", "venv", str(tmp_path / "venv"), check=True)
-    stdout, stderr = run(str(tmp_path / "venv" / "Scripts" / "pip.exe"), "--version")
+    stdout, stderr = do_run(str(tmp_path / "venv" / "Scripts" / "pip.exe"), "--version")
     assert stderr == "", stdout
 

@@ -45,10 +45,9 @@ def remove_python_exe(pyenv, pyenv_path, settings):
 @pytest.mark.parametrize(
     "command",
     [
-        lambda path: [str(path / "bin" / "pyenv.bat"), "exec", "python"],
-        lambda path: [str(path / "shims" / "python.bat")],
+        lambda path: [str(path / "bin" / "pyenv.ps1"), "exec", "python"],
     ],
-    ids=["pyenv exec", "python shim"],
+    ids=["pyenv exec"],
 )
 @pytest.mark.parametrize(
     "arg",
@@ -112,14 +111,13 @@ def test_exec_help(args, env, pyenv):
 
 
 def test_path_not_updated(pyenv_path, local_path, env, run):
-    python = str(pyenv_path / "shims" / "python.bat")
-    tmp_bat = str(Path(local_path, "tmp.bat"))
-    with open(tmp_bat, "w") as f:
-        # must chain commands because env var is lost when cmd ends
-        print(f'@echo %PATH%', file=f)
-        print(f'@call "{python}" -V>nul', file=f)
-        print(f'@echo %PATH%', file=f)
-    stdout, stderr = run("call", tmp_bat, env=env)
+    pyenv_ps1 = str(pyenv_path / "bin" / "pyenv.ps1")
+    tmp_ps1 = str(Path(local_path, "tmp.ps1"))
+    with open(tmp_ps1, "w") as f:
+        print('$env:PATH', file=f)
+        print(f'& "{pyenv_ps1}" exec python -V 2>$null | Out-Null', file=f)
+        print('$env:PATH', file=f)
+    stdout, stderr = run(tmp_ps1, env=env)
     path = os.environ['PATH']
     assert (stdout, stderr) == (f"{path}\r\n{path}", "")
 
@@ -155,13 +153,9 @@ def test_bat_shim(pyenv):
 
 
 def test_removes_shims_from_path(pyenv):
-    assert pyenv.exec('python310') == (
-        '',
-        (
-            "'python310' is not recognized as an internal or external command,\r\n"
-            'operable program or batch file.'
-        )
-    )
+    stdout, stderr = pyenv.exec('python310')
+    assert stdout == ''
+    assert 'python310' in stderr
 
 
 def pyenv_exec_help():

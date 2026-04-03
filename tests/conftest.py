@@ -11,15 +11,12 @@ from test_pyenv_helpers import touch, pyenv_setup, do_run
 
 @pytest.fixture()
 def shell():
-    return "cmd"
+    return "pwsh"
 
 
 @pytest.fixture()
 def shell_ext(shell):
-    if shell == 'cmd':
-        return '.bat'
-    if shell in ['powershell', 'pwsh']:
-        return '.ps1'
+    return '.ps1'
 
 
 @pytest.fixture()
@@ -55,8 +52,6 @@ def current_arch():
 @pytest.fixture()
 def pyenv_file(shell, bin_path, shell_ext):
     pyenv_file = str(Path(bin_path, 'pyenv' + shell_ext))
-    if shell in ['powershell', 'pwsh']:
-        pyenv_file = pyenv_file.replace(' ', '` ')
     return pyenv_file
 
 
@@ -65,7 +60,7 @@ def pyenv_file(shell, bin_path, shell_ext):
 def arch(request):
     value = request.param
     if request.session.testsfailed:
-        pytest.skip(f'Skipping PYENV_FORCE_ARCH={value} since at lease one test failed for PYENV_FORCE_ARCH=AMD64')
+        pytest.skip(f'Skipping PYENV_FORCE_ARCH={value} since at least one test failed for PYENV_FORCE_ARCH=AMD64')
     with(TemporaryEnvironment({'PYENV_FORCE_ARCH': value})):
         yield value
 
@@ -94,12 +89,7 @@ def tmp_pyenv(tmp_path, pyenv_path, local_path, bin_path, shims_path, settings, 
 
 @pytest.fixture()
 def run_args(shell):
-    if shell == 'cmd':
-        return ['cmd', '/d', '/c', 'call']
-    if shell == 'powershell':
-        return ['powershell', '-Command']
-    if shell == 'pwsh':
-        return ['pwsh', '-Command']
+    return ['pwsh', '-NoProfile', '-File']
 
 
 @pytest.fixture()
@@ -107,8 +97,8 @@ def run(run_args, pyenv_path, bin_path, shims_path):
     environ = os.environ.copy()
     for key in ['PYENV', 'PYENV_ROOT', 'PYENV_HOME']:
         if key in environ:
-            environ[key] = str(pyenv_path)
-            environ['PATH'] = environ['PATH'].replace(str(Path(os.environ[key])), environ[key])
+            environ['PATH'] = environ['PATH'].replace(str(Path(os.environ[key])), str(pyenv_path))
+        environ[key] = str(pyenv_path)
 
     def remove_python_paths(path):
         path = Path(path)
