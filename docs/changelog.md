@@ -1,5 +1,18 @@
 # Changelog
 
+> **Note:** Issues and PRs referenced below version 4.0.0 link to the [upstream repository](https://github.com/pyenv-win/pyenv-win) from which this project was forked.
+
+## New in 4.0.0
+
+- **BREAKING:** Rewritten entirely in PowerShell 7. Requires `pwsh` (PowerShell 7+).
+- Eliminated all VBScript (.vbs) and Batch (.bat) command files.
+- Eliminated WiX `dark.exe` dependency — Python EXE installers (3.5+) now use silent install directly.
+- New architecture following Scoop's proven pattern: `lib/` shared libraries, `libexec/` per-command scripts, `bin/pyenv.ps1` dispatcher.
+- Added C# shim (`src/shim.cs`) for near-instant cmd.exe entry via compiled `bin/pyenv.exe`.
+- `pyenv update` consolidated from 4 separate files into a single `pyenv-update.ps1`.
+- Installer (`install-pyenv-win.ps1`) now requires PowerShell 7.
+- Test suite updated for `pwsh -File` execution model.
+
 ## New in 3.1.1
 
 - Fix [#413](https://github.com/pyenv-win/pyenv-win/issues/413): bug: pyenv install failing because the system cannot find the file specified 'dark.exe'

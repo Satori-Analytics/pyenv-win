@@ -1,14 +1,14 @@
 # pyenv for Windows
 
-[pyenv][1] is an amazing tool used to manage multiple versions of python in your machine. We have ported it to Windows. We need your thoughts to improve this library and your feedback helps to grow the project.
+[pyenv][1] is an amazing tool used to manage multiple versions of python in your machine. Originally ported to Windows by [Kiran Kumar Kotari](https://github.com/kirankotari), this fork rewrites pyenv-win in PowerShell 7 for modern Windows compatibility. We need your thoughts to improve this library and your feedback helps to grow the project.
 
 For existing python users, we support [installation via pip](#installation).
 
 Contributors and Interested people can join us on @[Slack](https://join.slack.com/t/pyenv/shared_invite/zt-f9ydwgyt-Fp8tehxqeCQi5mi77RxpGw). Your help keeps us motivated!
 
-[![pytest](https://github.com/pyenv-win/pyenv-win/actions/workflows/pytest.yml/badge.svg)](https://github.com/pyenv-win/pyenv-win/actions/workflows/pytest.yml)
+[![pytest](https://github.com/satori-analytics/pyenv-win/actions/workflows/pytest.yml/badge.svg)](https://github.com/satori-analytics/pyenv-win/actions/workflows/pytest.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![GitHub issues open](https://img.shields.io/github/issues/pyenv-win/pyenv-win.svg?)](https://github.com/pyenv-win/pyenv-win/issues)
+[![GitHub issues open](https://img.shields.io/github/issues/satori-analytics/pyenv-win.svg?)](https://github.com/satori-analytics/pyenv-win/issues)
 [![Downloads](https://pepy.tech/badge/pyenv-win)](https://pepy.tech/project/pyenv-win)
 
 - [Introduction](#introduction)
@@ -38,10 +38,12 @@ This project was forked from [rbenv-win][3] and modified for [pyenv][1]. It is n
 
 ## Quick start
 
+> **Prerequisite:** [PowerShell 7+](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows) must be installed. Run `pwsh --version` to verify.
+
 1. Install pyenv-win in PowerShell.
 
    ```pwsh
-   Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/pyenv-win/pyenv-win/master/pyenv-win/install-pyenv-win.ps1" -OutFile "./install-pyenv-win.ps1"; &"./install-pyenv-win.ps1"
+   Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/satori-analytics/pyenv-win/master/pyenv-win/install-pyenv-win.ps1" -OutFile "./install-pyenv-win.ps1"; &"./install-pyenv-win.ps1"
    ```
 
 2. Reopen PowerShell
@@ -67,20 +69,23 @@ This project was forked from [rbenv-win][3] and modified for [pyenv][1]. It is n
 
 ```yml
    commands     List all available pyenv commands
+   duplicate    Creates a duplicate python environment
+   export       Exports a Python version to a specified path
+   migrate      Migrate pip packages between Python versions
    local        Set or show the local application-specific Python version
    latest       Print the latest installed or known version with the given prefix
    global       Set or show the global Python version
    shell        Set or show the shell-specific Python version
    install      Install 1 or more versions of Python
-   uninstall    Uninstall 1 or more versions of Python
+   uninstall    Uninstall a specific Python version
    update       Update the cached version DB
-   rehash       Rehash pyenv shims (run this after switching Python versions)
+   rehash       Rehash pyenv shims (run this after installing executables)
    vname        Show the current Python version
    version      Show the current Python version and its origin
    version-name Show the current Python version
    versions     List all Python versions available to pyenv
-   exec         Runs an executable by first preparing PATH so that the selected 
-                Python version's `bin' directory is at the front
+   exec         Runs an executable by first preparing PATH so that the selected
+                Python version's directory is at the front
    which        Display the full path to an executable
    whence       List all Python versions that contain the given executable
 ```
@@ -134,10 +139,10 @@ This PC
 ## Usage
 
 - To view a list of python versions supported by pyenv windows: `pyenv install -l`
-- To filter the list: `pyenv install -l | findstr 3.8`
+- To filter the list: `pyenv install -l | findstr 3.8` (cmd) or `pyenv install -l | Select-String 3.8` (pwsh)
 - To install a python version:  `pyenv install 3.5.2`
-  - _Note: An install wizard may pop up for some non-silent installs. You'll need to click through the wizard during installation. There's no need to change any options in it. or you can use -q for quiet installation_
-  - You can also install multiple versions in one command too: `pyenv install 2.4.3 3.6.8`
+  - _Note: An install wizard may pop up for some non-silent installs. You'll need to click through the wizard during installation. There's no need to change any options in it, or you can use -q for quiet installation._
+  - You can also install multiple versions in one command too: `pyenv install 3.8.10 3.12.4`
 - To set a python version as the global version: `pyenv global 3.5.2`
   - This is the version of python that will be used by default if a local version (see below) isn't set.
   - _Note: The version must first be installed._
@@ -149,7 +154,7 @@ This PC
 - To uninstall a python version: `pyenv uninstall 3.5.2`
 - To view which python you are using and its path: `pyenv version`
 - To view all the python versions installed on this system: `pyenv versions`
-- Update the list of discoverable Python versions using: `pyenv update` command for pyenv-win `2.64.x` and `2.32.x` versions
+- Update the list of discoverable Python versions using: `pyenv update`
 
 ## How to update pyenv
 
@@ -160,13 +165,15 @@ This PC
   - Go to `%USERPROFILE%\.pyenv\pyenv-win` (which is your installed path) and run `git pull`
 - If installed via zip
   - Download the latest zip and extract it
-  - Go to `%USERPROFILE%\.pyenv\pyenv-win` and replace the folders `libexec` and `bin` with the new ones you just downloaded
+  - Go to `%USERPROFILE%\.pyenv\pyenv-win` and replace the folders `lib`, `libexec` and `bin` with the new ones you just downloaded
 - If installed via the installer
-  - Run the following in a Powershell terminal: `&"${env:PYENV_HOME}\install-pyenv-win.ps1"`
+  - Run the following in a PowerShell 7 terminal: `&"${env:PYENV_HOME}\install-pyenv-win.ps1"`
 
 ## Announcements
 
-To keep in sync with [pyenv][1] linux/mac, pyenv-win now installs 64bit versions by default. To support compatibility with older versions of pyenv-win, we maintain a 32bit train (branch) as a separate release.
+pyenv-win 4.0 has been rewritten in PowerShell 7 and requires `pwsh`. See the [Changelog](./docs/changelog.md) for details.
+
+pyenv-win installs 64bit versions by default. To support compatibility with older versions of pyenv-win, we maintain a 32bit train (branch) as a separate release.
 
 Both releases can install 64bit and 32bit python versions; the difference is in version names, for example:
 
@@ -220,13 +227,13 @@ Please see the [Changelog](./docs/changelog.md) page.
 - Create an upstream remote and sync your local copy before you branch.
 - Branch for each separate piece of work. It's good practice to write test cases.
 - Do the work, write good commit messages, and read the CONTRIBUTING file if there is one.
-- Test the changes by running `tests\bat_files\test_install.bat` and `tests\bat_files\test_uninstall.bat`
+- Test the changes by running `pytest tests/`
 - Push to your origin repository.
 - Create a new Pull Request in GitHub.
 
 ## Bug Tracker and Support
 
-- Please report any suggestions, bug reports, or annoyances with pyenv-win through the [GitHub bug tracker](https://github.com/pyenv-win/pyenv-win/issues).
+- Please report any suggestions, bug reports, or annoyances with pyenv-win through the [GitHub bug tracker](https://github.com/satori-analytics/pyenv-win/issues).
 
 ## License and Copyright
 
@@ -236,8 +243,9 @@ Please see the [Changelog](./docs/changelog.md) page.
 
 ## Author and Thanks
 
-pyenv-win was developed by [Kiran Kumar Kotari](https://github.com/kirankotari) and [Contributors](https://github.com/pyenv-win/pyenv-win/graphs/contributors)
-Thanks for all Contributors and Supports for patience for the latest major release.
+pyenv-win was originally created by [Kiran Kumar Kotari](https://github.com/kirankotari).
+This fork is maintained by [Satori Analytics](https://github.com/satori-analytics) and [Contributors](https://github.com/satori-analytics/pyenv-win/graphs/contributors).
+Thanks to all Contributors and Supporters for their patience for the latest major release.
 
 [1]: https://github.com/pyenv/pyenv
 [2]: https://github.com/rbenv/rbenv
