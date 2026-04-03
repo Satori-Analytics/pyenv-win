@@ -52,8 +52,13 @@ else {
     $localVersions = @()
     foreach ($ver in $args) {
         $resolved = Resolve-VersionPrefix -Prefix $ver -Known:$false
-        Get-BinDir $resolved | Out-Null
-        $localVersions += $resolved
+        $dir = Join-Path $script:PyenvVersions $resolved
+        if (-not (Test-IsVersion $resolved) -or -not (Test-Path $dir -PathType Container)) {
+            Write-Output "pyenv specific python requisite didn't meet. Project is using different version of python."
+            Write-Output "Install python '$ver' by typing: 'pyenv install $ver'"
+            exit 1
+        }
+        $localVersions += $ver
     }
 
     # Write version file

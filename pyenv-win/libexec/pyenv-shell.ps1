@@ -30,7 +30,12 @@ else {
     $shellVersions = @()
     foreach ($ver in $args) {
         $resolved = Resolve-32Bit $ver
-        Get-BinDir $resolved | Out-Null
+        $dir = Join-Path $script:PyenvVersions $resolved
+        if (-not (Test-IsVersion $resolved) -or -not (Test-Path $dir -PathType Container)) {
+            Write-Output "pyenv specific python requisite didn't meet. Project is using different version of python."
+            Write-Output "Install python '$resolved' by typing: 'pyenv install $resolved'"
+            exit 1
+        }
         $shellVersions += $resolved
     }
 
