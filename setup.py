@@ -16,28 +16,25 @@ setup(
     description = "pyenv lets you easily switch between multiple versions of Python. It's simple, unobtrusive, and follows the UNIX tradition of single-purpose tools that do one thing well.",
     long_description = long_description,
     long_description_content_type = 'text/markdown',
-    url = 'https://github.com/pyenv-win/pyenv-win.git',
-    author = 'Kiran Kumar Kotari',
-    author_email = 'kirankotari@live.com',
+    url = 'https://github.com/satori-analytics/pyenv-win.git',
+    author = 'Nikolas Demiridis',
+    author_email = 'nikolas.demiridis@satorianalytics.com',
     classifiers = [
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Build Tools',
         'License :: OSI Approved :: MIT License',
         'Operating System :: Microsoft :: Windows',
-        'Programming Language :: Python :: 2.6',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.1',
-        'Programming Language :: Python :: 3.2',
-        'Programming Language :: Python :: 3.3',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10'
-        ],
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+        'Programming Language :: Python :: 3.13',
+    ],
     keywords = 'pyenv for windows, multiple versions of python',
     packages = find_packages(
         exclude=['tests']
@@ -48,10 +45,13 @@ setup(
     package_data = {
         'pyenv-win': 
         [
-            'bin/*', 
-            'bin/WiX/*',
-            'libexec/*', 
-            'libexec/libs/*', 
+            'bin/pyenv.ps1',
+            'bin/pyenv',
+            'bin/pyenv.shim',
+            'lib/*.ps1',
+            'libexec/*.ps1',
+            'src/shim.cs',
+            'src/shim.csproj',
             '../.version', 
             '.versions_cache.xml'
         ]
