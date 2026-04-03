@@ -21,11 +21,22 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
 
-      - name: pytest_ps1 pwsh command
+      - name: verify pwsh
         shell: pwsh
-        run : |
-          Set-PSRepository PSGallery -InstallationPolicy Trusted
-          Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/pyenv-win/pyenv-win/master/pyenv-win/install-pyenv-win.ps1" -OutFile "./install-pyenv-win.ps1"; &"./install-pyenv-win.ps1"
+        run: $PSVersionTable.PSVersion
+
+      - name: compile shim
+        shell: pwsh
+        run: |
+          cd pyenv-win/src
+          dotnet publish -c Release -r win-x64 --self-contained -o ../bin
+
+      - name: setup pyenv
+        shell: pwsh
+        run: |
+          $env:PYENV = "${{ env.HOME }}/pyenv-win"
+          $env:PYENV_HOME = "${{ env.HOME }}/pyenv-win"
+          $env:PYENV_ROOT = "${{ env.HOME }}/pyenv-win"
 
       - name: pytest bash script
         run: ${{ env.HOME }}/.github/scripts/ps1.sh

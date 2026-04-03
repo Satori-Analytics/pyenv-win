@@ -6,8 +6,8 @@ on:
     - cron: '5 0 * * 5'
 
 env:
-  DEPLOY_USER: "Kiran Kumar Kotari"
-  DEPLOY_EMAIL: "kirankotari@live.com"
+  DEPLOY_USER: "pyenv-win-bot"
+  DEPLOY_EMAIL: "pyenv-win@satorianalytics.com"
   DEPLOY_COMMIT_MESSAGE: Update cached versions
   DEPLOY_BRANCH: master
 

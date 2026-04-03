@@ -21,6 +21,16 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
 
+      - name: verify pwsh
+        shell: pwsh
+        run: $PSVersionTable.PSVersion
+
+      - name: compile shim
+        shell: pwsh
+        run: |
+          cd pyenv-win/src
+          dotnet publish -c Release -r win-x64 --self-contained -o ../bin
+
       - name: pytest bash script
         run: ${{ env.HOME }}/.github/scripts/build.sh
         shell: bash
