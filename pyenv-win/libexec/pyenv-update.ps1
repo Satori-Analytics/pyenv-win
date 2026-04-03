@@ -26,9 +26,6 @@ if ($Help -or '--help' -in $args) {
     exit 0
 }
 
-# Import required modules
-Add-Type -AssemblyName System.Web
-
 # Configuration
 $mirrors = @(
     "https://www.python.org/ftp/python/",
@@ -316,7 +313,7 @@ function Save-VersionsXml {
         $xml += "`t<version x64=`"$x64`" webInstall=`"$isWebInstall`" msi=`"$isMsi`">`n"
         $xml += "`t`t<code>$code</code>`n"
         $xml += "`t`t<file>$fileName</file>`n"
-        $xml += "`t`t<URL>$([System.Web.HttpUtility]::HtmlEncode($url))</URL>`n"
+        $xml += "`t`t<URL>$([System.Net.WebUtility]::HtmlEncode($url))</URL>`n"
         $xml += "`t</version>`n"
     }
     
