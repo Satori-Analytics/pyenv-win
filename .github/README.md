@@ -6,7 +6,8 @@
 | ------------------ | ------------------------------------------------- | ------- | -------------------------------------------------- |
 | `pytest.yml`       | Push (any branch), PR to master, manual           | Windows | Run test suite across Python 3.8–3.12              |
 | `update_cache.yml` | Weekly (Friday 00:05 UTC), manual                 | Windows | Refresh `.versions_cache.xml` from python.org      |
-| `publish.yml`      | After `update_cache` completes, or manual release | Ubuntu  | Build and upload `pyenv-win.zip` to GitHub Release |
+| `release.yml`      | Push to master that changes `.version`             | Ubuntu  | Create GitHub Release from version bump            |
+| `publish.yml`      | After `update_cache` completes, or release created | Ubuntu  | Build and upload `pyenv-win.zip` to GitHub Release |
 
 ## Workflow Details
 
@@ -24,9 +25,15 @@ Runs `pyenv update` to scrape python.org for new Python releases. If `.versions_
 
 If no new Python versions are found, the workflow exits without changes.
 
+### release.yml — Auto-Release on Version Bump
+
+Triggered on push to `master` when `.version` changes. Reads the version, checks whether a matching release already exists (to avoid duplicates from `update_cache`), and creates a GitHub Release if needed. This automates the code-change release path — just bump `.version`, commit, and push.
+
+> **Note:** Pushes made by `update_cache.yml` use `GITHUB_TOKEN`, which does not trigger other workflows. So this workflow only fires for developer pushes, not automated cache updates.
+
 ### publish.yml — Build & Attach Release Zip
 
-Triggered by `workflow_run` after `update_cache.yml` completes successfully, or when a release is manually created. Builds `pyenv-win.zip` (containing `pyenv-win/` and `.version`) and uploads it as a release asset. This is the zip that `install.ps1` downloads.
+Triggered by `workflow_run` after `update_cache.yml` completes successfully, or when a release is created (by `release.yml` or manually). Builds `pyenv-win.zip` (containing `pyenv-win/` and `.version`) and uploads it as a release asset. This is the zip that `install.ps1` downloads.
 
 ## End-to-End Flow
 
@@ -73,4 +80,11 @@ flowchart LR
     J --> K[Create Release]
     K --> L[publish.yml]
     L --> M[Build + Upload zip]
+
+    N[Developer bumps .version] --> O[Push to master]
+    O --> P[release.yml]
+    P --> Q{Release exists?}
+    Q -- Yes --> R[Skip]
+    Q -- No --> S[Create Release]
+    S --> L
 ```
