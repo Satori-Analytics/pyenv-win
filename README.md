@@ -75,6 +75,7 @@ install      Install 1 or more versions of Python
 uninstall    Uninstall a specific Python version
 update       Update the cached version DB
 rehash       Rehash pyenv shims (run this after installing executables)
+cache        List, clear, or sync the installer cache
 root         Display the root directory where versions and shims are kept
 prefix       Display the directory where a Python version is installed
 version      Show the current Python version and its origin
