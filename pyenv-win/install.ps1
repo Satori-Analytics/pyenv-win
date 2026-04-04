@@ -81,7 +81,7 @@ Function Main() {
     If ($PSVersionTable.PSVersion.Major -lt 7) {
         Write-Host "ERROR: pyenv-win 4.0+ requires PowerShell 7. Current version: $($PSVersionTable.PSVersion)"
         Write-Host "Install PowerShell 7: https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows"
-        exit 1
+        return
     }
 
     If ($Uninstall) {
@@ -92,7 +92,7 @@ Function Main() {
         Else {
             Write-Host "Uninstallation failed."
         }
-        exit
+        return
     }
 
     $BackupDir = "${env:Temp}/pyenv-win-backup"
@@ -103,7 +103,7 @@ Function Main() {
         $LatestVersion = Get-LatestVersion
         If ($CurrentVersion -eq $LatestVersion) {
             Write-Host "No updates available."
-            exit
+            return
         }
         Else {
             Write-Host "New version available: $LatestVersion. Updating..."
@@ -161,13 +161,13 @@ Function Main() {
         catch {
             Write-Host "ERROR: Failed to download pyenv-win: $_" -ForegroundColor Red
             Write-Host "Check your internet connection or visit https://github.com/satori-analytics/pyenv-win"
-            exit 1
+            return
         }
     }
 
     if (-not (Test-Path $DownloadPath) -or (Get-Item $DownloadPath).Length -eq 0) {
         Write-Host "ERROR: Download failed — file is missing or empty." -ForegroundColor Red
-        exit 1
+        return
     }
 
     Expand-Archive -Path $DownloadPath -DestinationPath $PyEnvDir -Force
