@@ -1,0 +1,2 @@
+path = ..\bin\pyenv.ps1
+args = pwsh -NoLogo -NoProfile -File

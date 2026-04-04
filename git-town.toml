@@ -27,11 +27,11 @@ ignore-uncommitted = false
 strategy = "api"
 
 [sync]
-auto-sync = true
+auto-sync = false
 detached = true
-feature-strategy = "rebase"
-perennial-strategy = "ff-only"
-prototype-strategy = "rebase"
+perennial-strategy = " rebase"
+feature-strategy = "merge"
+prototype-strategy = "merge"
 push-branches = true
 push-hook = false
 tags = true

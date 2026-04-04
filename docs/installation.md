@@ -1,14 +1,19 @@
 # Installation
 
+## Prerequisites
+
+**PowerShell 7 (pwsh) is required.** Install it from [Microsoft's official documentation](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows) or via:
+
+```pwsh
+winget install --id Microsoft.PowerShell --source winget
+```
+
 Currently we support following ways, choose any of your comfort:
 
 - [PowerShell](#powershell) - easiest way
 - [Git Commands](#git-commands) - default way + adding manual settings
 - [Pyenv-win zip](#pyenv-win-zip) - manual installation
 - [Python pip](#python-pip) - for existing users
-- [Chocolatey](#chocolatey)
-- [How to use 32-train](#how-to-use-32-train)  
-  - [check announcements](../README.md#announcements)
 
 Hurray! When you are done here are steps to [Validate installation](../README.md#validate-installation)
 
@@ -38,11 +43,15 @@ Installation is complete!
 
 ## **Git Commands**
 
-The default way to install pyenv-win, it needs git commands you need to install git/git-bash for windows
+The default way to install pyenv-win. Requires git to be installed.
 
-If you are using PowerShell or Git Bash use `$HOME` instead of `%USERPROFILE%`
+Using command prompt:
 
-git clone using command prompt `git clone https://github.com/pyenv-win/pyenv-win.git "%USERPROFILE%\.pyenv"`
+`git clone https://github.com/satori-analytics/pyenv-win.git "%USERPROFILE%\.pyenv"`
+
+Or using PowerShell:
+
+`git clone https://github.com/satori-analytics/pyenv-win.git "$HOME\.pyenv"`
 
 steps to [add System Settings](#add-system-settings)
 
@@ -58,11 +67,11 @@ Installation is complete!
 
 Manual installation steps for pyenv-win
 
-If you are using PowerShell or Git Bash use `$HOME` instead of `%USERPROFILE%`
+1. Download [pyenv-win.zip](https://github.com/satori-analytics/pyenv-win/archive/master.zip)
 
-1. Download [pyenv-win.zip](https://github.com/pyenv-win/pyenv-win/archive/master.zip)
-
-2. Create a `.pyenv` directory using command prompt `mkdir %USERPROFILE%/.pyenv` if not exist
+2. Create a `.pyenv` directory if it doesn't exist:
+   - Command prompt: `mkdir %USERPROFILE%\.pyenv`
+   - PowerShell: `New-Item -ItemType Directory -Path "$HOME\.pyenv" -Force`
 
 3. Extract and move files to `%USERPROFILE%\.pyenv\`
 
@@ -86,7 +95,7 @@ For existing python users
 
 `pip install pyenv-win --target %USERPROFILE%\\.pyenv`  
 
-If you run into an error with the above command use the folllowing instead ([#303](https://github.com/pyenv-win/pyenv-win/issues/303)):
+If you run into an error with the above command use the following instead ([#303](https://github.com/pyenv-win/pyenv-win/issues/303) (upstream)):
 
 `pip install pyenv-win --target %USERPROFILE%\\.pyenv --no-user --upgrade`
 
@@ -104,25 +113,9 @@ Return to [README](../README.md#installation)
 
 ***
 
-## **Chocolatey**
-
-This needs choco commands to install, [installation link](https://chocolatey.org/install)
-
-Chocolatey command `choco install pyenv-win`
-
-Chocolatey page: [pyenv-win](https://chocolatey.org/packages/pyenv-win)
-
-Installation is complete!
-
-Validate Installation
-
-Return to [README](../README.md#installation)
-
-***
-
 ## **Add System Settings**
 
-It's a easy way to use PowerShell here
+Use PowerShell to configure environment variables:
 
 1. Adding PYENV, PYENV_HOME and PYENV_ROOT to your Environment Variables
 
@@ -140,7 +133,7 @@ It's a easy way to use PowerShell here
    [System.Environment]::SetEnvironmentVariable('path', $env:USERPROFILE + "\.pyenv\pyenv-win\bin;" + $env:USERPROFILE + "\.pyenv\pyenv-win\shims;" + [System.Environment]::GetEnvironmentVariable('path', "User"),"User")
    ```
 
-If for some reason you cannot execute PowerShell command(likely on an organization managed device), type "environment variables for you account" in Windows search bar and open Environment Variables dialog.
+If for some reason you cannot execute PowerShell commands (likely on an organization-managed device), type "environment variables for your account" in the Windows search bar and open the Environment Variables dialog.
 You will need create those 3 new variables in System Variables section (bottom half). Let's assume username is `my_pc`.
 |Variable|Value|
 |---|---|
@@ -167,22 +160,3 @@ echo 'export PATH="$HOME/.pyenv/pyenv-win/bin:$PATH"' >> ~/.bash_profile
 ```
 
 Open a new terminal, and confirm `pyenv --version` works.
-
-***
-
-## **How to use 32-train**
-
-- **Using Git**
-  1. For 32-train prerequisite is [installing pyenv-win using Git](#git-commands)
-  2. Go to .pyenv dir command `cd %USERPROFILE%\.pyenv`
-  3. run `git checkout -b 32bit-train origin/32bit-train`
-  4. run `pyenv --version` and you should see _2.32.x_
-- **Using pip**
-  1. run `pip install pyenv-win==2.32.x --target %USERPROFILE%\.pyenv`
-  2. steps to [add System Settings](#add-system-settings)
-- **Using Zip**
-  1. Download [pyenv-win.zip](https://github.com/pyenv-win/pyenv-win/archive/32bit-train.zip)
-  2. Follow step 2 from [Pyenv-win zip](#pyenv-win-zip)
-  3. steps to [add System Settings](#add-system-settings)
-
-Return to [README](../README.md#installation)

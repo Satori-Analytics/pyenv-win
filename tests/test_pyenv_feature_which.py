@@ -1,20 +1,24 @@
+import os
+
 import pytest
 
 from test_pyenv_helpers import Native
 
+S = os.sep
+
 
 def assert_paths_equal(actual, expected):
-    assert actual.lower() == expected.lower()
+    assert actual.replace('/', os.sep).lower() == expected.replace('/', os.sep).lower()
 
 
 def pyenv_which_usage():
-    return (f"Usage: pyenv which <command>\r\n"
-            f"\r\n"
-            f"Shows the full path of the executable\r\n"
-            f"selected. To obtain the full path, use `pyenv which pip'.")
+    return ("Usage: pyenv which <command>\n"
+            "\n"
+            "Shows the full path of the executable\n"
+            "selected. To obtain the full path, use `pyenv which pip'.")
 
 
-@pytest.mark.parametrize('settings', [lambda: {'versions': [Native('3.7.7')]}])
+@pytest.mark.parametrize('settings', [lambda: {'versions': [Native('3.8.1')]}])
 def test_which_no_arg(pyenv):
     assert pyenv.which() == (pyenv_which_usage(), "")
     assert pyenv.which("--help") == (pyenv_which_usage(), "")
@@ -28,9 +32,9 @@ def test_which_no_arg(pyenv):
     }])
 def test_which_exists_is_global(pyenv_path, pyenv):
     for name in ['python', 'python3', 'python38', 'pip3', 'pip3.8']:
-        sub_dir = '' if 'python' in name else 'Scripts\\'
+        sub_dir = '' if 'python' in name else f'Scripts{S}'
         stdout, stderr = pyenv.which(name)
-        assert_paths_equal(stdout, rf'{pyenv_path}\versions\{Native("3.8.5")}\{sub_dir}{name}.exe')
+        assert_paths_equal(stdout, f'{pyenv_path}{S}versions{S}{Native("3.8.5")}{S}{sub_dir}{name}.exe')
         assert stderr == ""
 
 
@@ -40,9 +44,9 @@ def test_which_exists_is_global(pyenv_path, pyenv):
     }])
 def test_which_exists_is_local(pyenv_path, pyenv):
     for name in ['python', 'python3', 'python38', 'pip3', 'pip3.8']:
-        sub_dir = '' if 'python' in name else 'Scripts\\'
+        sub_dir = '' if 'python' in name else f'Scripts{S}'
         stdout, stderr = pyenv.which(name)
-        assert_paths_equal(stdout, rf'{pyenv_path}\versions\{Native("3.8.5")}\{sub_dir}{name}.exe')
+        assert_paths_equal(stdout, f'{pyenv_path}{S}versions{S}{Native("3.8.5")}{S}{sub_dir}{name}.exe')
         assert stderr == ""
 
 
@@ -50,9 +54,9 @@ def test_which_exists_is_local(pyenv_path, pyenv):
 def test_which_exists_is_shell(pyenv_path, pyenv):
     env = {"PYENV_VERSION": Native("3.8.5")}
     for name in ['python', 'python3', 'python38', 'pip3', 'pip3.8']:
-        sub_dir = '' if 'python' in name else 'Scripts\\'
+        sub_dir = '' if 'python' in name else f'Scripts{S}'
         stdout, stderr = pyenv.which(name, env=env)
-        assert_paths_equal(stdout, rf'{pyenv_path}\versions\{Native("3.8.5")}\{sub_dir}{name}.exe')
+        assert_paths_equal(stdout, f'{pyenv_path}{S}versions{S}{Native("3.8.5")}{S}{sub_dir}{name}.exe')
         assert stderr == ""
 
 
@@ -82,11 +86,11 @@ def test_which_exists_is_global_other_version(pyenv):
     for name in ['python38', 'pip3.8']:
         assert pyenv.which(name) == (
             (
-                f"pyenv: {name}: command not found\r\n"
-                f"\r\n"
-                f"The '{name}' command exists in these Python versions:\r\n"
-                f"  {Native('3.8.2')}\r\n"
-                f"  {Native('3.8.6')}\r\n"
+                f"pyenv: {name}: command not found\n"
+                f"\n"
+                f"The '{name}' command exists in these Python versions:\n"
+                f"  {Native('3.8.2')}\n"
+                f"  {Native('3.8.6')}\n"
                 f"  "
             ),
             ""
@@ -101,11 +105,11 @@ def test_which_exists_is_local_other_version(pyenv):
     for name in ['python38', 'pip3.8']:
         assert pyenv.which(name) == (
             (
-                f"pyenv: {name}: command not found\r\n"
-                f"\r\n"
-                f"The '{name}' command exists in these Python versions:\r\n"
-                f"  {Native('3.8.2')}\r\n"
-                f"  {Native('3.8.6')}\r\n"
+                f"pyenv: {name}: command not found\n"
+                f"\n"
+                f"The '{name}' command exists in these Python versions:\n"
+                f"  {Native('3.8.2')}\n"
+                f"  {Native('3.8.6')}\n"
                 f"  "
             ),
             ""
@@ -120,11 +124,11 @@ def test_which_exists_is_shell_other_version(pyenv):
     for name in ['python38', 'python3.8', 'pip3.8']:
         assert pyenv.which(name, env=env) == (
             (
-                f"pyenv: {name}: command not found\r\n"
-                f"\r\n"
-                f"The '{name}' command exists in these Python versions:\r\n"
-                f"  {Native('3.8.2')}\r\n"
-                f"  {Native('3.8.6')}\r\n"
+                f"pyenv: {name}: command not found\n"
+                f"\n"
+                f"The '{name}' command exists in these Python versions:\n"
+                f"  {Native('3.8.2')}\n"
+                f"  {Native('3.8.6')}\n"
                 f"  "
             ),
             ""
@@ -146,29 +150,29 @@ def test_which_no_version_defined(pyenv):
         assert pyenv.which(name) == (
             (
                 "No global/local python version has been set yet. "
-                "Please set the global/local version by typing:\r\n"
-                "pyenv global <python-version>\r\n"
-                "pyenv global 3.7.4\r\n"
-                "pyenv local <python-version>\r\n"
-                "pyenv local 3.7.4"
+                "Please set the global/local version by typing:\n"
+                "pyenv global <python-version>\n"
+                "pyenv global 3.8.4\n"
+                "pyenv local <python-version>\n"
+                "pyenv local 3.8.4"
             ),
             ""
         )
 
 
 @pytest.mark.parametrize('settings', [lambda: {
-        'versions': [Native('3.7.7'), Native('3.8.2'), Native('3.9.1')],
-        'local_ver': [Native('3.7.7'), Native('3.8.2')]
+        'versions': [Native('3.8.3'), Native('3.9.2'), Native('3.10.1')],
+        'local_ver': [Native('3.8.3'), Native('3.9.2')]
     }])
 def test_which_many_local_versions(pyenv_path, pyenv):
     cases = [
-        ('python37', rf'{Native("3.7.7")}\python37.exe'),
-        ('python38', rf'{Native("3.8.2")}\python38.exe'),
-        ('pip3.7', rf'{Native("3.7.7")}\Scripts\pip3.7.exe'),
-        ('pip3.8', rf'{Native("3.8.2")}\Scripts\pip3.8.exe'),
+        ('python38', f'{Native("3.8.3")}{S}python38.exe'),
+        ('python39', f'{Native("3.9.2")}{S}python39.exe'),
+        ('pip3.8', f'{Native("3.8.3")}{S}Scripts{S}pip3.8.exe'),
+        ('pip3.9', f'{Native("3.9.2")}{S}Scripts{S}pip3.9.exe'),
     ]
     for (name, path) in cases:
         stdout, stderr = pyenv.which(name)
-        assert_paths_equal(stdout, rf'{pyenv_path}\versions\{path}')
+        assert_paths_equal(stdout, f'{pyenv_path}{S}versions{S}{path}')
         assert stderr == ""
 

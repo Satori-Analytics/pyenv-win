@@ -6,27 +6,23 @@ on:
     - cron: '5 0 * * 5'
 
 env:
-  DEPLOY_USER: "Kiran Kumar Kotari"
-  DEPLOY_EMAIL: "kirankotari@live.com"
+  DEPLOY_USER: "Nikolas Demiridis"
+  DEPLOY_EMAIL: "nikolas.demiridis@satorianalytics.com"
   DEPLOY_COMMIT_MESSAGE: Update cached versions
   DEPLOY_BRANCH: master
 
 
 jobs:
   update_cache:
-    runs-on: windows-latest
-    env:
-      HOME: D:/a/pyenv-win/pyenv-win
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout master
       uses: actions/checkout@v4
-    - name: Setup Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.x'
     - name: Update versions cache
-      run: python ${{ env.HOME }}/.github/scripts/update_versions_cache.py
-      shell: bash
+      shell: pwsh
+      run: |
+        $env:PYENV_HOME = "${{ github.workspace }}/pyenv-win"
+        ./pyenv-win/bin/pyenv.ps1 update
     - name: Commit and push changes
       run: |
         git config user.name "${{ env.DEPLOY_USER }}"
@@ -39,7 +35,6 @@ jobs:
         fi
         git commit -m "${{ env.DEPLOY_COMMIT_MESSAGE }} [skip ci]"
         git push -f origin automated/update_cache
-      shell: bash
     - name: Create Pull Request
       run: |
         gh pr create --base ${{ env.DEPLOY_BRANCH }} \
