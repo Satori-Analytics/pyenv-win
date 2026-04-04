@@ -98,7 +98,7 @@ function Parse-PythonOrgPage {
             $major = [int]$versionMatch.Groups[1].Value
             $minor = [int]$versionMatch.Groups[2].Value
             
-                            # Only process Python >= 2.4
+                # Only process Python >= 2.4
                 if ($major -gt 2 -or ($major -eq 2 -and $minor -ge 4)) {
                     Write-Host "     -> Processing Python $versionName..." -ForegroundColor DarkCyan
                     
@@ -353,12 +353,12 @@ foreach ($mirror in $mirrors) {
     Write-Host "   -> Content downloaded, parsing..." -ForegroundColor Yellow
     $pageCount++
     
-    if ($mirror.EndsWith(".json")) {
+    if ($mirror.EndsWith(".json") -or $mirror.Contains("graalpython")) {
         if ($mirror.Contains("pypy")) {
             Write-Host "   -> Parsing PyPy JSON data..." -ForegroundColor Cyan
             $installers = Parse-JsonVersions -Content $content -Type "pypy"
         }
-        elseif ($mirror.Contains("graalpy")) {
+        elseif ($mirror.Contains("graalpython")) {
             Write-Host "   -> Parsing GraalPy JSON data..." -ForegroundColor Cyan
             $installers = Parse-JsonVersions -Content $content -Type "graalpy"
         }
