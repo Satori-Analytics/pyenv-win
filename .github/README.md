@@ -7,7 +7,7 @@
 | `pytest.yml`       | Push (any branch), PR to master, manual           | Windows | Run test suite across Python 3.8–3.12              |
 | `update_cache.yml` | Weekly (Friday 00:05 UTC), manual                 | Windows | Refresh `.versions_cache.xml` from python.org      |
 | `release.yml`      | Push to master that changes `.version`             | Ubuntu  | Create GitHub Release from version bump            |
-| `publish.yml`      | After `update_cache` completes, or release created | Ubuntu  | Build and upload `pyenv-win.zip` to GitHub Release |
+| `publish.yml`      | After `update_cache` or `release` completes, or release created | Ubuntu  | Build and upload `pyenv-win.zip` to GitHub Release |
 
 ## Workflow Details
 
@@ -33,7 +33,7 @@ Triggered on push to `master` when `.version` changes. Reads the version, checks
 
 ### publish.yml — Build & Attach Release Zip
 
-Triggered by `workflow_run` after `update_cache.yml` completes successfully, or when a release is created (by `release.yml` or manually). Builds `pyenv-win.zip` (containing `pyenv-win/` and `.version`) and uploads it as a release asset. This is the zip that `install.ps1` downloads.
+Triggered by `workflow_run` after `update_cache.yml` or `release.yml` completes successfully, or when a release is created manually. Builds `pyenv-win.zip` (containing `pyenv-win/` and `.version`) and uploads it as a release asset. This is the zip that `install.ps1` downloads.
 
 ## End-to-End Flow
 

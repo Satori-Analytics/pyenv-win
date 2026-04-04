@@ -2,7 +2,7 @@ name: Publish Release Zip
 
 on:
   workflow_run:
-    workflows: ["Update cached versions"]
+    workflows: ["Update cached versions", "Create release on version bump"]
     types: [completed]
   release:
     types: [created]
