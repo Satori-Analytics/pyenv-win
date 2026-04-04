@@ -11,6 +11,7 @@
     Shows help information
 #>
 
+[CmdletBinding()]
 param(
     [switch]$Ignore,
     [switch]$Help
@@ -18,7 +19,7 @@ param(
 
 # Manual --help check — PS can't bind --help to -Help via splatted arrays
 if ($Help -or '--help' -in $args) {
-    Write-Output "Usage: pyenv update [-Ignore]"
+    Write-Output "Usage: pyenv update [-Verbose] [-Ignore]"
     Write-Output ""
     Write-Output "  -Ignore   Ignores any HTTP errors that occur during downloads."
     Write-Output ""
@@ -38,10 +39,10 @@ $regexVer = [regex]'(\d+)\.(\d+)(?:\.(\d+))?'
 $regexFile = [regex]'python-(\d+)\.(\d+)(?:\.(\d+))?(?:([a-z]+)(\d+))?(?:-(amd64|win32|arm64))?(?:-(web)installer)?\.(.+)'
 $regexJsonUrl = [regex]'"url":\s*"([^"]+/([^/]+\.zip))"[^}]*"extract_dir":\s*"([^"]*)"[^}]*"version":\s*"([^"]+)"'
 
-Write-Host ":: [Info] :: Starting Python version cache update..."
+Write-Host ":: [Info] :: Updating versions cache..." -ForegroundColor Green
 
 foreach ($mirror in $mirrors) {
-    Write-Host ":: [Info] :: Mirror: $mirror"
+    Write-Verbose "Mirror: $mirror"
 }
 
 function Get-WebContent {
@@ -98,7 +99,7 @@ function Parse-PythonOrgPage {
             
             # Only process Python >= 2.4
             if ($major -gt 2 -or ($major -eq 2 -and $minor -ge 4)) {
-                Write-Host "     -> Processing Python $versionName..." -ForegroundColor DarkCyan
+                Write-Verbose "     Processing Python $versionName..."
                     
                 # Build full URL
                 if (-not $href.StartsWith("http")) {
@@ -109,13 +110,13 @@ function Parse-PythonOrgPage {
                 $subContent = Get-WebContent -Url $href -IgnoreErrors $Ignore
                 if ($subContent) {
                     $subVersions = Parse-VersionSubdirectory -Content $subContent -BaseUrl $href
-                    Write-Host "        Found $($subVersions.Count) installers" -ForegroundColor DarkGreen
+                    Write-Verbose "        Found $($subVersions.Count) installers"
                     foreach ($key in $subVersions.Keys) {
                         $versions[$key] = $subVersions[$key]
                     }
                 }
                 else {
-                    Write-Host "        Failed to get content" -ForegroundColor DarkRed
+                    Write-Verbose "        Failed to get content"
                 }
             }
         }
@@ -213,7 +214,7 @@ function Parse-JsonVersions {
             }
         }
         catch {
-            Write-Host "Error parsing PyPy JSON: $($_.Exception.Message)"
+            Write-Warning "Error parsing PyPy JSON: $($_.Exception.Message)"
         }
     }
     elseif ($Type -eq "graalpy") {
@@ -233,7 +234,7 @@ function Parse-JsonVersions {
             }
         }
         catch {
-            Write-Host "Error parsing GraalPy JSON: $($_.Exception.Message)"
+            Write-Warning "Error parsing GraalPy JSON: $($_.Exception.Message)"
         }
     }
     
@@ -331,43 +332,46 @@ $pageCount = 0
 $allInstallers = @{}
 
 foreach ($mirror in $mirrors) {
-    Write-Host ":: [Info] :: Processing mirror: $mirror" -ForegroundColor Green
-    Write-Host "   -> Downloading content..." -ForegroundColor Yellow
+    Write-Verbose "Processing mirror: $mirror"
+    Write-Verbose "   Downloading content..."
     
     $content = Get-WebContent -Url $mirror -IgnoreErrors $Ignore
     if (-not $content) { 
-        Write-Host "   -> Failed to get content, skipping..." -ForegroundColor Red
+        Write-Host "   -> Failed to get content from $mirror, skipping..." -ForegroundColor Red
         continue 
     }
     
-    Write-Host "   -> Content downloaded, parsing..." -ForegroundColor Yellow
+    Write-Verbose "   Content downloaded, parsing..."
     $pageCount++
     
+    $mirrorName = ""
     if ($mirror.EndsWith(".json") -or $mirror.Contains("graalpython")) {
         if ($mirror.Contains("pypy")) {
-            Write-Host "   -> Parsing PyPy JSON data..." -ForegroundColor Cyan
+            $mirrorName = "PyPy"
+            Write-Verbose "   Parsing PyPy JSON data..."
             $installers = Parse-JsonVersions -Content $content -Type "pypy"
         }
         elseif ($mirror.Contains("graalpython")) {
-            Write-Host "   -> Parsing GraalPy JSON data..." -ForegroundColor Cyan
+            $mirrorName = "GraalPy"
+            Write-Verbose "   Parsing GraalPy JSON data..."
             $installers = Parse-JsonVersions -Content $content -Type "graalpy"
         }
     }
     else {
-        Write-Host "   -> Parsing Python.org HTML page..." -ForegroundColor Cyan
+        $mirrorName = "python.org"
+        Write-Verbose "   Parsing Python.org HTML page..."
         $installers = Parse-PythonOrgPage -Content $content -BaseUrl $mirror
     }
     
-    Write-Host "   -> Found $($installers.Count) installers from this mirror" -ForegroundColor Green
+    Write-Host "   -> ${mirrorName}: $($installers.Count) installers" -ForegroundColor Cyan
     
     foreach ($key in $installers.Keys) {
         $allInstallers[$key] = $installers[$key]
     }
 }
 
-Write-Host ""
-Write-Host ":: [Info] :: Processing $($allInstallers.Count) total installers found..." -ForegroundColor Green
-Write-Host "   -> Filtering versions >= 2.4 and deduplicating..." -ForegroundColor Yellow
+Write-Verbose "Processing $($allInstallers.Count) total installers..."
+Write-Verbose "   Filtering versions >= 2.4 and deduplicating..."
 
 # Remove versions < 2.4 and deduplicate web vs offline installers
 $filteredInstallers = @{}
@@ -394,8 +398,8 @@ foreach ($key in $allInstallers.Keys) {
     $filteredInstallers[$key] = $installer
 }
 
-Write-Host "   -> Filtered to $($filteredInstallers.Count) installers" -ForegroundColor Green
-Write-Host "   -> Sorting by semantic version..." -ForegroundColor Yellow
+Write-Verbose "Filtered to $($filteredInstallers.Count) installers"
+Write-Verbose "Sorting by semantic version..."
 
 # Sort by semantic version
 $sortedInstallers = $filteredInstallers.Values | Sort-Object { 
@@ -418,11 +422,9 @@ $sortedInstallers = $filteredInstallers.Values | Sort-Object {
     }
 }
 
-Write-Host "   -> Saving XML cache file..." -ForegroundColor Yellow
+Write-Verbose "Saving XML cache file..."
 
 # Save to XML
 Save-VersionsXml -Installers $sortedInstallers
 
-Write-Host ""
-Write-Host ":: [Info] :: Scanned $pageCount pages and found $($filteredInstallers.Count) installers." -ForegroundColor Green
-Write-Host ":: [Info] :: Cache file updated: .versions.xml" -ForegroundColor Green
+Write-Host ":: [Info] :: Saved $($filteredInstallers.Count) versions to .versions.xml" -ForegroundColor Green

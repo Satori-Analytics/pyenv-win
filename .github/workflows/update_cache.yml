@@ -21,7 +21,7 @@ jobs:
       shell: pwsh
       run: |
         $env:PYENV_HOME = "${{ github.workspace }}/pyenv-win"
-        ./pyenv-win/bin/pyenv.ps1 update
+        ./pyenv-win/bin/pyenv.ps1 update -Verbose
     - name: Check for changes
       id: changes
       run: |
