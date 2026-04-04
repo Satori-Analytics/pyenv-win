@@ -68,7 +68,7 @@ def pyenv_setup(settings):
         if f.endswith(".ps1"):
             shutil.copy(Path(src_path, "libexec", f), Path(pyenv_path, "libexec", f))
     files = [
-        ".versions_cache.xml",
+        ".versions.xml",
         str(Path("..", ".version")),
         str(Path("bin", "pyenv.ps1")),
     ]

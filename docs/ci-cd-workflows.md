@@ -2,11 +2,11 @@
 
 ## Overview
 
-| Workflow           | Trigger                                           | Runner  | Purpose                                            |
-| ------------------ | ------------------------------------------------- | ------- | -------------------------------------------------- |
-| `pytest.yml`       | Push (any branch), PR to master, manual           | Windows | Run test suite across Python 3.8–3.12              |
-| `update_cache.yml` | Weekly (Friday 00:05 UTC), manual                 | Windows | Refresh `.versions_cache.xml` from python.org      |
-| `release.yml`      | Push to master that changes `.version`             | Ubuntu  | Create GitHub Release from version bump            |
+| Workflow           | Trigger                                                         | Runner  | Purpose                                            |
+| ------------------ | --------------------------------------------------------------- | ------- | -------------------------------------------------- |
+| `pytest.yml`       | Push (any branch), PR to master, manual                         | Windows | Run test suite across Python 3.8–3.12              |
+| `update_cache.yml` | Weekly (Friday 00:05 UTC), manual                               | Windows | Refresh `.versions.xml` from python.org            |
+| `release.yml`      | Push to master that changes `.version`                          | Ubuntu  | Create GitHub Release from version bump            |
 | `publish.yml`      | After `update_cache` or `release` completes, or release created | Ubuntu  | Build and upload `pyenv-win.zip` to GitHub Release |
 
 ## Workflow Details
@@ -17,7 +17,7 @@ Runs on every push and PR. Executes pytest with coverage across a matrix of five
 
 ### update_cache.yml — Weekly Version Cache Update
 
-Runs `pyenv update` to scrape python.org for new Python releases. If `.versions_cache.xml` changes:
+Runs `pyenv update` to scrape python.org for new Python releases. If `.versions.xml` changes:
 
 1. Bumps the patch version in `.version` (e.g. `4.0.3` → `4.0.4`)
 2. Commits both files directly to `master`
@@ -59,7 +59,7 @@ sequenceDiagram
 
     Cron->>UC: Trigger scheduled run
     UC->>UC: pyenv update (scrape python.org)
-    UC->>UC: Check for .versions_cache.xml changes
+    UC->>UC: Check for .versions.xml changes
 
     alt No changes
         UC->>UC: Exit (nothing to do)
@@ -111,11 +111,11 @@ flowchart LR
 
 ## Release Scenarios
 
-| Scenario | Who bumps `.version`? | Who creates release? | Who uploads zip? |
-| --- | --- | --- | --- |
+| Scenario            | Who bumps `.version`? | Who creates release?  | Who uploads zip? |
+| ------------------- | --------------------- | --------------------- | ---------------- |
 | New Python versions | `update_cache` (auto) | `update_cache` (auto) | `publish` (auto) |
-| Code changes | Developer (manual) | `release.yml` (auto) | `publish` (auto) |
-| Manual release | Developer (manual) | Developer (manual) | `publish` (auto) |
+| Code changes        | Developer (manual)    | `release.yml` (auto)  | `publish` (auto) |
+| Manual release      | Developer (manual)    | Developer (manual)    | `publish` (auto) |
 
 ## Token Anti-Recursion
 

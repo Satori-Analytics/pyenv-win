@@ -96,27 +96,28 @@ function Parse-PythonOrgPage {
             $major = [int]$versionMatch.Groups[1].Value
             $minor = [int]$versionMatch.Groups[2].Value
             
-                # Only process Python >= 2.4
-                if ($major -gt 2 -or ($major -eq 2 -and $minor -ge 4)) {
-                    Write-Host "     -> Processing Python $versionName..." -ForegroundColor DarkCyan
+            # Only process Python >= 2.4
+            if ($major -gt 2 -or ($major -eq 2 -and $minor -ge 4)) {
+                Write-Host "     -> Processing Python $versionName..." -ForegroundColor DarkCyan
                     
-                    # Build full URL
-                    if (-not $href.StartsWith("http")) {
-                        $href = $BaseUrl.TrimEnd('/') + '/' + $href.TrimStart('./')
-                    }
+                # Build full URL
+                if (-not $href.StartsWith("http")) {
+                    $href = $BaseUrl.TrimEnd('/') + '/' + $href.TrimStart('./')
+                }
                     
-                    # Scan version subdirectory
-                    $subContent = Get-WebContent -Url $href -IgnoreErrors $Ignore
-                    if ($subContent) {
-                        $subVersions = Parse-VersionSubdirectory -Content $subContent -BaseUrl $href
-                        Write-Host "        Found $($subVersions.Count) installers" -ForegroundColor DarkGreen
-                        foreach ($key in $subVersions.Keys) {
-                            $versions[$key] = $subVersions[$key]
-                        }
-                    } else {
-                        Write-Host "        Failed to get content" -ForegroundColor DarkRed
+                # Scan version subdirectory
+                $subContent = Get-WebContent -Url $href -IgnoreErrors $Ignore
+                if ($subContent) {
+                    $subVersions = Parse-VersionSubdirectory -Content $subContent -BaseUrl $href
+                    Write-Host "        Found $($subVersions.Count) installers" -ForegroundColor DarkGreen
+                    foreach ($key in $subVersions.Keys) {
+                        $versions[$key] = $subVersions[$key]
                     }
                 }
+                else {
+                    Write-Host "        Failed to get content" -ForegroundColor DarkRed
+                }
+            }
         }
     }
     
@@ -250,13 +251,15 @@ function Compare-UpdateVersion {
         $v1 = if ($Version1[$i] -and $Version1[$i] -ne "") { $Version1[$i] } else { if ($i -lt 3) { 0 } else { "" } }
         $v2 = if ($Version2[$i] -and $Version2[$i] -ne "") { $Version2[$i] } else { if ($i -lt 3) { 0 } else { "" } }
         
-        if ($i -lt 3 -or $i -eq 4) {  # Numeric comparison for major, minor, patch, release number
+        if ($i -lt 3 -or $i -eq 4) {
+            # Numeric comparison for major, minor, patch, release number
             $v1 = [int]$v1
             $v2 = [int]$v2
             if ($v1 -lt $v2) { return $true }
             if ($v1 -gt $v2) { return $false }
         }
-        else {  # String comparison for others
+        else {
+            # String comparison for others
             if ($v1 -lt $v2) { return $true }
             if ($v1 -gt $v2) { return $false }
         }
@@ -318,7 +321,7 @@ function Save-VersionsXml {
     
     $cachePath = $script:PyenvDBFile
     if (-not $cachePath) {
-        $cachePath = Join-Path $PSScriptRoot "..\.versions_cache.xml"
+        $cachePath = Join-Path $PSScriptRoot "..\.versions.xml"
     }
     $xml | Set-Content -Path $cachePath -Encoding UTF8
 }
@@ -380,7 +383,8 @@ foreach ($key in $allInstallers.Keys) {
     }
     
     # Prefer offline installers over web installers
-    if ($version[7] -eq "web") {  # This is a web installer
+    if ($version[7] -eq "web") {
+        # This is a web installer
         $offlineFileName = $key -replace "-webinstaller", ""
         if ($allInstallers.ContainsKey($offlineFileName)) {
             continue  # Skip web installer if offline version exists
@@ -402,11 +406,13 @@ $sortedInstallers = $filteredInstallers.Values | Sort-Object {
         $patch = if ($v[2]) { $v[2] } else { "0" }
         try {
             [version]"$major.$minor.$patch"
-        } catch {
+        }
+        catch {
             # If version parsing fails, use string comparison
             "$major.$minor.$patch"
         }
-    } else {
+    }
+    else {
         # Fallback for malformed version arrays
         $_[0]  # Sort by filename
     }
@@ -419,4 +425,4 @@ Save-VersionsXml -Installers $sortedInstallers
 
 Write-Host ""
 Write-Host ":: [Info] :: Scanned $pageCount pages and found $($filteredInstallers.Count) installers." -ForegroundColor Green
-Write-Host ":: [Info] :: Cache file updated: .versions_cache.xml" -ForegroundColor Green
+Write-Host ":: [Info] :: Cache file updated: .versions.xml" -ForegroundColor Green

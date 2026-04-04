@@ -20,7 +20,7 @@ $script:PyenvVersions = Join-Path $script:PyenvHome 'versions'
 $script:PyenvShims = Join-Path $script:PyenvHome 'shims'
 $script:PyenvLibexec = Join-Path $script:PyenvHome 'libexec'
 $script:PyenvCache = Join-Path $script:PyenvHome 'install_cache'
-$script:PyenvDBFile = Join-Path $script:PyenvHome '.versions_cache.xml'
+$script:PyenvDBFile = Join-Path $script:PyenvHome '.versions.xml'
 $script:PyenvVersionFile = '.python-version'
 
 function Get-PyenvVersion {
