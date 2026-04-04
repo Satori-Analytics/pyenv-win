@@ -39,7 +39,7 @@ if (-not (Test-Path $script:PyenvCache -PathType Container)) {
     exit 0
 }
 
-$cachedItems = Get-ChildItem $script:PyenvCache -Directory
+$cachedItems = Get-ChildItem $script:PyenvCache
 if ($cachedItems.Count -eq 0) {
     if (-not $optClear -and -not $optSync) {
         Write-Output "No cached installers."
@@ -60,13 +60,26 @@ if ($optSync) {
     }
     $removed = 0
     foreach ($item in $cachedItems) {
-        if ($item.Name -notin $installedVersions) {
+        # Match directory names directly, or extract version from installer filenames
+        $matchesInstalled = $false
+        if ($item.PSIsContainer) {
+            $matchesInstalled = $item.Name -in $installedVersions
+        }
+        else {
+            foreach ($ver in $installedVersions) {
+                if ($item.Name -match [regex]::Escape($ver)) {
+                    $matchesInstalled = $true
+                    break
+                }
+            }
+        }
+        if (-not $matchesInstalled) {
             Remove-Item $item.FullName -Recurse -Force
             $removed++
         }
     }
     if ($removed -gt 0) {
-        Write-Output "Removed $removed cached version(s) not currently installed."
+        Write-Output "Removed $removed cached item(s) not matching installed versions."
     }
     else {
         Write-Output "Cache is already in sync with installed versions."
@@ -74,7 +87,7 @@ if ($optSync) {
     exit 0
 }
 
-# Default: list cached versions
+# Default: list cached items
 foreach ($item in $cachedItems) {
     Write-Output $item.Name
 }
