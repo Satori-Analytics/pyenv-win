@@ -100,9 +100,9 @@ function Get-CurrentVersions {
     if ($versions.Count -eq 0) {
         Write-Output "No global/local python version has been set yet. Please set the global/local version by typing:"
         Write-Output "pyenv global <python-version>"
-        Write-Output "pyenv global 3.7.4"
+        Write-Output "pyenv global 3.8.4"
         Write-Output "pyenv local <python-version>"
-        Write-Output "pyenv local 3.7.4"
+        Write-Output "pyenv local 3.8.4"
         exit 1
     }
     return $versions

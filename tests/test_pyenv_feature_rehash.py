@@ -43,8 +43,8 @@ def test_rehash_local_version(pyenv_path, pyenv):
 
 
 @pytest.mark.parametrize('settings', [lambda: {
-        'versions': [Native('3.7.5'), Native('3.8.6'), Native('3.9.1')],
-        'global_ver': Native('3.7.5'),
+        'versions': [Native('3.8.3'), Native('3.8.6'), Native('3.9.1')],
+        'global_ver': Native('3.8.3'),
         'local_ver': Native('3.8.6')
     }])
 def test_rehash_shell_version(pyenv):

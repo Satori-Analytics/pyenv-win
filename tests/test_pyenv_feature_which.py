@@ -18,7 +18,7 @@ def pyenv_which_usage():
             "selected. To obtain the full path, use `pyenv which pip'.")
 
 
-@pytest.mark.parametrize('settings', [lambda: {'versions': [Native('3.7.7')]}])
+@pytest.mark.parametrize('settings', [lambda: {'versions': [Native('3.8.1')]}])
 def test_which_no_arg(pyenv):
     assert pyenv.which() == (pyenv_which_usage(), "")
     assert pyenv.which("--help") == (pyenv_which_usage(), "")
@@ -152,24 +152,24 @@ def test_which_no_version_defined(pyenv):
                 "No global/local python version has been set yet. "
                 "Please set the global/local version by typing:\n"
                 "pyenv global <python-version>\n"
-                "pyenv global 3.7.4\n"
+                "pyenv global 3.8.4\n"
                 "pyenv local <python-version>\n"
-                "pyenv local 3.7.4"
+                "pyenv local 3.8.4"
             ),
             ""
         )
 
 
 @pytest.mark.parametrize('settings', [lambda: {
-        'versions': [Native('3.7.7'), Native('3.8.2'), Native('3.9.1')],
-        'local_ver': [Native('3.7.7'), Native('3.8.2')]
+        'versions': [Native('3.8.3'), Native('3.9.2'), Native('3.10.1')],
+        'local_ver': [Native('3.8.3'), Native('3.9.2')]
     }])
 def test_which_many_local_versions(pyenv_path, pyenv):
     cases = [
-        ('python37', f'{Native("3.7.7")}{S}python37.exe'),
-        ('python38', f'{Native("3.8.2")}{S}python38.exe'),
-        ('pip3.7', f'{Native("3.7.7")}{S}Scripts{S}pip3.7.exe'),
-        ('pip3.8', f'{Native("3.8.2")}{S}Scripts{S}pip3.8.exe'),
+        ('python38', f'{Native("3.8.3")}{S}python38.exe'),
+        ('python39', f'{Native("3.9.2")}{S}python39.exe'),
+        ('pip3.8', f'{Native("3.8.3")}{S}Scripts{S}pip3.8.exe'),
+        ('pip3.9', f'{Native("3.9.2")}{S}Scripts{S}pip3.9.exe'),
     ]
     for (name, path) in cases:
         stdout, stderr = pyenv.which(name)

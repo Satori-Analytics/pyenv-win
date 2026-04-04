@@ -24,7 +24,7 @@ if ($args -contains '--help') {
     Write-Output "Example: To enable the python2.7 and python3.7 shims to find their"
     Write-Output "         respective executables you could set both versions with:"
     Write-Output ""
-    Write-Output "'pyenv local 3.7.0 2.7.15'"
+    Write-Output "'pyenv local 3.10.0 3.9.5'"
     exit 0
 }
 

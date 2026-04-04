@@ -22,59 +22,59 @@ def test_global_no_version(pyenv):
     assert pyenv("global") == ("no global version configured", "")
 
 
-@pytest.mark.parametrize('settings', [lambda: {'global_ver': Native("3.8.9")}])
+@pytest.mark.parametrize('settings', [lambda: {'global_ver': Native("3.10.9")}])
 def test_global_version_defined(pyenv):
-    assert pyenv("global") == (Native("3.8.9"), "")
+    assert pyenv("global") == (Native("3.10.9"), "")
 
 
 @pytest.mark.parametrize('settings', [lambda: {
-        'versions': [Native("3.7.7"), Native("3.8.9")],
-        'global_ver': Native("3.8.9")
+        'versions': [Native("3.9.7"), Native("3.10.9")],
+        'global_ver': Native("3.10.9")
     }])
 def test_global_set_installed_version(pyenv):
-    assert pyenv("global", Arch("3.7")) == ("", "")
-    assert pyenv("global") == (Arch("3.7"), "")
+    assert pyenv("global", Arch("3.9")) == ("", "")
+    assert pyenv("global") == (Arch("3.9"), "")
 
-    assert pyenv("global", Arch("3.7.7")) == ("", "")
-    assert pyenv("global") == (Arch("3.7.7"), "")
+    assert pyenv("global", Arch("3.9.7")) == ("", "")
+    assert pyenv("global") == (Arch("3.9.7"), "")
 
-    assert pyenv("global", Native("3.7.7")) == ("", "")
-    assert pyenv("global") == (Native("3.7.7"), "")
+    assert pyenv("global", Native("3.9.7")) == ("", "")
+    assert pyenv("global") == (Native("3.9.7"), "")
 
 
 @pytest.mark.parametrize('settings', [lambda: {
-        'versions': [Native("3.8.9")],
-        'global_ver': Native("3.8.9"),
+        'versions': [Native("3.10.9")],
+        'global_ver': Native("3.10.9"),
     }])
 def test_global_set_unknown_version(pyenv):
-    assert pyenv("global", Arch("3.7")) == (not_installed_output(Arch("3.7")), "")
-    assert pyenv("global", Arch("3.7.8")) == (not_installed_output(Arch("3.7.8")), "")
-    assert pyenv("global", Native("3.7.8")) == (not_installed_output(Native("3.7.8")), "")
+    assert pyenv("global", Arch("3.9")) == (not_installed_output(Arch("3.9")), "")
+    assert pyenv("global", Arch("3.9.8")) == (not_installed_output(Arch("3.9.8")), "")
+    assert pyenv("global", Native("3.9.8")) == (not_installed_output(Native("3.9.8")), "")
 
 
 @pytest.mark.parametrize('settings', [lambda: {
-        'versions': [Native("3.8.9")],
-        'global_ver': Native("3.8.9"),
+        'versions': [Native("3.10.9")],
+        'global_ver': Native("3.10.9"),
     }])
 def test_global_unset(pyenv):
     assert pyenv("global", "--unset") == ("", "")
     assert pyenv("global") == ("no global version configured", "")
 
 
-@pytest.mark.parametrize('settings', [lambda: {'versions': [Native("3.7.7"), Native("3.8.9")]}])
+@pytest.mark.parametrize('settings', [lambda: {'versions': [Native("3.9.7"), Native("3.10.9")]}])
 def test_global_set_many_versions(pyenv_path, pyenv):
-    assert pyenv('global', Arch("3.7.7"), Arch("3.8.9")) == ("", "")
-    assert global_python_versions(pyenv_path) == "\n".join([Arch('3.7.7'), Arch('3.8.9')])
+    assert pyenv('global', Arch("3.9.7"), Arch("3.10.9")) == ("", "")
+    assert global_python_versions(pyenv_path) == "\n".join([Arch('3.9.7'), Arch('3.10.9')])
 
-    assert pyenv('global', Arch("3.7.7"), Arch("3.8.9")) == ("", "")
-    assert global_python_versions(pyenv_path) == "\n".join([Arch('3.7.7'), Arch('3.8.9')])
+    assert pyenv('global', Arch("3.9.7"), Arch("3.10.9")) == ("", "")
+    assert global_python_versions(pyenv_path) == "\n".join([Arch('3.9.7'), Arch('3.10.9')])
 
 
-@pytest.mark.parametrize('settings', [lambda: {'versions': [Native("3.7.7")]}])
+@pytest.mark.parametrize('settings', [lambda: {'versions': [Native("3.9.7")]}])
 def test_global_set_many_versions_one_not_installed(pyenv):
-    assert pyenv('global', Arch("3.7.7"), Arch("3.8.9")) == (not_installed_output(Arch("3.8.9")), "")
+    assert pyenv('global', Arch("3.9.7"), Arch("3.10.9")) == (not_installed_output(Arch("3.10.9")), "")
 
 
-@pytest.mark.parametrize('settings', [lambda: {'global_ver': [Native('3.7.7'), Native('3.8.9')]}])
+@pytest.mark.parametrize('settings', [lambda: {'global_ver': [Native('3.9.7'), Native('3.10.9')]}])
 def test_global_many_versions_defined(pyenv):
-    assert pyenv('global') == ("\n".join([Native('3.7.7'), Native('3.8.9')]), "")
+    assert pyenv('global') == ("\n".join([Native('3.9.7'), Native('3.10.9')]), "")

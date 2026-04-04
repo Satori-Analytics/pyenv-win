@@ -14,9 +14,9 @@ P = os.pathsep
 @pytest.fixture()
 def settings():
     return lambda: {
-        'versions': [Native('3.7.7'), Native('3.8.9'), Native('3.10.0')],
-        'global_ver': Native('3.7.7'),
-        'local_ver': [Native('3.7.7'), Native('3.8.9')]
+        'versions': [Native('3.9.7'), Native('3.10.9'), Native('3.10.0')],
+        'global_ver': Native('3.9.7'),
+        'local_ver': [Native('3.9.7'), Native('3.10.9')]
     }
 
 
@@ -132,13 +132,13 @@ def test_many_paths(pyenv_path, env, pyenv):
     assert stderr == ""
     assert stdout.startswith(
         (
-            f"{pyenv_path}{S}versions{S}{Native('3.7.7')}{P}"
-            f"{pyenv_path}{S}versions{S}{Native('3.7.7')}{S}Scripts{P}"
-            f"{pyenv_path}{S}versions{S}{Native('3.8.9')}{P}"
-            f"{pyenv_path}{S}versions{S}{Native('3.8.9')}{S}Scripts{P}"
+            f"{pyenv_path}{S}versions{S}{Native('3.9.7')}{P}"
+            f"{pyenv_path}{S}versions{S}{Native('3.9.7')}{S}Scripts{P}"
+            f"{pyenv_path}{S}versions{S}{Native('3.10.9')}{P}"
+            f"{pyenv_path}{S}versions{S}{Native('3.10.9')}{S}Scripts{P}"
         )
     )
-    assert pyenv.exec('version.bat') == ("3.7.7", "")
+    assert pyenv.exec('version.bat') == ("3.9.7", "")
 
 
 @pytest.mark.parametrize('settings', [lambda: {
