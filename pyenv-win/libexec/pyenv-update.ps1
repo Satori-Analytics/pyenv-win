@@ -401,7 +401,7 @@ foreach ($key in $allInstallers.Keys) {
 Write-Verbose "Filtered to $($filteredInstallers.Count) installers"
 Write-Verbose "Sorting by semantic version..."
 
-# Sort by semantic version
+# Sort by semantic version, then by filename for deterministic output
 $sortedInstallers = $filteredInstallers.Values | Sort-Object { 
     $v = $_[2]
     if ($v -and $v.Count -ge 3) {
@@ -420,7 +420,7 @@ $sortedInstallers = $filteredInstallers.Values | Sort-Object {
         # Fallback for malformed version arrays
         $_[0]  # Sort by filename
     }
-}
+}, { $_[0] }
 
 Write-Verbose "Saving XML cache file..."
 
