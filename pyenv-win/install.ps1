@@ -196,6 +196,13 @@ Function Main() {
         If (Test-Path "$BackupDir/install_cache") {
             Write-Host "Restoring install cache..."
             Move-Item -Path "$BackupDir/install_cache" -Destination $PyEnvWinDir
+
+            # Remove v3 extraction folders — v4 only keeps flat installer files
+            $v3Dirs = Get-ChildItem "$PyEnvWinDir/install_cache" -Directory -ErrorAction SilentlyContinue
+            If ($v3Dirs.Count -gt 0) {
+                Write-Host "Cleaning up v3 extraction folders from install cache..."
+                $v3Dirs | Remove-Item -Recurse -Force
+            }
         }
 
         If (Test-Path "$BackupDir/version") {
