@@ -17,9 +17,12 @@ $OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = [System
 # Command discovery: find all pyenv-*.ps1 in libexec/
 function Get-PyenvCommands {
     $cmds = @{}
+    $hidden = @('version-name')
     Get-ChildItem "$script:PyenvLibexec" -Filter 'pyenv-*.ps1' -File | ForEach-Object {
         $name = $_.BaseName -replace '^pyenv-', ''
-        $cmds[$name] = $_.FullName
+        if ($name -notin $hidden) {
+            $cmds[$name] = $_.FullName
+        }
     }
     return $cmds
 }
@@ -42,10 +45,10 @@ switch ($subCommand) {
     # Help flag or help command — route to specific command if given
     { $_ -in @('-h', '--help', 'help') } {
         if ($subArgs.Count -gt 0) {
-            $commands = Get-PyenvCommands
             $helpTarget = $subArgs[0]
-            if ($commands.ContainsKey($helpTarget)) {
-                . $commands[$helpTarget] '--help'
+            $scriptPath = Join-Path $script:PyenvLibexec "pyenv-$helpTarget.ps1"
+            if (Test-Path $scriptPath) {
+                . $scriptPath '--help'
                 exit $LASTEXITCODE
             }
         }
@@ -135,9 +138,9 @@ switch ($subCommand) {
 
     # All other commands — look up in libexec/
     default {
-        $commands = Get-PyenvCommands
-        if ($commands.ContainsKey($subCommand)) {
-            . $commands[$subCommand] @subArgs
+        $scriptPath = Join-Path $script:PyenvLibexec "pyenv-$subCommand.ps1"
+        if (Test-Path $scriptPath) {
+            . $scriptPath @subArgs
             exit $LASTEXITCODE
         }
 

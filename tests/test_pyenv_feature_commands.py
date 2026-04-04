@@ -12,10 +12,10 @@ def test_check_pyenv_commands_list(pyenv):
     stdout, stderr = pyenv.commands()
     assert stderr == ''
     commands = stdout.splitlines()
-    for expected in ['commands', 'duplicate', 'exec', 'export', 'global', 'help',
-                     'install', 'latest', 'local', 'migrate', 'rehash', 'shell',
-                     'shims', 'uninstall', 'update', 'version', 'version-name',
-                     'versions', 'vname', 'whence', 'which']:
+    for expected in ['commands', 'exec', 'global', 'help',
+                     'install', 'latest', 'local', 'prefix', 'rehash',
+                     'root', 'shell', 'shims', 'uninstall', 'update', 'version',
+                     'versions', 'whence', 'which']:
         assert expected in commands, f"Command '{expected}' not found in commands output"
 
 
