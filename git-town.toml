@@ -5,7 +5,8 @@
 [branches]
 main = "master"
 order = "asc"
-unknown-type = "feature"
+unknown-type = "prototype"
+feature-regex = "^(feature|fix|ci|test|doc)\\/.+"
 
 [create]
 new-branch-type = "feature"
@@ -16,10 +17,10 @@ stash = true
 dev-remote = "origin"
 forge-type = "github"
 github-connector = "api"
+origin-hostname = "github.com"
 
 [propose]
 breadcrumb = "none"
-breadcrumb-direction = "down"
 
 [ship]
 delete-tracking-branch = false
@@ -27,11 +28,12 @@ ignore-uncommitted = false
 strategy = "api"
 
 [sync]
-auto-sync = false
-detached = true
+auto-resolve = true
+auto-sync = true
+detached = false
 feature-strategy = "merge"
 perennial-strategy = "rebase"
-prototype-strategy = "merge"
+prototype-strategy = "rebase"
 push-branches = true
 push-hook = false
 tags = true

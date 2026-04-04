@@ -168,8 +168,8 @@ Please see the [Changelog](./docs/changelog.md) page.
 
 - Fork the project & clone locally.
 - Create an upstream remote and sync your local copy before you branch.
-- Branch for each separate piece of work. It's good practice to write test cases.
-- Do the work, write good commit messages.
+- Branch for each separate piece of work using the naming convention: `feature/`, `fix/`, `ci/`, `test/`, or `doc/` prefix (e.g. `feature/add-caching`, `fix/shim-regression`).
+- Do the work, write good commit messages. It's good practice to write test cases.
 - Test the changes by running `python -m pytest tests/`
 - Push to your origin repository.
 - Create a new Pull Request in GitHub.
