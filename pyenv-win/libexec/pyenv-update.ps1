@@ -33,8 +33,6 @@ $mirrors = @(
     "https://api.github.com/repos/oracle/graalpython/releases"
 )
 
-$dbFile = Join-Path $PSScriptRoot "..\share\pyenv-win\versions.xml"
-
 # Regex patterns
 $regexVer = [regex]'(\d+)\.(\d+)(?:\.(\d+))?'
 $regexFile = [regex]'python-(\d+)\.(\d+)(?:\.(\d+))?(?:([a-z]+)(\d+))?(?:-(amd64|win32|arm64))?(?:-(web)installer)?\.(.+)'
@@ -269,7 +267,6 @@ function Compare-UpdateVersion {
 
 function Save-VersionsXml {
     param(
-        [string]$FilePath,
         [array]$Installers
     )
     
@@ -319,16 +316,6 @@ function Save-VersionsXml {
     
     $xml += '</versions>'
     
-    # Save to both locations
-    # 1. Standard location (share/pyenv-win/versions.xml)
-    $standardPath = Join-Path $PSScriptRoot "..\share\pyenv-win\versions.xml"
-    $standardDir = Split-Path $standardPath -Parent
-    if (-not (Test-Path $standardDir)) {
-        New-Item -ItemType Directory -Path $standardDir -Force | Out-Null
-    }
-    $xml | Set-Content -Path $standardPath -Encoding UTF8
-    
-    # 2. Cache location (.versions_cache.xml in pyenv root)
     $cachePath = $script:PyenvDBFile
     if (-not $cachePath) {
         $cachePath = Join-Path $PSScriptRoot "..\.versions_cache.xml"
@@ -428,10 +415,8 @@ $sortedInstallers = $filteredInstallers.Values | Sort-Object {
 Write-Host "   -> Saving XML cache file..." -ForegroundColor Yellow
 
 # Save to XML
-Save-VersionsXml -FilePath $dbFile -Installers $sortedInstallers
+Save-VersionsXml -Installers $sortedInstallers
 
 Write-Host ""
 Write-Host ":: [Info] :: Scanned $pageCount pages and found $($filteredInstallers.Count) installers." -ForegroundColor Green
-Write-Host ":: [Info] :: Cache files updated successfully:" -ForegroundColor Green
-Write-Host "   -> Standard: share\pyenv-win\versions.xml" -ForegroundColor Cyan
-Write-Host "   -> Cache: .versions_cache.xml" -ForegroundColor Cyan
+Write-Host ":: [Info] :: Cache file updated: .versions_cache.xml" -ForegroundColor Green
