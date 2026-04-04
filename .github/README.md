@@ -96,3 +96,33 @@ flowchart LR
     Q -- No --> S[Create Release]
     S --> L
 ```
+
+## Release Scenarios
+
+| Scenario | Who bumps `.version`? | Who creates release? | Who uploads zip? |
+| --- | --- | --- | --- |
+| New Python versions | `update_cache` (auto) | `update_cache` (auto) | `publish` (auto) |
+| Code changes | Developer (manual) | `release.yml` (auto) | `publish` (auto) |
+| Manual release | Developer (manual) | Developer (manual) | `publish` (auto) |
+
+## Token Anti-Recursion
+
+GitHub's `GITHUB_TOKEN` has a built-in safety rule: actions performed with it **do not trigger other workflows**. This project relies on that behavior to prevent infinite loops, and uses `workflow_run` as the workaround to chain workflows intentionally.
+
+```mermaid
+flowchart LR
+    subgraph "Cache update path"
+        UC[update_cache.yml] -->|"GITHUB_TOKEN push"| M[master]
+        M -.->|"❌ Does NOT trigger"| R[release.yml]
+        UC -->|"workflow_run ✅"| P[publish.yml]
+    end
+
+    subgraph "Developer path"
+        DEV[Developer push] -->|"triggers ✅"| R2[release.yml]
+        R2 -.->|"GITHUB_TOKEN release ❌"| P2["publish.yml (release event)"]
+        R2 -->|"workflow_run ✅"| P3["publish.yml (workflow_run)"]
+    end
+```
+
+- **Cache path:** `update_cache` pushes with `GITHUB_TOKEN`, so `release.yml` does **not** fire (no duplicate release). `publish.yml` runs via `workflow_run`.
+- **Developer path:** A developer push **does** trigger `release.yml`. The release it creates with `GITHUB_TOKEN` won't trigger `publish.yml`'s `release: created` event, but `publish.yml` still runs via `workflow_run`.
