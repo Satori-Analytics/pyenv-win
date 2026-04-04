@@ -44,26 +44,9 @@ function Get-ArchPostfix {
 
     switch ($arch.ToUpper()) {
         'AMD64' { return '' }
-        'X86' { return '-win32' }
         'ARM64' { return '-arm64' }
         default { return '' }
     }
-}
-
-function Test-Is32Bit {
-    $arch = $env:PYENV_FORCE_ARCH
-    if ([string]::IsNullOrEmpty($arch)) {
-        $arch = [System.Environment]::GetEnvironmentVariable('PROCESSOR_ARCHITECTURE', 'Machine')
-    }
-    return ($arch.ToUpper() -eq 'X86')
-}
-
-function Resolve-32Bit {
-    param([string]$Version)
-    if ((Test-Is32Bit) -and $Version.ToLower() -notmatch '-win32$') {
-        return "$Version-win32"
-    }
-    return $Version
 }
 
 function Set-PyenvProxy {

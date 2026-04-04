@@ -15,8 +15,8 @@ function Show-InstallHelp {
     Write-Output "  -s/--skip-existing     Skip the installation if the version appears to be installed already"
     Write-Output "  -r/--register          Register version for py launcher"
     Write-Output "  -q/--quiet             Install using /quiet. This does not show the UI nor does it prompt for inputs"
-    Write-Output "  --32only               Installs only 32bit Python using -a/--all switch, no effect on 32-bit windows."
-    Write-Output "  --64only               Installs only 64bit Python using -a/--all switch, no effect on 32-bit windows."
+    Write-Output "  --32only               Installs only 32-bit Python using -a/--all switch."
+    Write-Output "  --64only               Installs only 64-bit Python using -a/--all switch."
     Write-Output "  --dev                  Installs precompiled standard libraries, debug symbols, and debug binaries (only applies to web installer)."
     Write-Output "  --help                 Help, list of options allowed on pyenv install"
     exit 0
@@ -63,7 +63,6 @@ foreach ($arg in $args) {
 }
 
 # Validation
-if (Test-Is32Bit) { $opt32 = $false; $opt64 = $false }
 if ($opt32 -and $opt64) {
     Write-Output "pyenv-install: only --32only or --64only may be specified, not both."
     exit 1
@@ -121,7 +120,6 @@ if ($optClear) {
 if ($optAll) {
     $installVersions = [ordered]@{}
     foreach ($version in $versions.Keys) {
-        $version = Resolve-32Bit $version
         if ($versions.ContainsKey($version)) {
             if ($opt64 -and -not $versions[$version][$script:LV_x64]) { continue }
             if ($opt32 -and $versions[$version][$script:LV_x64]) { continue }

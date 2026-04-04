@@ -61,7 +61,7 @@ if ($optAll) {
 
 # Single version check
 if ($uninstallVersions.Count -eq 1) {
-    $singleVer = Resolve-32Bit @($uninstallVersions.Keys)[0]
+    $singleVer = @($uninstallVersions.Keys)[0]
     $singlePath = Join-Path $script:PyenvVersions $singleVer
     if (-not (Test-Path $singlePath -PathType Container)) {
         Write-Output "pyenv: version '$singleVer' not installed"
@@ -73,7 +73,6 @@ $uninstalled = @{}
 $delError = 0
 
 foreach ($folder in @($uninstallVersions.Keys)) {
-    $folder = Resolve-32Bit $folder
 
     if ($uninstalled.ContainsKey($folder)) { continue }
 

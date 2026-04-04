@@ -140,19 +140,8 @@ class Arch(str):
 class Native(Arch):
     def __new__(cls, content):
         ver = content
-        if os.environ['PYENV_FORCE_ARCH'] == 'X86':
-            content = content + '-win32'
         if os.environ['PYENV_FORCE_ARCH'] == 'ARM64':
             content = content + '-arm64'
-        self = super().__new__(cls, content)
-        self.version = ver
-        return self
-
-
-class X86(Arch):
-    def __new__(cls, content):
-        ver = content
-        content = content + '-win32'
         self = super().__new__(cls, content)
         self.version = ver
         return self

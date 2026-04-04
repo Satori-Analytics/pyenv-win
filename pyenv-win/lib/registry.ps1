@@ -8,13 +8,6 @@ function Register-PythonVersion {
         [string]$InstallPath
     )
 
-    # Registration requires 64-bit process
-    $arch = $env:PROCESSOR_ARCHITECTURE
-    if ($arch -eq 'x86') {
-        Write-PyenvWarn "Python registration not supported in 32 bits"
-        return
-    }
-
     if ($Version -match 'pypy') {
         Write-PyenvWarn "Registering pypy versions is not supported yet"
         return

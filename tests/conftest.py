@@ -55,8 +55,8 @@ def pyenv_file(shell, bin_path, shell_ext):
     return pyenv_file
 
 
-@pytest.fixture(scope='session', autouse=True, params=['AMD64', 'X86'],
-                ids=['PYENV_FORCE_ARCH=AMD64', 'PYENV_FORCE_ARCH=X86'])
+@pytest.fixture(scope='session', autouse=True, params=['AMD64'],
+                ids=['PYENV_FORCE_ARCH=AMD64'])
 def arch(request):
     value = request.param
     if request.session.testsfailed:
