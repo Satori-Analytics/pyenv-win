@@ -29,8 +29,8 @@ strategy = "api"
 [sync]
 auto-sync = false
 detached = true
-perennial-strategy = " rebase"
 feature-strategy = "merge"
+perennial-strategy = "rebase"
 prototype-strategy = "merge"
 push-branches = true
 push-hook = false
