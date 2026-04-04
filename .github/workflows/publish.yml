@@ -1,6 +1,9 @@
 name: Publish Release Zip
 
 on:
+  workflow_run:
+    workflows: ["Update cached versions"]
+    types: [completed]
   release:
     types: [created]
 
@@ -9,14 +12,23 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    if: >
+      (github.event_name == 'release') ||
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: master
+      - name: Get version
+        id: version
+        run: echo "version=$(cat .version | tr -d '[:space:]')" >> $GITHUB_OUTPUT
       - name: Build release zip
         run: |
           zip -r pyenv-win.zip pyenv-win/ .version -x "pyenv-win/__pycache__/*"
       - name: Upload zip to release
         run: |
-          gh release upload "${{ github.event.release.tag_name }}" pyenv-win.zip --clobber
+          TAG="v${{ steps.version.outputs.version }}"
+          gh release upload "$TAG" pyenv-win.zip --clobber || echo "No release found for $TAG, skipping upload."
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
