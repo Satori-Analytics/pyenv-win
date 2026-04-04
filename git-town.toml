@@ -1,0 +1,38 @@
+#:schema https://raw.githubusercontent.com/git-town/git-town/refs/heads/main/docs/git-town.schema.json
+
+# See https://www.git-town.com/configuration-file for details
+
+[branches]
+main = "master"
+order = "asc"
+unknown-type = "feature"
+
+[create]
+new-branch-type = "feature"
+share-new-branches = "no"
+stash = true
+
+[hosting]
+dev-remote = "origin"
+forge-type = "github"
+github-connector = "api"
+
+[propose]
+breadcrumb = "none"
+breadcrumb-direction = "down"
+
+[ship]
+delete-tracking-branch = false
+ignore-uncommitted = false
+strategy = "api"
+
+[sync]
+auto-sync = true
+detached = true
+feature-strategy = "rebase"
+perennial-strategy = "ff-only"
+prototype-strategy = "rebase"
+push-branches = true
+push-hook = false
+tags = true
+upstream = false
