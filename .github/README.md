@@ -33,7 +33,14 @@ Triggered on push to `master` when `.version` changes. Reads the version, checks
 
 ### publish.yml — Build & Attach Release Zip
 
-Triggered by `workflow_run` after `update_cache.yml` or `release.yml` completes successfully, or when a release is created manually. Builds `pyenv-win.zip` (containing `pyenv-win/` and `.version`) and uploads it as a release asset. This is the zip that `install.ps1` downloads.
+Triggered by `workflow_run` after `update_cache.yml` or `release.yml` completes successfully, or when a release is created manually. Steps:
+
+1. Builds `pyenv-win.zip` (containing `pyenv-win/` and `.version`) and uploads it as a release asset
+2. Runs [git-cliff](https://git-cliff.org/) to generate release notes from conventional commits
+3. Updates the GitHub Release with the generated notes
+4. Prepends the new version section to `docs/changelog.md` and commits to master
+
+Configuration for git-cliff lives in `cliff.toml` at the repo root.
 
 ## End-to-End Flow
 
@@ -64,6 +71,9 @@ sequenceDiagram
         Pub->>Master: Checkout latest master
         Pub->>Pub: zip pyenv-win/ + .version
         Pub->>GH: Upload pyenv-win.zip to release
+        Pub->>Pub: git-cliff --latest
+        Pub->>GH: Update release notes
+        Pub->>Master: Commit updated changelog.md
     end
 
     User->>GH: irm .../install.ps1 | iex
@@ -88,6 +98,8 @@ flowchart LR
     J --> K[Create Release]
     K --> L[publish.yml]
     L --> M[Build + Upload zip]
+    M --> M2[git-cliff → release notes]
+    M2 --> M3[Update changelog.md]
 
     N[Developer bumps .version] --> O[Push to master]
     O --> P[release.yml]
