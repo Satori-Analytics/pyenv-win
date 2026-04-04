@@ -37,6 +37,10 @@ Triggered by `workflow_run` after `update_cache.yml` completes successfully, or 
 
 ## End-to-End Flow
 
+### Sequence: Automated Cache Update → Release → Install
+
+Shows the full lifecycle from scheduled cache scrape through zip delivery to end users.
+
 ```mermaid
 sequenceDiagram
     participant Cron as Cron (Friday 00:05 UTC)
@@ -65,6 +69,10 @@ sequenceDiagram
     User->>GH: irm .../install.ps1 | iex
     GH-->>User: Download pyenv-win.zip (latest release)
 ```
+
+### Flowchart: All Workflow Triggers
+
+Overview of every CI/CD path — testing, automated cache releases, and developer-initiated releases.
 
 ```mermaid
 flowchart LR
