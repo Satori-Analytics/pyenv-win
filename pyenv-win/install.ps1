@@ -17,7 +17,7 @@
     None.
 
     .EXAMPLE
-    PS> install-pyenv-win.ps1
+    PS> install.ps1
 
     .LINK
     Online version: https://pyenv-win.github.io/pyenv-win/
@@ -141,10 +141,36 @@ Function Main() {
     New-Item -Path $PyEnvDir -ItemType Directory
 
     $DownloadPath = "$PyEnvDir\pyenv-win.zip"
+    $fromMaster = $false
 
-    (New-Object System.Net.WebClient).DownloadFile("https://github.com/satori-analytics/pyenv-win/releases/latest/download/pyenv-win.zip", $DownloadPath)
+    try {
+        (New-Object System.Net.WebClient).DownloadFile("https://github.com/satori-analytics/pyenv-win/releases/latest/download/pyenv-win.zip", $DownloadPath)
+    }
+    catch {
+        Write-Host "Release zip not available, falling back to master..." -ForegroundColor Yellow
+        try {
+            (New-Object System.Net.WebClient).DownloadFile("https://github.com/satori-analytics/pyenv-win/archive/master.zip", $DownloadPath)
+            $fromMaster = $true
+        }
+        catch {
+            Write-Host "ERROR: Failed to download pyenv-win: $_" -ForegroundColor Red
+            Write-Host "Check your internet connection or visit https://github.com/satori-analytics/pyenv-win"
+            exit 1
+        }
+    }
+
+    if (-not (Test-Path $DownloadPath) -or (Get-Item $DownloadPath).Length -eq 0) {
+        Write-Host "ERROR: Download failed — file is missing or empty." -ForegroundColor Red
+        exit 1
+    }
 
     Expand-Archive -Path $DownloadPath -DestinationPath $PyEnvDir -Force
+
+    if ($fromMaster) {
+        Move-Item -Path "$PyEnvDir\pyenv-win-master\*" -Destination "$PyEnvDir"
+        Remove-Item -Path "$PyEnvDir\pyenv-win-master" -Recurse
+    }
+
     Remove-Item -Path $DownloadPath
 
     # Update env vars
