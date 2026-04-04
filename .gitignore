@@ -18,7 +18,6 @@ bin/Release/
 obj/
 *.dll
 *.exe
-!pyenv-win/bin/pyenv.exe
 
 # Installer logs
 pip-log.txt

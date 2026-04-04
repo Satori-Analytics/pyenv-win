@@ -25,15 +25,11 @@ setup(
         'Topic :: Software Development :: Build Tools',
         'License :: OSI Approved :: MIT License',
         'Operating System :: Microsoft :: Windows',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
-        'Programming Language :: Python :: 3.13',
     ],
     keywords = 'pyenv for windows, multiple versions of python',
     packages = find_packages(
@@ -46,12 +42,11 @@ setup(
         'pyenv-win': 
         [
             'bin/pyenv.ps1',
+            'bin/pyenv.cmd',
             'bin/pyenv',
             'bin/pyenv.shim',
             'lib/*.ps1',
             'libexec/*.ps1',
-            'src/shim.cs',
-            'src/shim.csproj',
             '../.version', 
             '.versions_cache.xml'
         ]
