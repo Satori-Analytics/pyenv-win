@@ -1,7 +1,5 @@
 # Changelog
 
-> **Note:** Issues and PRs referenced below version 4.0.0 link to the [upstream repository](https://github.com/pyenv-win/pyenv-win) from which this project was forked.
-
 ## New in 4.0.0
 
 - **BREAKING:** Rewritten entirely in PowerShell 7. Requires `pwsh` (PowerShell 7+).
@@ -13,6 +11,8 @@
 - `pyenv update` consolidated from 4 separate files into a single `pyenv-update.ps1`.
 - Installer (`install.ps1`) now requires PowerShell 7.
 - Test suite updated for `pwsh -File` execution model.
+
+> **Note:** Issues and PRs referenced below version 4.0.0 link to the [upstream repository](https://github.com/pyenv-win/pyenv-win) from which this project was forked.
 
 ## New in 3.1.1
 
