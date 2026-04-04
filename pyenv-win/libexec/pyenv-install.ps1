@@ -120,7 +120,7 @@ if ($optClear) {
 if ($optAll) {
     $installVersions = [ordered]@{}
     foreach ($version in $versions.Keys) {
-        if ($versions.ContainsKey($version)) {
+        if ($versions.Contains($version)) {
             if ($opt64 -and -not $versions[$version][$script:LV_x64]) { continue }
             if ($opt32 -and $versions[$version][$script:LV_x64]) { continue }
             $installVersions[$version] = $true
@@ -142,7 +142,7 @@ if ($installVersions.Count -eq 0 -and -not $optAll) {
 
 # Pre-check all versions exist in DB
 foreach ($version in @($installVersions.Keys)) {
-    if (-not $versions.ContainsKey($version)) {
+    if (-not $versions.Contains($version)) {
         Write-Output "pyenv-install: definition not found: $version"
         Write-Output ""
         Write-Output "See all available versions with ``pyenv install --list``."
