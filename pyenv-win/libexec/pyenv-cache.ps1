@@ -39,8 +39,8 @@ if (-not (Test-Path $script:PyenvCache -PathType Container)) {
     exit 0
 }
 
-$cachedItems = Get-ChildItem $script:PyenvCache
-if ($cachedItems.Count -eq 0) {
+$cachedFiles = Get-ChildItem $script:PyenvCache -File
+if ($cachedFiles.Count -eq 0) {
     if (-not $optClear -and -not $optSync) {
         Write-Output "No cached installers."
     }
@@ -59,25 +59,27 @@ if ($optSync) {
         $installedVersions = (Get-ChildItem $script:PyenvVersions -Directory).Name
     }
     $removed = 0
-    foreach ($item in $cachedItems) {
-        # Match directory names directly, or extract version from installer filenames
+    foreach ($file in $cachedFiles) {
         $matchesInstalled = $false
-        if ($item.PSIsContainer) {
-            $matchesInstalled = $item.Name -in $installedVersions
-        }
-        else {
-            foreach ($ver in $installedVersions) {
-                if ($item.Name -match [regex]::Escape($ver)) {
-                    $matchesInstalled = $true
-                    break
-                }
+        foreach ($ver in $installedVersions) {
+            if ($file.Name -match [regex]::Escape($ver)) {
+                $matchesInstalled = $true
+                break
             }
         }
         if (-not $matchesInstalled) {
-            Remove-Item $item.FullName -Recurse -Force
+            Remove-Item $file.FullName -Force
             $removed++
         }
     }
+
+    # Also remove any leftover v3 extraction directories
+    $v3Dirs = Get-ChildItem $script:PyenvCache -Directory -ErrorAction SilentlyContinue
+    foreach ($dir in $v3Dirs) {
+        Remove-Item $dir.FullName -Recurse -Force
+        $removed++
+    }
+
     if ($removed -gt 0) {
         Write-Output "Removed $removed cached item(s) not matching installed versions."
     }
@@ -87,7 +89,14 @@ if ($optSync) {
     exit 0
 }
 
-# Default: list cached items
-foreach ($item in $cachedItems) {
-    Write-Output $item.Name
+# Default: list cached installers with version and size
+$totalSize = 0
+foreach ($file in $cachedFiles) {
+    $size = $file.Length
+    $totalSize += $size
+    $sizeStr = if ($size -ge 1MB) { "{0:N1} MB" -f ($size / 1MB) } else { "{0:N0} KB" -f ($size / 1KB) }
+    Write-Output ("{0,-40} {1,10}" -f $file.Name, $sizeStr)
 }
+$totalStr = if ($totalSize -ge 1MB) { "{0:N1} MB" -f ($totalSize / 1MB) } else { "{0:N0} KB" -f ($totalSize / 1KB) }
+Write-Output ""
+Write-Output "$($cachedFiles.Count) installer(s), $totalStr total"
