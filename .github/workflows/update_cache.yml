@@ -14,7 +14,7 @@ env:
 
 jobs:
   update_cache:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
     - name: Checkout master
       uses: actions/checkout@v4
