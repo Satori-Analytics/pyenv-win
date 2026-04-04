@@ -144,7 +144,7 @@ Function Main() {
         }   
     }
 
-    New-Item -Path $PyEnvDir -ItemType Directory
+    New-Item -Path $PyEnvDir -ItemType Directory | Out-Null
 
     $DownloadPath = "$PyEnvDir\pyenv-win.zip"
     $fromMaster = $false
