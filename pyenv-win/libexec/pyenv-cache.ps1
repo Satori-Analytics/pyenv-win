@@ -89,13 +89,39 @@ if ($optSync) {
     exit 0
 }
 
-# Default: list cached installers with version and size
+# Default: list cached installers
 $totalSize = 0
 foreach ($file in $cachedFiles) {
+    $name = $file.Name
     $size = $file.Length
     $totalSize += $size
     $sizeStr = if ($size -ge 1MB) { "{0:N1} MB" -f ($size / 1MB) } else { "{0:N0} KB" -f ($size / 1KB) }
-    Write-Output ("{0,-40} {1,10}" -f $file.Name, $sizeStr)
+
+    $desc = ""
+    $arch = ""
+
+    if ($name -match '^python-(.+?)(?:-(amd64|win32|arm64|ia64))?\.(?:exe|msi|zip)$') {
+        $desc = "python $($matches[1])"
+        $arch = if ($matches[2]) { $matches[2] } else { "x86" }
+    }
+    elseif ($name -match '^pypy(\d[\d.]*)-v(.+?)-win(\d+)\.zip$') {
+        $desc = "pypy $($matches[2]) py$($matches[1])"
+        $arch = "win$($matches[3])"
+    }
+    elseif ($name -match '^graalpy(?:-(community))?(?:-(jvm))?-(.+?)-windows-(.+?)\.zip$') {
+        $parts = @($matches[3])
+        if ($matches[1]) { $parts += $matches[1] }
+        if ($matches[2]) { $parts += $matches[2] }
+        $desc = "graalpy $($parts -join '-')"
+        $arch = $matches[4]
+    }
+    else {
+        # Unknown format — show raw filename
+        Write-Output ("{0,-50} {1,10}" -f $name, $sizeStr)
+        continue
+    }
+
+    Write-Output ("{0,-30} {1,-8} {2,10}" -f $desc, $arch, $sizeStr)
 }
 $totalStr = if ($totalSize -ge 1MB) { "{0:N1} MB" -f ($totalSize / 1MB) } else { "{0:N0} KB" -f ($totalSize / 1KB) }
 Write-Output ""
