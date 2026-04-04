@@ -108,13 +108,29 @@ Function Main() {
         Else {
             Write-Host "New version available: $LatestVersion. Updating..."
             
-            Write-Host "Backing up existing Python installations..."
-            $FoldersToBackup = "install_cache", "versions"
-            ForEach ($Dir in $FoldersToBackup) {
-                If (-not (Test-Path $BackupDir)) {
-                    New-Item -ItemType Directory -Path $BackupDir
+            If (-not (Test-Path $BackupDir)) {
+                New-Item -ItemType Directory -Path $BackupDir | Out-Null
+            }
+
+            If (Test-Path "${PyEnvWinDir}/install_cache") {
+                Write-Host "Backing up install cache..."
+                Move-Item -Path "${PyEnvWinDir}/install_cache" -Destination $BackupDir
+            }
+
+            $VersionsDir = "${PyEnvWinDir}/versions"
+            If (Test-Path $VersionsDir) {
+                $Versions = Get-ChildItem -Directory $VersionsDir
+                If ($Versions.Count -gt 0) {
+                    New-Item -ItemType Directory -Path "$BackupDir/versions" | Out-Null
+                    $i = 0
+                    ForEach ($Ver in $Versions) {
+                        $i++
+                        $Pct = [int](($i / $Versions.Count) * 100)
+                        Write-Progress -Activity "Backing up Python installations" -Status "Python $($Ver.Name)" -PercentComplete $Pct
+                        Move-Item -Path $Ver.FullName -Destination "$BackupDir/versions"
+                    }
+                    Write-Progress -Activity "Backing up Python installations" -Completed
                 }
-                Move-Item -Path "${PyEnvWinDir}/${Dir}" -Destination $BackupDir
             }
             
             Write-Host "Removing $PyEnvDir..."
@@ -148,8 +164,27 @@ Function Main() {
     [System.Environment]::SetEnvironmentVariable('PATH', $NewPath, "User")
 
     If (Test-Path $BackupDir) {
-        Write-Host "Restoring Python installations..."
-        Move-Item -Path "$BackupDir/*" -Destination $PyEnvWinDir
+        If (Test-Path "$BackupDir/install_cache") {
+            Write-Host "Restoring install cache..."
+            Move-Item -Path "$BackupDir/install_cache" -Destination $PyEnvWinDir
+        }
+
+        $BackupVersionsDir = "$BackupDir/versions"
+        If (Test-Path $BackupVersionsDir) {
+            $Versions = Get-ChildItem -Directory $BackupVersionsDir
+            If ($Versions.Count -gt 0) {
+                New-Item -ItemType Directory -Path "$PyEnvWinDir/versions" -ErrorAction SilentlyContinue | Out-Null
+                $i = 0
+                ForEach ($Ver in $Versions) {
+                    $i++
+                    $Pct = [int](($i / $Versions.Count) * 100)
+                    Write-Progress -Activity "Restoring Python installations" -Status "Python $($Ver.Name)" -PercentComplete $Pct
+                    Move-Item -Path $Ver.FullName -Destination "$PyEnvWinDir/versions"
+                }
+                Write-Progress -Activity "Restoring Python installations" -Completed
+            }
+        }
+
         Remove-Item -Path $BackupDir -Recurse -ErrorAction SilentlyContinue
     }
 
