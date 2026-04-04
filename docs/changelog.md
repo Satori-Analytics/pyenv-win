@@ -11,7 +11,7 @@
 - New architecture following Scoop's proven pattern: `lib/` shared libraries, `libexec/` per-command scripts, `bin/pyenv.ps1` dispatcher.
 - Added `bin/pyenv.cmd` for cmd.exe entry point (calls `pwsh` with `pyenv.ps1`).
 - `pyenv update` consolidated from 4 separate files into a single `pyenv-update.ps1`.
-- Installer (`install-pyenv-win.ps1`) now requires PowerShell 7.
+- Installer (`install.ps1`) now requires PowerShell 7.
 - Test suite updated for `pwsh -File` execution model.
 
 ## New in 3.1.1

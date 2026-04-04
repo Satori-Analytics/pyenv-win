@@ -25,13 +25,13 @@ _NOTE:_ If you are running Windows 10 1905 or newer, you might need to disable t
 The easiest way to install pyenv-win is to run the following installation command in a PowerShell 7 (`pwsh`) terminal:
 
 ```pwsh
-irm https://raw.githubusercontent.com/satori-analytics/pyenv-win/master/pyenv-win/install-pyenv-win.ps1 | iex
+irm https://raw.githubusercontent.com/satori-analytics/pyenv-win/master/pyenv-win/install.ps1 | iex
 ```
 
 To uninstall pyenv-win (removes all installed Python versions):
 
 ```pwsh
-& "${env:PYENV_HOME}install-pyenv-win.ps1" -Uninstall
+& "${env:PYENV_HOME}install.ps1" -Uninstall
 ```
 
 Installation is complete!

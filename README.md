@@ -41,7 +41,7 @@ This project was forked from [rbenv-win][3] and modified for [pyenv][1]. Version
 1. Install pyenv-win in PowerShell:
 
    ```pwsh
-   irm https://raw.githubusercontent.com/satori-analytics/pyenv-win/master/pyenv-win/install-pyenv-win.ps1 | iex
+   irm https://raw.githubusercontent.com/satori-analytics/pyenv-win/master/pyenv-win/install.ps1 | iex
    ```
 
 2. Reopen PowerShell
@@ -81,7 +81,7 @@ prefix       Display the directory where a Python version is installed
 version      Show the current Python version and its origin
 versions     List all Python versions available to pyenv
 exec         Runs an executable by first preparing PATH so that the selected
-Python version's directory is at the front
+             Python version's directory is at the front
 which        Display the full path to an executable
 whence       List all Python versions that contain the given executable
 ```
@@ -151,7 +151,7 @@ This PC
 
 ## How to update pyenv
 
-- If installed via PowerShell, run `&"${env:PYENV_HOME}\install-pyenv-win.ps1"` in a PowerShell 7 terminal.
+- If installed via PowerShell, run `&"${env:PYENV_HOME}\install.ps1"` in a PowerShell 7 terminal.
 - If installed via Git, navigate to the location where you installed pyenv, usually `%USERPROFILE%\.pyenv\pyenv-win`, and run `git pull`
 - If installed via zip
   - Download the latest [pyenv-win.zip](https://github.com/satori-analytics/pyenv-win/releases/latest/download/pyenv-win.zip) from the [Releases](https://github.com/satori-analytics/pyenv-win/releases) page
