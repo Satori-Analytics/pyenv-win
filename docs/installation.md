@@ -18,25 +18,17 @@ _NOTE:_ If you are running Windows 10 1905 or newer, you might need to disable t
 
 ## **PowerShell**
 
-The easiest way to install pyenv-win is to run the following installation command in a PowerShell terminal:
+The easiest way to install pyenv-win is to run the following installation command in a PowerShell 7 (`pwsh`) terminal:
 
 ```pwsh
-Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/pyenv-win/pyenv-win/master/pyenv-win/install-pyenv-win.ps1" -OutFile "./install-pyenv-win.ps1"; &"./install-pyenv-win.ps1"
+irm https://raw.githubusercontent.com/satori-analytics/pyenv-win/master/pyenv-win/install-pyenv-win.ps1 | iex
 ```
 
-If you are getting any **UnauthorizedAccess** error as below then start Windows PowerShell with the "Run as administrator" option and run `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine`, now re-run the above installation command.
+To uninstall pyenv-win (removes all installed Python versions):
 
-```plaintext
-& : File C:\Users\kirankotari\install-pyenv-win.ps1 cannot be loaded because running scripts is disabled on this system. For
-more information, see about_Execution_Policies at https:/go.microsoft.com/fwlink/?LinkID=135170.
-At line:1 char:173
-+ ... n.ps1" -OutFile "./install-pyenv-win.ps1"; &"./install-pyenv-win.ps1"
-+ ~~~~~~~~~~~~~~~~~~~~~~~~~ 
- + CategoryInfo          : SecurityError: (:) [], PSSecurityException 
- + FullyQualifiedErrorId : UnauthorizedAccess
+```pwsh
+& "${env:PYENV_HOME}install-pyenv-win.ps1" -Uninstall
 ```
-
-For more information on 'digitally signed' or 'Security warning' you can refer to following issue [#332](https://github.com/pyenv-win/pyenv-win/issues/332)
 
 Installation is complete!
 
