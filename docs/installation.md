@@ -13,7 +13,6 @@ Currently we support following ways, choose any of your comfort:
 - [PowerShell](#powershell) - easiest way
 - [Git Commands](#git-commands) - default way + adding manual settings
 - [Pyenv-win zip](#pyenv-win-zip) - manual installation
-- [Python pip](#python-pip) - for existing users
 
 Hurray! When you are done here are steps to [Validate installation](../README.md#validate-installation)
 
@@ -67,13 +66,13 @@ Installation is complete!
 
 Manual installation steps for pyenv-win
 
-1. Download [pyenv-win.zip](https://github.com/satori-analytics/pyenv-win/archive/master.zip)
+1. Download the latest [pyenv-win.zip](https://github.com/satori-analytics/pyenv-win/releases/latest/download/pyenv-win.zip) from the [Releases](https://github.com/satori-analytics/pyenv-win/releases) page
 
 2. Create a `.pyenv` directory if it doesn't exist:
    - Command prompt: `mkdir %USERPROFILE%\.pyenv`
    - PowerShell: `New-Item -ItemType Directory -Path "$HOME\.pyenv" -Force`
 
-3. Extract and move files to `%USERPROFILE%\.pyenv\`
+3. Extract the zip contents into `%USERPROFILE%\.pyenv\`
 
 4. Ensure there is a `bin` folder under `%USERPROFILE%\.pyenv\pyenv-win`
 
@@ -82,32 +81,6 @@ steps to [add System Settings](#add-system-settings)
 _Note:_ Don't forget the check above link, it contains final steps to complete.
 
 Installation is complete!
-
-Return to [README](../README.md#installation)
-
-***
-
-## **Python pip**
-
-For existing python users
-
-### Command prompt
-
-`pip install pyenv-win --target %USERPROFILE%\\.pyenv`  
-
-If you run into an error with the above command use the following instead ([#303](https://github.com/pyenv-win/pyenv-win/issues/303) (upstream)):
-
-`pip install pyenv-win --target %USERPROFILE%\\.pyenv --no-user --upgrade`
-
-### PowerShell or Git Bash
-
-Use the same command as above, but replace `%USERPROFILE%` with `$HOME`.
-
-### Final steps
-
-Proceed to [adding System Settings](#add-system-settings).
-
-Installation should then be complete!
 
 Return to [README](../README.md#installation)
 

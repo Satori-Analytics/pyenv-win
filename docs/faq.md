@@ -16,9 +16,6 @@
 - **Question:** System is stuck while uninstalling a python version
   - **Answer:** Navigate to the location where you installed pyenv, open its 'versions' folder (usually `%USERPROFILE%\.pyenv\pyenv-win\versions`), and delete the folder of the version you want removed.
 
-- **Question:** I installed pyenv-win using pip. How can I uninstall it?
-  - **Answer:** Follow the pip instructions in [How to update pyenv](../README.md#how-to-update-pyenv) and then run `pip uninstall pyenv-win`
-
 - **Question:** pyenv-win is not recognised, but I have set the ENV PATH?
   - **Answer:** According to Windows, when adding a path under the User variable you need to log out and log in again in order for the change to take effect. For System variables this is not required.
 
