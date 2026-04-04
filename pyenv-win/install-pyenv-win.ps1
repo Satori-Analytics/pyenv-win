@@ -142,12 +142,9 @@ Function Main() {
 
     $DownloadPath = "$PyEnvDir\pyenv-win.zip"
 
-    (New-Object System.Net.WebClient).DownloadFile("https://github.com/satori-analytics/pyenv-win/archive/master.zip", $DownloadPath)
+    (New-Object System.Net.WebClient).DownloadFile("https://github.com/satori-analytics/pyenv-win/releases/latest/download/pyenv-win.zip", $DownloadPath)
 
     Expand-Archive -Path $DownloadPath -DestinationPath $PyEnvDir -Force
-
-    Move-Item -Path "$PyEnvDir\pyenv-win-master\*" -Destination "$PyEnvDir"
-    Remove-Item -Path "$PyEnvDir\pyenv-win-master" -Recurse
     Remove-Item -Path $DownloadPath
 
     # Update env vars
@@ -193,6 +190,9 @@ Function Main() {
     If (Test-Path $PyenvBin) {
         Write-Host "Regenerating shims..."
         & pwsh -NoProfile -File $PyenvBin rehash
+
+        Write-Host "Updating Python versions cache..."
+        & pwsh -NoProfile -File $PyenvBin update
     }
     
     If ($? -eq $True) {
