@@ -77,6 +77,13 @@ Function Get-LatestVersion() {
 }
 
 Function Main() {
+    # #Requires -Version 7 is bypassed when run via irm | iex, so check manually
+    If ($PSVersionTable.PSVersion.Major -lt 7) {
+        Write-Host "ERROR: pyenv-win 4.0+ requires PowerShell 7. Current version: $($PSVersionTable.PSVersion)"
+        Write-Host "Install PowerShell 7: https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows"
+        exit 1
+    }
+
     If ($Uninstall) {
         Remove-PyEnv
         If ($? -eq $True) {
@@ -102,7 +109,7 @@ Function Main() {
             Write-Host "New version available: $LatestVersion. Updating..."
             
             Write-Host "Backing up existing Python installations..."
-            $FoldersToBackup = "install_cache", "versions", "shims"
+            $FoldersToBackup = "install_cache", "versions"
             ForEach ($Dir in $FoldersToBackup) {
                 If (-not (Test-Path $BackupDir)) {
                     New-Item -ItemType Directory -Path $BackupDir
@@ -143,6 +150,14 @@ Function Main() {
     If (Test-Path $BackupDir) {
         Write-Host "Restoring Python installations..."
         Move-Item -Path "$BackupDir/*" -Destination $PyEnvWinDir
+        Remove-Item -Path $BackupDir -Recurse -ErrorAction SilentlyContinue
+    }
+
+    # Regenerate shims for all installed versions
+    $PyenvBin = Join-Path $PyEnvWinDir "bin\pyenv.ps1"
+    If (Test-Path $PyenvBin) {
+        Write-Host "Regenerating shims..."
+        & pwsh -NoProfile -File $PyenvBin rehash
     }
     
     If ($? -eq $True) {
