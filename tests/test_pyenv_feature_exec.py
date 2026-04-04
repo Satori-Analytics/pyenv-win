@@ -7,21 +7,24 @@ from tempenv import TemporaryEnvironment
 
 from test_pyenv_helpers import Native
 
+S = os.sep
+P = os.pathsep
+
 
 @pytest.fixture()
 def settings():
     return lambda: {
-        'versions': [Native('3.7.7'), Native('3.8.9'), Native('3.10.0')],
-        'global_ver': Native('3.7.7'),
-        'local_ver': [Native('3.7.7'), Native('3.8.9')]
+        'versions': [Native('3.9.7'), Native('3.10.9'), Native('3.10.0')],
+        'global_ver': Native('3.9.7'),
+        'local_ver': [Native('3.9.7'), Native('3.10.9')]
     }
 
 
 @pytest.fixture()
 def env(pyenv_path):
-    env = {"PATH": f"{os.path.dirname(sys.executable)};" \
-                     f"{str(Path(pyenv_path, 'bin'))};" \
-                     f"{str(Path(pyenv_path, 'shims'))};" \
+    env = {"PATH": f"{os.path.dirname(sys.executable)}{P}" \
+                     f"{str(Path(pyenv_path, 'bin'))}{P}" \
+                     f"{str(Path(pyenv_path, 'shims'))}{P}" \
                      f"{os.environ['PATH']}"}
     environment = TemporaryEnvironment(env)
     with environment:
@@ -45,10 +48,9 @@ def remove_python_exe(pyenv, pyenv_path, settings):
 @pytest.mark.parametrize(
     "command",
     [
-        lambda path: [str(path / "bin" / "pyenv.bat"), "exec", "python"],
-        lambda path: [str(path / "shims" / "python.bat")],
+        lambda path: [str(path / "bin" / "pyenv.ps1"), "exec", "python"],
     ],
-    ids=["pyenv exec", "python shim"],
+    ids=["pyenv exec"],
 )
 @pytest.mark.parametrize(
     "arg",
@@ -90,7 +92,7 @@ def test_exec_arg(command, arg, env, pyenv_path, run):
         arg,
         env=env
     )
-    assert (stdout, stderr) == (arg.replace('%World%', 'Earth'), "")
+    assert (stdout, stderr) == (arg, "")
 
 
 @pytest.mark.parametrize(
@@ -108,20 +110,21 @@ def test_exec_arg(command, arg, env, pyenv_path, run):
 )
 def test_exec_help(args, env, pyenv):
     stdout, stderr = pyenv(*args, env=env)
-    assert ("\r\n".join(stdout.splitlines()[:1]), stderr) == (pyenv_exec_help(), "")
+    assert ("\n".join(stdout.splitlines()[:1]), stderr) == (pyenv_exec_help(), "")
 
 
 def test_path_not_updated(pyenv_path, local_path, env, run):
-    python = str(pyenv_path / "shims" / "python.bat")
-    tmp_bat = str(Path(local_path, "tmp.bat"))
-    with open(tmp_bat, "w") as f:
-        # must chain commands because env var is lost when cmd ends
-        print(f'@echo %PATH%', file=f)
-        print(f'@call "{python}" -V>nul', file=f)
-        print(f'@echo %PATH%', file=f)
-    stdout, stderr = run("call", tmp_bat, env=env)
-    path = os.environ['PATH']
-    assert (stdout, stderr) == (f"{path}\r\n{path}", "")
+    pyenv_ps1 = str(pyenv_path / "bin" / "pyenv.ps1")
+    tmp_ps1 = str(Path(local_path, "tmp.ps1"))
+    with open(tmp_ps1, "w") as f:
+        print('$env:PATH', file=f)
+        print(f'& "{pyenv_ps1}" exec python -V 2>$null | Out-Null', file=f)
+        print('$env:PATH', file=f)
+    stdout, stderr = run(tmp_ps1, env=env)
+    lines = stdout.strip().split("\n")
+    assert stderr == ""
+    assert len(lines) == 2
+    assert lines[0] == lines[1]
 
 
 def test_many_paths(pyenv_path, env, pyenv):
@@ -129,15 +132,13 @@ def test_many_paths(pyenv_path, env, pyenv):
     assert stderr == ""
     assert stdout.startswith(
         (
-            rf"{pyenv_path}\versions\{Native('3.7.7')};"
-            rf"{pyenv_path}\versions\{Native('3.7.7')}\Scripts;"
-            rf"{pyenv_path}\versions\{Native('3.7.7')}\bin;"
-            rf"{pyenv_path}\versions\{Native('3.8.9')};"
-            rf"{pyenv_path}\versions\{Native('3.8.9')}\Scripts;"
-            rf"{pyenv_path}\versions\{Native('3.8.9')}\bin;"
+            f"{pyenv_path}{S}versions{S}{Native('3.9.7')}{P}"
+            f"{pyenv_path}{S}versions{S}{Native('3.9.7')}{S}Scripts{P}"
+            f"{pyenv_path}{S}versions{S}{Native('3.10.9')}{P}"
+            f"{pyenv_path}{S}versions{S}{Native('3.10.9')}{S}Scripts{P}"
         )
     )
-    assert pyenv.exec('version.bat') == ("3.7.7", "")
+    assert pyenv.exec('version.bat') == ("3.9.7", "")
 
 
 @pytest.mark.parametrize('settings', [lambda: {
@@ -155,13 +156,9 @@ def test_bat_shim(pyenv):
 
 
 def test_removes_shims_from_path(pyenv):
-    assert pyenv.exec('python310') == (
-        '',
-        (
-            "'python310' is not recognized as an internal or external command,\r\n"
-            'operable program or batch file.'
-        )
-    )
+    stdout, stderr = pyenv.exec('python310')
+    assert stdout == ''
+    assert 'python310' in stderr
 
 
 def pyenv_exec_help():

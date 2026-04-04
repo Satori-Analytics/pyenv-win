@@ -24,9 +24,9 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Desktop (please complete the following information):**
- - OS: [e.g. Windows 7]
- - Tools used [e.g. command prompt, git bash]
- - Version [e.g. 22]
+ - OS: [e.g. Windows 10, Windows 11]
+ - Shell: [e.g. PowerShell 7, Git Bash]
+ - pyenv-win version: [e.g. 4.0.0]
 
 **Additional context**
 Add any other context about the problem here.

@@ -1,4 +1,4 @@
-#Requires -Version 5.0
+#Requires -Version 7
 
 <#
 .SYNOPSIS
@@ -16,18 +16,15 @@ param(
     [switch]$Help
 )
 
-if ($Help) {
-    Write-Host "Usage: pyenv-update.ps1 [-Ignore] [-Help]"
-    Write-Host ""
-    Write-Host "  -Ignore   Ignores any HTTP errors that occur during downloads."
-    Write-Host "  -Help     Shows this help message."
-    Write-Host ""
-    Write-Host "Updates the internal database of python installer URL's."
+# Manual --help check — PS can't bind --help to -Help via splatted arrays
+if ($Help -or '--help' -in $args) {
+    Write-Output "Usage: pyenv update [-Ignore]"
+    Write-Output ""
+    Write-Output "  -Ignore   Ignores any HTTP errors that occur during downloads."
+    Write-Output ""
+    Write-Output "Updates the internal database of python installer URL's."
     exit 0
 }
-
-# Import required modules
-Add-Type -AssemblyName System.Web
 
 # Configuration
 $mirrors = @(
@@ -81,9 +78,9 @@ function Parse-PythonOrgPage {
     $linkPattern = @'
 <a\s+[^>]*href\s*=\s*["']([^"']+)["'][^>]*>([^<>]+)</a>
 '@
-    $matches = [regex]::Matches($Content, $linkPattern, [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+    $linkMatches = [regex]::Matches($Content, $linkPattern, [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
     
-    foreach ($match in $matches) {
+    foreach ($match in $linkMatches) {
         $href = $match.Groups[1].Value
         $linkText = $match.Groups[2].Value.Trim()
         
@@ -139,9 +136,9 @@ function Parse-VersionSubdirectory {
     $linkPattern = @'
 <a\s+[^>]*href\s*=\s*["']([^"']+)["'][^>]*>([^<>]+)</a>
 '@
-    $matches = [regex]::Matches($Content, $linkPattern, [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+    $linkMatches = [regex]::Matches($Content, $linkPattern, [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
     
-    foreach ($match in $matches) {
+    foreach ($match in $linkMatches) {
         $href = $match.Groups[1].Value
         $fileName = $match.Groups[2].Value.Trim()
         
@@ -244,7 +241,7 @@ function Parse-JsonVersions {
     return $installers
 }
 
-function Compare-SemanticVersion {
+function Compare-UpdateVersion {
     param(
         [array]$Version1,
         [array]$Version2
@@ -316,7 +313,7 @@ function Save-VersionsXml {
         $xml += "`t<version x64=`"$x64`" webInstall=`"$isWebInstall`" msi=`"$isMsi`">`n"
         $xml += "`t`t<code>$code</code>`n"
         $xml += "`t`t<file>$fileName</file>`n"
-        $xml += "`t`t<URL>$([System.Web.HttpUtility]::HtmlEncode($url))</URL>`n"
+        $xml += "`t`t<URL>$([System.Net.WebUtility]::HtmlEncode($url))</URL>`n"
         $xml += "`t</version>`n"
     }
     
@@ -332,7 +329,10 @@ function Save-VersionsXml {
     $xml | Set-Content -Path $standardPath -Encoding UTF8
     
     # 2. Cache location (.versions_cache.xml in pyenv root)
-    $cachePath = Join-Path $PSScriptRoot "..\.versions_cache.xml"
+    $cachePath = $script:PyenvDBFile
+    if (-not $cachePath) {
+        $cachePath = Join-Path $PSScriptRoot "..\.versions_cache.xml"
+    }
     $xml | Set-Content -Path $cachePath -Encoding UTF8
 }
 
@@ -388,7 +388,7 @@ foreach ($key in $allInstallers.Keys) {
     $version = $installer[2]
     
     # Skip versions < 2.4
-    if (Compare-SemanticVersion -Version1 $version -Version2 $minVersion) {
+    if (Compare-UpdateVersion -Version1 $version -Version2 $minVersion) {
         continue
     }
     
