@@ -14,9 +14,6 @@ Currently we support following ways, choose any of your comfort:
 - [Git Commands](#git-commands) - default way + adding manual settings
 - [Pyenv-win zip](#pyenv-win-zip) - manual installation
 - [Python pip](#python-pip) - for existing users
-- [Chocolatey](#chocolatey)
-- [How to use 32-train](#how-to-use-32-train)  
-  - [check announcements](../README.md#announcements)
 
 Hurray! When you are done here are steps to [Validate installation](../README.md#validate-installation)
 
@@ -124,22 +121,6 @@ Return to [README](../README.md#installation)
 
 ***
 
-## **Chocolatey**
-
-This needs choco commands to install, [installation link](https://chocolatey.org/install)
-
-Chocolatey command `choco install pyenv-win`
-
-Chocolatey page: [pyenv-win](https://chocolatey.org/packages/pyenv-win)
-
-Installation is complete!
-
-Validate Installation
-
-Return to [README](../README.md#installation)
-
-***
-
 ## **Add System Settings**
 
 Use PowerShell to configure environment variables:
@@ -187,22 +168,3 @@ echo 'export PATH="$HOME/.pyenv/pyenv-win/bin:$PATH"' >> ~/.bash_profile
 ```
 
 Open a new terminal, and confirm `pyenv --version` works.
-
-***
-
-## **How to use 32-train**
-
-- **Using Git**
-  1. For 32-train prerequisite is [installing pyenv-win using Git](#git-commands)
-  2. Go to .pyenv dir command `cd %USERPROFILE%\.pyenv`
-  3. run `git checkout -b 32bit-train origin/32bit-train`
-  4. run `pyenv --version` and you should see _2.32.x_
-- **Using pip**
-  1. run `pip install pyenv-win==2.32.x --target %USERPROFILE%\.pyenv`
-  2. steps to [add System Settings](#add-system-settings)
-- **Using Zip**
-  1. Download [pyenv-win.zip](https://github.com/satori-analytics/pyenv-win/archive/32bit-train.zip)
-  2. Follow step 2 from [Pyenv-win zip](#pyenv-win-zip)
-  3. steps to [add System Settings](#add-system-settings)
-
-Return to [README](../README.md#installation)
