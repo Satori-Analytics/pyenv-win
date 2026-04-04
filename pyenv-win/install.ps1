@@ -117,6 +117,12 @@ Function Main() {
                 Move-Item -Path "${PyEnvWinDir}/install_cache" -Destination $BackupDir
             }
 
+            $GlobalVersionFile = "${PyEnvWinDir}/version"
+            If (Test-Path $GlobalVersionFile) {
+                Write-Host "Backing up global version setting..."
+                Copy-Item -Path $GlobalVersionFile -Destination "$BackupDir/version"
+            }
+
             $VersionsDir = "${PyEnvWinDir}/versions"
             If (Test-Path $VersionsDir) {
                 $Versions = Get-ChildItem -Directory $VersionsDir
@@ -190,6 +196,11 @@ Function Main() {
         If (Test-Path "$BackupDir/install_cache") {
             Write-Host "Restoring install cache..."
             Move-Item -Path "$BackupDir/install_cache" -Destination $PyEnvWinDir
+        }
+
+        If (Test-Path "$BackupDir/version") {
+            Write-Host "Restoring global version setting..."
+            Copy-Item -Path "$BackupDir/version" -Destination "$PyEnvWinDir/version"
         }
 
         $BackupVersionsDir = "$BackupDir/versions"
