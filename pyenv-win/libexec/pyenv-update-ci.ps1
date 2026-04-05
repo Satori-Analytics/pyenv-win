@@ -21,7 +21,7 @@ param(
 
 # Manual --help check — PS can't bind --help to -Help via splatted arrays
 if ($Help -or '--help' -in $Remaining) {
-    Write-Output "Usage: pyenv update-scrape [-Verbose] [-Ignore]"
+    Write-Output "Usage: pyenv update-ci [-Verbose] [-Ignore]"
     Write-Output ""
     Write-Output "  -Ignore   Ignores any HTTP errors that occur during downloads."
     Write-Output ""
