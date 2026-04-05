@@ -3,9 +3,9 @@ name: Pester
 on:
   push:
     branches:
-      - '**'
+      - master
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
   workflow_dispatch:
 
@@ -14,7 +14,6 @@ jobs:
     name: Pester tests
     runs-on: windows-latest
     steps:
-
       - name: Checkout
         uses: actions/checkout@v4
 
