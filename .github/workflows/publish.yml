@@ -25,18 +25,6 @@ jobs:
       - name: Get version
         id: version
         run: echo "version=$(cat .version | tr -d '[:space:]')" >> $GITHUB_OUTPUT
-      - name: Build release zip
-        run: |
-          zip -r pyenv-win.zip \
-            pyenv-win/ \
-            .gitignore .version LICENSE README.md \
-            -x "pyenv-win/__pycache__/*"
-      - name: Upload zip to release
-        run: |
-          TAG="v${{ steps.version.outputs.version }}"
-          gh release upload "$TAG" pyenv-win.zip --clobber || echo "No release found for $TAG, skipping upload."
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Generate release notes
         uses: orhun/git-cliff-action@v4
         with:
@@ -44,12 +32,6 @@ jobs:
           args: --latest --strip header
         env:
           OUTPUT: RELEASE_NOTES.md
-      - name: Update release notes
-        run: |
-          TAG="v${{ steps.version.outputs.version }}"
-          gh release edit "$TAG" --notes-file RELEASE_NOTES.md
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Update changelog file
         run: |
           { head -7 docs/changelog.md; echo; cat RELEASE_NOTES.md; tail -n +8 docs/changelog.md; } > /tmp/changelog.md
@@ -63,3 +45,21 @@ jobs:
             git commit -m "docs: update changelog for v${{ steps.version.outputs.version }}"
             git push origin master
           fi
+      - name: Build release zip
+        run: |
+          zip -r pyenv-win.zip \
+            pyenv-win/ \
+            .gitignore .version LICENSE README.md \
+            -x "pyenv-win/__pycache__/*"
+      - name: Upload zip to release
+        run: |
+          TAG="v${{ steps.version.outputs.version }}"
+          gh release upload "$TAG" pyenv-win.zip --clobber || echo "No release found for $TAG, skipping upload."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update release notes
+        run: |
+          TAG="v${{ steps.version.outputs.version }}"
+          gh release edit "$TAG" --notes-file RELEASE_NOTES.md
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
