@@ -19,7 +19,7 @@
   - Lists only installer files (not v3 extraction directories).
   - Output shows parsed columns: mirror, version, variant, architecture, and size (e.g. `python 3.12.10 amd64 25.7 MB`).
   - `--sync` also removes leftover v3 WiX extraction directories.
-- **`pyenv update -Verbose`** — compact default output (5 lines); pass `-Verbose` for detailed per-mirror progress. CI workflow uses `-Verbose`.
+- **`pyenv update-ci --verbose`** — compact default output (5 lines); pass `--verbose` for detailed per-mirror progress. CI workflow uses `--verbose`.
 - GraalPy and PyPy mirrors fully supported alongside python.org.
 
 ### Installer (`install.ps1`)

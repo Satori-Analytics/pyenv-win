@@ -34,10 +34,10 @@ if ($Args.Count -gt 1) {
     $subArgs = @($Args[1..($Args.Count - 1)])
 }
 
-# Propagate -Verbose as a preference so [CmdletBinding()] scripts inherit it
-if ($subArgs -contains '-Verbose') {
+# Propagate --verbose as a preference so [CmdletBinding()] scripts inherit it
+if ($subArgs -contains '--verbose' -or $subArgs -contains '-Verbose') {
     $VerbosePreference = 'Continue'
-    $subArgs = @($subArgs | Where-Object { $_ -ne '-Verbose' })
+    $subArgs = @($subArgs | Where-Object { $_ -notin @('--verbose', '-Verbose') })
 }
 
 # Route commands
