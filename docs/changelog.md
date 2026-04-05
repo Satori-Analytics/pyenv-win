@@ -8,9 +8,33 @@
 - Eliminated WiX `dark.exe` dependency — Python EXE installers (3.5+) now use silent install directly.
 - New architecture following Scoop's proven pattern: `lib/` shared libraries, `libexec/` per-command scripts, `bin/pyenv.ps1` dispatcher.
 - Added `bin/pyenv.cmd` for cmd.exe entry point (calls `pwsh` with `pyenv.ps1`).
-- `pyenv update` consolidated from 4 separate files into a single `pyenv-update.ps1`.
 - Installer (`install.ps1`) now requires PowerShell 7.
 - Test suite updated for `pwsh -File` execution model.
+
+### Commands
+
+- **New `pyenv upgrade` command** — self-updates pyenv-win by downloading and running the latest installer. Preserves installed Python versions, cache, and global version setting.
+- **`pyenv update` redesigned** — now downloads the pre-built `.versions.xml` from the repository in a single fast request, instead of scraping three mirror sites. Prints an upgrade notice when a newer pyenv-win version is available.
+- **`pyenv cache` improvements:**
+  - Lists only installer files (not v3 extraction directories).
+  - Output shows parsed columns: mirror, version, variant, architecture, and size (e.g. `python 3.12.10 amd64 25.7 MB`).
+  - `--sync` also removes leftover v3 WiX extraction directories.
+- **`pyenv update -Verbose`** — compact default output (5 lines); pass `-Verbose` for detailed per-mirror progress. CI workflow uses `-Verbose`.
+- GraalPy and PyPy mirrors fully supported alongside python.org.
+
+### Installer (`install.ps1`)
+
+- Preserves global version setting (`pyenv-win/version`) during upgrade.
+- Cleans up v3 WiX extraction folders from `install_cache` after restoring backup.
+- Replaced `exit` with `return` to prevent terminal closure when run via `irm | iex`.
+- Suppressed `New-Item` directory info output during install.
+
+### Internal
+
+- Renamed `.versions_cache.xml` → `.versions.xml`; removed dead `share/pyenv-win/versions.xml` write path.
+- Deterministic `.versions.xml` output (filename tiebreaker in sort) to prevent spurious CI releases.
+- Fixed GraalPy GitHub API URL detection for JSON parsing.
+- CI scraping logic moved to hidden `pyenv update-ci` command (not shown in `pyenv commands`).
 
 > **Note:** Issues and PRs referenced below version 4.0.0 link to the [upstream repository](https://github.com/pyenv-win/pyenv-win) from which this project was forked.
 
