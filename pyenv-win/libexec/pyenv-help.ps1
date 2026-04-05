@@ -23,6 +23,7 @@ Write-Output "   exec         Runs an executable by first preparing PATH so that
 Write-Output "                Python version's directory is at the front"
 Write-Output "   which        Display the full path to an executable"
 Write-Output "   whence       List all Python versions that contain the given executable"
+Write-Output "   completions  List available completions for a given command"
 Write-Output ""
 Write-Output "See 'pyenv help <command>' for information on a specific command."
 Write-Output "For full documentation, see: https://github.com/satori-analytics/pyenv-win#readme"

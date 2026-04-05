@@ -85,6 +85,7 @@ exec         Runs an executable by first preparing PATH so that the selected
              Python version's directory is at the front
 which        Display the full path to an executable
 whence       List all Python versions that contain the given executable
+completions  List available completions for a given command
 ```
 
 ## Installation
@@ -149,6 +150,16 @@ This PC
 - To view which python you are using and its path: `pyenv version`
 - To view all the python versions installed on this system: `pyenv versions`
 - Update the list of discoverable Python versions using: `pyenv update`
+
+## Tab Completion
+
+If you installed via the PowerShell installer, tab completion is enabled automatically. Otherwise, add this line to your `$PROFILE`:
+
+```pwsh
+. "$env:PYENV_HOME\completions\pyenv.ps1"
+```
+
+Then restart your shell. You can now press `Tab` to complete commands and flags, e.g. `pyenv inst<Tab>` → `pyenv install`, `pyenv install --l<Tab>` → `pyenv install --list`.
 
 ## How to update pyenv
 

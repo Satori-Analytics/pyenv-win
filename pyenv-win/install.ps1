@@ -43,6 +43,13 @@ Function Remove-PyEnvVars() {
     [System.Environment]::SetEnvironmentVariable('PYENV', $null, "User")
     [System.Environment]::SetEnvironmentVariable('PYENV_ROOT', $null, "User")
     [System.Environment]::SetEnvironmentVariable('PYENV_HOME', $null, "User")
+
+    # Remove tab completion from PowerShell profile
+    If (Test-Path $PROFILE) {
+        $Lines = Get-Content $PROFILE
+        $Filtered = $Lines | Where-Object { $_ -notmatch 'completions\\pyenv\.ps1' -and $_ -notmatch '# pyenv tab completion' }
+        Set-Content -Path $PROFILE -Value $Filtered
+    }
 }
 
 Function Remove-PyEnv() {
@@ -191,6 +198,22 @@ Function Main() {
     $NewPathParts = ($BinPath, $ShimsPath) + $NewPathParts
     $NewPath = $NewPathParts -Join ";"
     [System.Environment]::SetEnvironmentVariable('PATH', $NewPath, "User")
+
+    # Enable tab completion in PowerShell profile
+    $CompletionsScript = "${PyEnvWinDir}\completions\pyenv.ps1"
+    $ProfileDir = Split-Path $PROFILE -Parent
+    If (-not (Test-Path $ProfileDir)) {
+        New-Item -ItemType Directory -Path $ProfileDir -Force | Out-Null
+    }
+    If (-not (Test-Path $PROFILE)) {
+        New-Item -ItemType File -Path $PROFILE | Out-Null
+    }
+    $ProfileContent = Get-Content $PROFILE -Raw -ErrorAction SilentlyContinue
+    $SourceLine = ". `"$CompletionsScript`""
+    If (-not $ProfileContent -or $ProfileContent -notmatch [regex]::Escape($SourceLine)) {
+        Add-Content -Path $PROFILE -Value "`n# pyenv tab completion`n$SourceLine"
+        Write-Host "Tab completion added to $PROFILE"
+    }
 
     If (Test-Path $BackupDir) {
         If (Test-Path "$BackupDir/install_cache") {
