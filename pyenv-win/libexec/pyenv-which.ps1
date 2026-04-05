@@ -6,7 +6,7 @@ if ($args.Count -eq 0 -or $args[0] -eq '' -or $args -contains '--help') {
     Write-Output "Usage: pyenv which <command>"
     Write-Output ""
     Write-Output "Shows the full path of the executable"
-    Write-Output "selected. To obtain the full path, use ``pyenv which pip'."
+    Write-Output "selected. To obtain the full path, use 'pyenv which pip'."
     if ($args -contains '--help') { exit 0 }
     exit 1
 }

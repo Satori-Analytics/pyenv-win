@@ -7,8 +7,8 @@ if ($args -contains '--help') {
     Write-Output "       pyenv global --unset"
     Write-Output ""
     Write-Output "Sets the global Python version. You can override the global version at"
-    Write-Output "any time by setting a directory-specific version with ``pyenv local'"
-    Write-Output "or by setting the ``PYENV_VERSION' environment variable."
+    Write-Output "any time by setting a directory-specific version with 'pyenv local'"
+    Write-Output "or by setting the PYENV_VERSION environment variable."
     exit 0
 }
 

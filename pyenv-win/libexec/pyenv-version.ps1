@@ -6,7 +6,7 @@ if ($args -contains '--help') {
     Write-Output "Usage: pyenv version"
     Write-Output ""
     Write-Output "Shows the currently selected Python version and how it was"
-    Write-Output "selected. To obtain only the version string, use ``pyenv"
+    Write-Output "selected. To obtain only the version string, use 'pyenv"
     Write-Output "version-name'."
     exit 0
 }

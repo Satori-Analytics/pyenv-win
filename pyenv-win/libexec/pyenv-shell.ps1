@@ -6,7 +6,7 @@ if ($args -contains '--help') {
     Write-Output "Usage: pyenv shell <version>"
     Write-Output "       pyenv shell --unset"
     Write-Output ""
-    Write-Output "Sets a shell-specific Python version by setting the ``PYENV_VERSION'"
+    Write-Output "Sets a shell-specific Python version by setting the PYENV_VERSION"
     Write-Output "environment variable in your shell. This version overrides local"
     Write-Output "application-specific versions and the global version."
     exit 0

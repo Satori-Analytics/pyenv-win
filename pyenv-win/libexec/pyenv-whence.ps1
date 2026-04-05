@@ -7,13 +7,13 @@ if ($args.Count -eq 0 -or $args[0] -eq '' -or ($args.Count -eq 1 -and $args[0] -
         Write-Output "Usage: pyenv whence [--path] <command>"
         Write-Output ""
         Write-Output "Shows the currently given executable contains path"
-        Write-Output "selected. To obtain python version of executable, use ``pyenv whence pip'."
+        Write-Output "selected. To obtain python version of executable, use 'pyenv whence pip'."
         exit 0
     }
     Write-Output "Usage: pyenv whence [--path] <command>"
     Write-Output ""
     Write-Output "Shows the currently given executable contains path"
-    Write-Output "selected. To obtain python version of executable, use ``pyenv whence pip'."
+    Write-Output "selected. To obtain python version of executable, use 'pyenv whence pip'."
     exit 1
 }
 
@@ -24,7 +24,7 @@ if ($args[0] -eq '--help') {
     Write-Output "Usage: pyenv whence [--path] <command>"
     Write-Output ""
     Write-Output "Shows the currently given executable contains path"
-    Write-Output "selected. To obtain python version of executable, use ``pyenv whence pip'."
+    Write-Output "selected. To obtain python version of executable, use 'pyenv whence pip'."
     exit 0
 }
 

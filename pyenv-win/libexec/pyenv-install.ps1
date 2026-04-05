@@ -86,7 +86,7 @@ $versions = Import-VersionsCache
 if ($versions.Count -eq 0) {
     Write-Output "pyenv-install: no definitions in local database"
     Write-Output ""
-    Write-Output "Please update the local database cache with ``pyenv update'."
+    Write-Output "Please update the local database cache with 'pyenv update'."
     exit 1
 }
 
@@ -145,8 +145,8 @@ foreach ($version in @($installVersions.Keys)) {
     if (-not $versions.Contains($version)) {
         Write-Output "pyenv-install: definition not found: $version"
         Write-Output ""
-        Write-Output "See all available versions with ``pyenv install --list``."
-        Write-Output "Does the list seem out of date? Update it using ``pyenv update``."
+        Write-Output "See all available versions with 'pyenv install --list'."
+        Write-Output "Does the list seem out of date? Update it using 'pyenv update'."
         exit 1
     }
 }

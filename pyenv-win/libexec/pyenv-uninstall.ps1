@@ -12,7 +12,7 @@ function Show-UninstallHelp {
     Write-Output ""
     Write-Output "   -a/--all    *Caution* Attempt to remove all installed versions."
     Write-Output ""
-    Write-Output "See ``pyenv versions' for a complete list of installed versions."
+    Write-Output "See 'pyenv versions' for a complete list of installed versions."
     exit 0
 }
 
