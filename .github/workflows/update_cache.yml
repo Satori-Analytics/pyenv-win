@@ -17,11 +17,11 @@ jobs:
     steps:
     - name: Checkout master
       uses: actions/checkout@v4
-    - name: Update versions cache
+    - name: Scrape and update versions cache
       shell: pwsh
       run: |
         $env:PYENV_HOME = "${{ github.workspace }}/pyenv-win"
-        ./pyenv-win/bin/pyenv.ps1 update -Verbose
+        ./pyenv-win/bin/pyenv.ps1 update-scrape -Verbose
     - name: Check for changes
       id: changes
       run: |

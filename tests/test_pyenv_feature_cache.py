@@ -75,14 +75,14 @@ def test_cache_clear_then_list(settings, pyenv, pyenv_path):
 )
 def test_cache_sync(settings, pyenv, pyenv_path):
     stdout, stderr = pyenv.cache("--sync")
-    assert "Removed 2 cached version(s)" in stdout
+    assert "Removed 2 cached item(s)" in stdout
     assert stderr == ""
 
     cache_dir = pyenv_path / "install_cache"
-    remaining = [d.name for d in cache_dir.iterdir() if d.is_dir()]
-    assert "3.10.11" in remaining
-    assert "3.11.9" not in remaining
-    assert "3.12.4" not in remaining
+    remaining = [f.name for f in cache_dir.iterdir() if f.is_file()]
+    assert any("3.10.11" in f for f in remaining)
+    assert not any("3.11.9" in f for f in remaining)
+    assert not any("3.12.4" in f for f in remaining)
 
 
 @pytest.mark.parametrize(

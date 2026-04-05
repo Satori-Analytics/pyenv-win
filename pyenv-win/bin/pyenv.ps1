@@ -17,7 +17,7 @@ $OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = [System
 # Command discovery: find all pyenv-*.ps1 in libexec/
 function Get-PyenvCommands {
     $cmds = @{}
-    $hidden = @('version-name')
+    $hidden = @('version-name', 'update-scrape')
     Get-ChildItem "$script:PyenvLibexec" -Filter 'pyenv-*.ps1' -File | ForEach-Object {
         $name = $_.BaseName -replace '^pyenv-', ''
         if ($name -notin $hidden) {

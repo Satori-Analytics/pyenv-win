@@ -112,7 +112,8 @@ def pyenv_setup(settings):
         cache_dir = Path(pyenv_path, "install_cache")
         os.makedirs(cache_dir, exist_ok=True)
         for cv in cache_versions:
-            os.makedirs(cache_dir / cv, exist_ok=True)
+            # Create dummy installer files (not directories)
+            Path(cache_dir, f"python-{cv}-amd64.exe").write_bytes(b'\x00' * 1024)
 
 
 def not_installed_output(ver):
