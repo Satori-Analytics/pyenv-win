@@ -65,3 +65,6 @@ versions/
 
 # git
 *.orig
+
+# local test files
+install-v3.ps1
