@@ -11,12 +11,13 @@ winget install --id Microsoft.PowerShell --source winget
 Currently we support following ways, choose any of your comfort:
 
 - [PowerShell](#powershell) - easiest way
-- [Git Commands](#git-commands) - default way + adding manual settings
 - [Pyenv-win zip](#pyenv-win-zip) - manual installation
+- [Git Commands](#git-commands)
 
 Hurray! When you are done here are steps to [Validate installation](../README.md#validate-installation)
 
-_NOTE:_ If you are running Windows 10 1905 or newer, you might need to disable the built-in Python launcher via Start > "Manage App Execution Aliases" and turning off the "App Installer" aliases for Python
+> [!NOTE]
+> If you are running Windows 10 1905 or newer, you might need to disable the built-in Python launcher via Start > "Manage App Execution Aliases" and turning off the "App Installer" aliases for Python
 
 ***
 
@@ -36,29 +37,7 @@ To uninstall pyenv-win (removes all installed Python versions):
 
 Installation is complete!
 
-[Return to README](../README.md#installation)
-
-***
-
-## **Git Commands**
-
-The default way to install pyenv-win. Requires git to be installed.
-
-Using command prompt:
-
-`git clone https://github.com/satori-analytics/pyenv-win.git "%USERPROFILE%\.pyenv"`
-
-Or using PowerShell:
-
-`git clone https://github.com/satori-analytics/pyenv-win.git "$HOME\.pyenv"`
-
-steps to [add System Settings](#add-system-settings)
-
-_Note:_ Don't forget the check above link, it contains final steps to complete.
-
-Installation is complete!
-
-[Return to README](../README.md#installation)
+Return to [README](../README.md#installation)
 
 ***
 
@@ -75,6 +54,28 @@ Manual installation steps for pyenv-win
 3. Extract the zip contents into `%USERPROFILE%\.pyenv\`
 
 4. Ensure there is a `bin` folder under `%USERPROFILE%\.pyenv\pyenv-win`
+
+steps to [add System Settings](#add-system-settings)
+
+_Note:_ Don't forget the check above link, it contains final steps to complete.
+
+Installation is complete!
+
+Return to [README](../README.md#installation)
+
+***
+
+## **Git Commands**
+
+Requires git to be installed.
+
+Using command prompt:
+
+`git clone https://github.com/satori-analytics/pyenv-win.git "%USERPROFILE%\.pyenv"`
+
+Or using PowerShell:
+
+`git clone https://github.com/satori-analytics/pyenv-win.git "$HOME\.pyenv"`
 
 steps to [add System Settings](#add-system-settings)
 
@@ -107,17 +108,19 @@ Use PowerShell to configure environment variables:
    ```
 
 If for some reason you cannot execute PowerShell commands (likely on an organization-managed device), type "environment variables for your account" in the Windows search bar and open the Environment Variables dialog.
-You will need create those 3 new variables in System Variables section (bottom half). Let's assume username is `my_pc`.
-|Variable|Value|
-|---|---|
-|PYENV|C:\Users\my_pc\\.pyenv\pyenv-win\
-|PYENV_HOME|C:\Users\my_pc\\.pyenv\pyenv-win\
-|PYENV_ROOT|C:\Users\my_pc\\.pyenv\pyenv-win\
+You will need create those 3 new variables in System Variables section (bottom half). Let's assume username is `my_username`.
+
+| Variable   | Value                                  |
+|------------|----------------------------------------|
+| PYENV      | C:\Users\my_username\.pyenv\pyenv-win\ |
+| PYENV_HOME | C:\Users\my_username\.pyenv\pyenv-win\ |
+| PYENV_ROOT | C:\Users\my_username\.pyenv\pyenv-win\ |
 
 And add two more lines to user variable `Path`.
-```
-C:\Users\my_pc\.pyenv\pyenv-win\bin
-C:\Users\my_pc\.pyenv\pyenv-win\shims
+
+```pwsh
+C:\Users\my_username\.pyenv\pyenv-win\bin
+C:\Users\my_username\.pyenv\pyenv-win\shims
 ```
 
 Installation is done. Hurray!

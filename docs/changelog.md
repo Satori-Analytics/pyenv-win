@@ -1,152 +1,102 @@
 # Changelog
 
-## 4.1.0
+All notable changes to this project will be documented in this file.
 
-### Documentation
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-- update changelog for v4.0.1
+## [4.1.0] - 2026-04-05
 
 ### Features
 
-- add pyenv completions command and tab completion (#3)
+- Add pyenv completions command and tab completion by @nikolasd in [#3](https://github.com/Satori-Analytics/pyenv-win/pull/3)
 
-
-## 4.0.1
-
-### Documentation
-
-- update changelog for v4.0.0
+## [4.0.1] - 2026-04-05
 
 ### Miscellaneous
 
-- update cached versions to v4.0.1
+- Update cached versions to v4.0.1 by @nikolasd
 
-
-## 4.0.0
+## [4.0.0] - 2026-04-05
 
 ### Bug Fixes
 
-- rehash command was failing tests
-- harden installer for upgrade from older versions
-- enhance backup and restore process for Python installations
-- correct spacing in perennial-strategy configuration
-- use Contains() instead of ContainsKey() for OrderedDictionary
-- detect GraalPy GitHub API URL for JSON parsing
-- preserve global version setting during upgrade
-- suppress New-Item output during install
-- replace exit with return to prevent terminal closure via irm|iex
-- deterministic .versions.xml output to prevent spurious CI releases
-- list all cached items including installer files, not just directories
-- clean up v3 extraction folders from install_cache during upgrade
-- clean up Unix-style escaping in help text
-- replace Unix-style backtick-quote escaping in all help text
-- align test assertions with backtick-quote cleanup
+- Align test assertions with backtick-quote cleanup by @nikolasd
+- Replace Unix-style backtick-quote escaping in all help text by @nikolasd
+- Clean up Unix-style escaping in help text by @nikolasd
+- Clean up v3 extraction folders from install_cache during upgrade by @nikolasd
+- List all cached items including installer files, not just directories by @nikolasd
+- Deterministic .versions.xml output to prevent spurious CI releases by @nikolasd
+- Replace exit with return to prevent terminal closure via irm|iex by @nikolasd
+- Suppress New-Item output during install by @nikolasd
+- Preserve global version setting during upgrade by @nikolasd
+- Detect GraalPy GitHub API URL for JSON parsing by @nikolasd
+- Use Contains() instead of ContainsKey() for OrderedDictionary by @nikolasd
+- Correct spacing in perennial-strategy configuration by @nikolasd
+- Enhance backup and restore process for Python installations by @nikolasd
+- Harden installer for upgrade from older versions by @nikolasd
 
 ### CI/CD
 
-- replace PyPI publish with zip release pipeline
-- trigger publish after cache update, remove auto_approve
-- add workflow_run trigger and CI/CD documentation
-- auto-create release on .version bump
-- fix publish trigger chain for developer releases
-- rename workflows and convert update_versions to pwsh
+- Rename workflows and convert update_versions to pwsh by @nikolasd
+- Fix publish trigger chain for developer releases by @nikolasd
+- Auto-create release on .version bump by @nikolasd
+- Add workflow_run trigger and CI/CD documentation by @nikolasd
+- Trigger publish after cache update, remove auto_approve by @nikolasd
+- Replace PyPI publish with zip release pipeline by @nikolasd
 
 ### Documentation
 
-- correct typos
-- update env manual
-- update env manual
-- simplify install command to irm | iex
-- remove pip install method from all documentation
-- add cache command and branch naming convention to README
-- update all references from install-pyenv-win.ps1 to install.ps1
-- move upstream note below 4.0.0 section in changelog
-- add headers and descriptions to CI/CD Mermaid diagrams
-- add release scenarios and token anti-recursion to CI docs
-- move CI/CD README to .github/workflows/
-- add CI/CD workflows documentation
-- update README and CI docs for update/upgrade split
-- update 4.0.0 changelog with all recent changes
+- Update README and CI docs for update/upgrade split by @nikolasd
+- Add CI/CD workflows documentation by @nikolasd
+- Move CI/CD README to .github/workflows/ by @nikolasd
+- Add release scenarios and token anti-recursion to CI docs by @nikolasd
+- Add headers and descriptions to CI/CD Mermaid diagrams by @nikolasd
+- Move upstream note below 4.0.0 section in changelog by @nikolasd
+- Update all references from install-pyenv-win.ps1 to install.ps1 by @nikolasd
+- Add cache command and branch naming convention to README by @nikolasd
+- Remove pip install method from all documentation by @nikolasd
+- Simplify install command to irm | iex by @nikolasd
 
 ### Features
 
-- migrate pyenv-update to PowerShell for Windows 11 compatibility
-- add support for arm64 architecture in pyenv-update script
-- migrate pyenv-update to PowerShell for Windows 11 compatibility
-- add support for arm64 architecture in pyenv-update script
-- installer downloads from GitHub Releases and updates cache
-- add pyenv cache command
-- auto-generate changelog with git-cliff on every release
-- compact default output for pyenv update, verbose with -Verbose
-- add local test file to .gitignore
-- split update into download + upgrade commands
+- Split update into download + upgrade commands by @nikolasd
+- Add local test file to .gitignore by @nikolasd
+- Compact default output for pyenv update, verbose with -Verbose by @nikolasd
+- Auto-generate changelog with git-cliff on every release by @nikolasd
+- Add pyenv cache command by @nikolasd
+- Installer downloads from GitHub Releases and updates cache by @nikolasd
+- Add support for arm64 architecture in pyenv-update script by @profabioalvespinto
+- Migrate pyenv-update to PowerShell for Windows 11 compatibility by @profabioalvespinto
+- Add support for arm64 architecture in pyenv-update script by @profabioalvespinto
+- Migrate pyenv-update to PowerShell for Windows 11 compatibility by @profabioalvespinto
 
 ### Miscellaneous
 
-- remove setup.py (drop PyPI packaging)
-- update branch naming conventions and configuration
+- Update branch naming conventions and configuration by @nikolasd
+- Remove setup.py (drop PyPI packaging) by @nikolasd
 
 ### Refactor
 
-- rename install-pyenv-win.ps1 to install.ps1
-- remove dead versions.xml, write only .versions_cache.xml
-- rename .versions_cache.xml to .versions.xml
-- pyenv cache lists only files, cleans v3 dirs on sync
-- parse installer filenames into structured columns
-- accept --verbose flag (CLI convention) alongside -Verbose
+- Accept --verbose flag (CLI convention) alongside -Verbose by @nikolasd
+- Parse installer filenames into structured columns by @nikolasd
+- Pyenv cache lists only files, cleans v3 dirs on sync by @nikolasd
+- Rename .versions_cache.xml to .versions.xml by @nikolasd
+- Remove dead versions.xml, write only .versions_cache.xml by @nikolasd
+- Rename install-pyenv-win.ps1 to install.ps1 by @nikolasd
 
 ### Testing
 
-- add tests for pyenv cache command
-
-### Doc
-
-- environment variables manually steps
-
-### Install-pyenv-win
-
-- select correct Expand-Archive
+- Add tests for pyenv cache command by @nikolasd
 
 ### Rename
 
-- update-scrape -> update-ci
+- Update-scrape -> update-ci by @nikolasd
 
+### New Contributors
 
-## New in 4.0.0
-
-- **BREAKING:** Rewritten entirely in PowerShell 7. Requires `pwsh` (PowerShell 7+).
-- **BREAKING:** Dropped X86 (32-bit Windows) OS support — PowerShell 7 does not ship for 32-bit Windows. The `--32only` and `--64only` install flags are preserved for filtering Python versions on 64-bit machines.
-- Eliminated all VBScript (.vbs) and Batch (.bat) command files.
-- Eliminated WiX `dark.exe` dependency — Python EXE installers (3.5+) now use silent install directly.
-- New architecture following Scoop's proven pattern: `lib/` shared libraries, `libexec/` per-command scripts, `bin/pyenv.ps1` dispatcher.
-- Added `bin/pyenv.cmd` for cmd.exe entry point (calls `pwsh` with `pyenv.ps1`).
-- Installer (`install.ps1`) now requires PowerShell 7.
-- Test suite updated for `pwsh -File` execution model.
-
-### Commands
-
-- **New `pyenv upgrade` command** — self-updates pyenv-win by downloading and running the latest installer. Preserves installed Python versions, cache, and global version setting.
-- **`pyenv update` redesigned** — now downloads the pre-built `.versions.xml` from the repository in a single fast request, instead of scraping three mirror sites. Prints an upgrade notice when a newer pyenv-win version is available.
-- **`pyenv cache` improvements:**
-  - Lists only installer files (not v3 extraction directories).
-  - Output shows parsed columns: mirror, version, variant, architecture, and size (e.g. `python 3.12.10 amd64 25.7 MB`).
-  - `--sync` also removes leftover v3 WiX extraction directories.
-- **`pyenv update-ci --verbose`** — compact default output (5 lines); pass `--verbose` for detailed per-mirror progress. CI workflow uses `--verbose`.
-- GraalPy and PyPy mirrors fully supported alongside python.org.
-
-### Installer (`install.ps1`)
-
-- Preserves global version setting (`pyenv-win/version`) during upgrade.
-- Cleans up v3 WiX extraction folders from `install_cache` after restoring backup.
-- Replaced `exit` with `return` to prevent terminal closure when run via `irm | iex`.
-- Suppressed `New-Item` directory info output during install.
-
-### Internal
-
-- Renamed `.versions_cache.xml` → `.versions.xml`; removed dead `share/pyenv-win/versions.xml` write path.
-- Deterministic `.versions.xml` output (filename tiebreaker in sort) to prevent spurious CI releases.
-- Fixed GraalPy GitHub API URL detection for JSON parsing.
-- CI scraping logic moved to hidden `pyenv update-ci` command (not shown in `pyenv commands`).
+- @nikolasd made their first contribution
+- @profabioalvespinto made their first contribution
 
 > **Note:** Issues and PRs referenced below version 4.0.0 link to the [upstream repository](https://github.com/pyenv-win/pyenv-win) from which this project was forked.
 
@@ -254,3 +204,9 @@
 - Shims created using `pyenv rehash` no longer call `pyenv exec`, but instead call python directly to prevent issues with other programs executing the shims.
 - Shims now use cp1250 as the default code page since Python2 will [never actually support cp65001](https://bugs.python.org/issue6058#msg120712). cp1250 has better support for upper ANSI characters (ex. "Pokémon"), but still isn't full UTF-8 compatible.
 - **Note: Support for Python versions below 2.4 have been dropped since their installers don't install "cleanly" like versions from 2.4 onward and they're predominantly out of use/support in most environments now.**
+
+[4.1.0]: https://github.com/Satori-Analytics/pyenv-win/compare/v4.0.1...v4.1.0
+[4.0.1]: https://github.com/Satori-Analytics/pyenv-win/compare/v4.0.0...v4.0.1
+[4.0.0]: https://github.com/Satori-Analytics/pyenv-win/compare/v3.1.1...v4.0.0
+
+<!-- generated by git-cliff -->

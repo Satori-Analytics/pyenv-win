@@ -8,7 +8,7 @@
   - Versions below 2.4 use outdated Wise installers and have issues installing multiple patch versions, unlike Windows MSI and the new Python3 installers that support "extraction" installations.
 
 - **Question:** Does pyenv for windows support python3?
-  - **Answer:** Yes, we support python3 from version 3.0. We support it from 3.0 until python.org officially removes it.
+  - **Answer:** Yes, we support python3 from version 3.8. We support it from 3.8 until python.org officially removes it.
 
 - **Question:** I am getting the issue `batch file cannot be found.` while installing python, what should I do?
   - **Answer:** This error was common in pyenv-win versions prior to 4.0. In version 4.0+, pyenv-win uses PowerShell 7 and this error should no longer occur. If you see it, ensure you are running the latest version.

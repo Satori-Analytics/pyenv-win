@@ -20,7 +20,7 @@
     PS> install.ps1
 
     .LINK
-    Online version: https://pyenv-win.github.io/pyenv-win/
+    Online version: https://github.com/satori-analytics/pyenv-win
 #>
 
 #Requires -Version 7

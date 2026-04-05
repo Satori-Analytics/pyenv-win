@@ -51,7 +51,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Update changelog file
         run: |
-          { head -1 docs/changelog.md; echo; cat RELEASE_NOTES.md; tail -n +2 docs/changelog.md; } > /tmp/changelog.md
+          { head -7 docs/changelog.md; echo; cat RELEASE_NOTES.md; tail -n +8 docs/changelog.md; } > /tmp/changelog.md
           mv /tmp/changelog.md docs/changelog.md
       - name: Commit changelog
         run: |
