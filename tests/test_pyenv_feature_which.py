@@ -15,7 +15,7 @@ def pyenv_which_usage():
     return ("Usage: pyenv which <command>\n"
             "\n"
             "Shows the full path of the executable\n"
-            "selected. To obtain the full path, use `pyenv which pip'.")
+            "selected. To obtain the full path, use 'pyenv which pip'.")
 
 
 @pytest.mark.parametrize('settings', [lambda: {'versions': [Native('3.8.1')]}])

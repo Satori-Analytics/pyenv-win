@@ -7,7 +7,7 @@ def pyenv_whence_usage():
     return ("Usage: pyenv whence [--path] <command>\n"
             "\n"
             "Shows the currently given executable contains path\n"
-            "selected. To obtain python version of executable, use `pyenv whence pip'.")
+            "selected. To obtain python version of executable, use 'pyenv whence pip'.")
 
 
 @pytest.mark.parametrize('settings', [lambda: {'versions': [Native('3.8.1')]}])
