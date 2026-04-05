@@ -1,5 +1,16 @@
 # Changelog
 
+## 4.1.0
+
+### Documentation
+
+- update changelog for v4.0.1
+
+### Features
+
+- add pyenv completions command and tab completion (#3)
+
+
 ## 4.0.1
 
 ### Documentation
