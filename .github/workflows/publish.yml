@@ -49,8 +49,7 @@ jobs:
         run: |
           zip -r pyenv-win.zip \
             pyenv-win/ \
-            .gitignore .version LICENSE README.md \
-            -x "pyenv-win/__pycache__/*"
+            .gitignore .version LICENSE README.md
       - name: Upload zip to release
         run: |
           TAG="v${{ steps.version.outputs.version }}"
