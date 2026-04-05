@@ -21,6 +21,7 @@ jobs:
         with:
           ref: master
           fetch-depth: 0
+          token: ${{ secrets.PYENV_WIN_PAT }}
       - name: Get version
         id: version
         run: echo "version=$(cat .version | tr -d '[:space:]')" >> $GITHUB_OUTPUT
