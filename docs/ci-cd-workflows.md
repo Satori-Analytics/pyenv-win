@@ -5,7 +5,7 @@
 | Workflow           | Trigger                                                         | Runner  | Purpose                                            |
 | ------------------ | --------------------------------------------------------------- | ------- | -------------------------------------------------- |
 | `pytest.yml`       | Push (any branch), PR to master, manual                         | Windows | Run test suite across Python 3.8–3.12              |
-| `update_cache.yml` | Weekly (Friday 00:05 UTC), manual                               | Windows | Refresh `.versions.xml` from python.org            |
+| `update_cache.yml` | Weekly (Friday 00:05 UTC), manual                               | Windows | Refresh `.versions.xml` via `update-ci`    |
 | `release.yml`      | Push to master that changes `.version`                          | Ubuntu  | Create GitHub Release from version bump            |
 | `publish.yml`      | After `update_cache` or `release` completes, or release created | Ubuntu  | Build and upload `pyenv-win.zip` to GitHub Release |
 
@@ -17,7 +17,7 @@ Runs on every push and PR. Executes pytest with coverage across a matrix of five
 
 ### update_cache.yml — Weekly Version Cache Update
 
-Runs `pyenv update` to scrape python.org for new Python releases. If `.versions.xml` changes:
+Runs `pyenv update-ci` (a hidden CI-only command) to scrape python.org, PyPy, and GraalPy for new installer releases. If `.versions.xml` changes:
 
 1. Bumps the patch version in `.version` (e.g. `4.0.3` → `4.0.4`)
 2. Commits both files directly to `master`
@@ -58,7 +58,7 @@ sequenceDiagram
     participant User as End User
 
     Cron->>UC: Trigger scheduled run
-    UC->>UC: pyenv update (scrape python.org)
+    UC->>UC: pyenv update-ci (scrape mirrors)
     UC->>UC: Check for .versions.xml changes
 
     alt No changes

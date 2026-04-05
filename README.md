@@ -73,7 +73,8 @@ global       Set or show the global Python version
 shell        Set or show the shell-specific Python version
 install      Install 1 or more versions of Python
 uninstall    Uninstall a specific Python version
-update       Update the cached version DB
+update       Update the cached version DB from the repository
+upgrade      Update pyenv-win itself to the latest version
 rehash       Rehash pyenv shims (run this after installing executables)
 cache        List, clear, or sync the installer cache
 root         Display the root directory where versions and shims are kept
@@ -151,11 +152,22 @@ This PC
 
 ## How to update pyenv
 
-- If installed via PowerShell, run `&"${env:PYENV_HOME}\install.ps1"` in a PowerShell 7 terminal.
+The simplest way to update pyenv-win is:
+
+```pwsh
+pyenv upgrade
+```
+
+This downloads and runs the latest installer, preserving your installed Python versions, cache, and global version setting.
+
+Alternatively:
+
 - If installed via Git, navigate to the location where you installed pyenv, usually `%USERPROFILE%\.pyenv\pyenv-win`, and run `git pull`
 - If installed via zip
   - Download the latest [pyenv-win.zip](https://github.com/satori-analytics/pyenv-win/releases/latest/download/pyenv-win.zip) from the [Releases](https://github.com/satori-analytics/pyenv-win/releases) page
   - Extract it and replace the `pyenv-win` folder under `%USERPROFILE%\.pyenv\`
+
+> **Note:** `pyenv update` only refreshes the Python versions database. To update pyenv-win itself, use `pyenv upgrade`.
 
 ## FAQ
 
