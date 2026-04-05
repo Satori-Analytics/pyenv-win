@@ -1,5 +1,16 @@
 # Changelog
 
+## 4.0.1
+
+### Documentation
+
+- update changelog for v4.0.0
+
+### Miscellaneous
+
+- update cached versions to v4.0.1
+
+
 ## 4.0.0
 
 ### Bug Fixes
