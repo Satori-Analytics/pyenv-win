@@ -1,6 +1,0 @@
-pytest>=8.0.0
-pytest-cov>=5.0.0
-coveralls>=4.0.0
-coverage>=7.0.0
-tempenv>=1.0.0
-packaging>=21.0
