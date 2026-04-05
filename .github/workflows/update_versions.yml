@@ -1,4 +1,4 @@
-name: Update cached versions
+name: Update versions
 
 on:
   workflow_dispatch:
@@ -11,7 +11,7 @@ env:
   DEPLOY_BRANCH: master
 
 jobs:
-  update_cache:
+  update_versions:
     runs-on: windows-latest
     steps:
       - name: Checkout master
@@ -23,14 +23,16 @@ jobs:
           ./pyenv-win/bin/pyenv.ps1 update-ci --verbose
       - name: Check for changes
         id: changes
+        shell: pwsh
         run: |
           git add -A
-          if git diff --staged --quiet; then
-            echo "changed=false" >> $GITHUB_OUTPUT
-          else
-            echo "changed=true" >> $GITHUB_OUTPUT
+          git diff --staged --quiet
+          if ($LASTEXITCODE -eq 0) {
+            'changed=false' >> $env:GITHUB_OUTPUT
+          } else {
+            'changed=true' >> $env:GITHUB_OUTPUT
             git reset HEAD
-          fi
+          }
       - name: Bump patch version
         if: steps.changes.outputs.changed == 'true'
         shell: pwsh
@@ -45,6 +47,7 @@ jobs:
           echo "NEW_VERSION=$newVersion" >> $env:GITHUB_ENV
       - name: Commit and push changes
         if: steps.changes.outputs.changed == 'true'
+        shell: pwsh
         run: |
           git config user.name "${{ env.DEPLOY_USER }}"
           git config user.email "${{ env.DEPLOY_EMAIL }}"
@@ -53,12 +56,12 @@ jobs:
           git push origin ${{ env.DEPLOY_BRANCH }}
       - name: Create GitHub Release
         if: steps.changes.outputs.changed == 'true'
+        shell: pwsh
         run: |
-          gh release create "v${{ env.NEW_VERSION }}" \
-            --target ${{ env.DEPLOY_BRANCH }} \
-            --title "v${{ env.NEW_VERSION }}" \
-            --notes "Automated release — updated Python versions cache." \
+          gh release create "v${{ env.NEW_VERSION }}" `
+            --target ${{ env.DEPLOY_BRANCH }} `
+            --title "v${{ env.NEW_VERSION }}" `
+            --notes "Automated release — updated Python versions cache." `
             --latest
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        shell: bash

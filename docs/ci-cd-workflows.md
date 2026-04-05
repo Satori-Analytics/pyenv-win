@@ -5,9 +5,9 @@
 | Workflow           | Trigger                                                         | Runner  | Purpose                                            |
 | ------------------ | --------------------------------------------------------------- | ------- | -------------------------------------------------- |
 | `pytest.yml`       | Push (any branch), PR to master, manual                         | Windows | Run test suite across Python 3.8–3.12              |
-| `update_cache.yml` | Weekly (Friday 00:05 UTC), manual                               | Windows | Refresh `.versions.xml` via `update-ci`    |
+| `update_versions.yml` | Weekly (Friday 00:05 UTC), manual                               | Windows | Refresh `.versions.xml` via `update-ci`    |
 | `release.yml`      | Push to master that changes `.version`                          | Ubuntu  | Create GitHub Release from version bump            |
-| `publish.yml`      | After `update_cache` or `release` completes, or release created | Ubuntu  | Build and upload `pyenv-win.zip` to GitHub Release |
+| `publish.yml`      | After `update_versions` or `release` completes, or release created | Ubuntu  | Build and upload `pyenv-win.zip` to GitHub Release |
 
 ## Workflow Details
 
@@ -15,7 +15,7 @@
 
 Runs on every push and PR. Executes pytest with coverage across a matrix of five Python versions (3.8, 3.9, 3.10, 3.11, 3.12) on Windows. All matrix jobs run independently (`fail-fast: false`).
 
-### update_cache.yml — Weekly Version Cache Update
+### update_versions.yml — Weekly Version Cache Update
 
 Runs `pyenv update-ci` (a hidden CI-only command) to scrape python.org, PyPy, and GraalPy for new installer releases. If `.versions.xml` changes:
 
@@ -27,13 +27,13 @@ If no new Python versions are found, the workflow exits without changes.
 
 ### release.yml — Auto-Release on Version Bump
 
-Triggered on push to `master` when `.version` changes. Reads the version, checks whether a matching release already exists (to avoid duplicates from `update_cache`), and creates a GitHub Release if needed. This automates the code-change release path — just bump `.version`, commit, and push.
+Triggered on push to `master` when `.version` changes. Reads the version, checks whether a matching release already exists (to avoid duplicates from `update_versions`), and creates a GitHub Release if needed. This automates the code-change release path — just bump `.version`, commit, and push.
 
-> **Note:** Pushes made by `update_cache.yml` use `GITHUB_TOKEN`, which does not trigger other workflows. So this workflow only fires for developer pushes, not automated cache updates.
+> **Note:** Pushes made by `update_versions.yml` use `GITHUB_TOKEN`, which does not trigger other workflows. So this workflow only fires for developer pushes, not automated cache updates.
 
 ### publish.yml — Build & Attach Release Zip
 
-Triggered by `workflow_run` after `update_cache.yml` or `release.yml` completes successfully, or when a release is created manually. Steps:
+Triggered by `workflow_run` after `update_versions.yml` or `release.yml` completes successfully, or when a release is created manually. Steps:
 
 1. Builds `pyenv-win.zip` (containing `pyenv-win/` and `.version`) and uploads it as a release asset
 2. Runs [git-cliff](https://git-cliff.org/) to generate release notes from conventional commits
@@ -51,7 +51,7 @@ Shows the full lifecycle from scheduled cache scrape through zip delivery to end
 ```mermaid
 sequenceDiagram
     participant Cron as Cron (Friday 00:05 UTC)
-    participant UC as update_cache.yml
+    participant UC as update_versions.yml
     participant Master as master branch
     participant GH as GitHub Releases
     participant Pub as publish.yml
@@ -90,7 +90,7 @@ flowchart LR
     B --> C{5x Python matrix}
     C --> D[Tests pass / fail]
 
-    E[Cron / Manual] --> F[update_cache.yml]
+    E[Cron / Manual] --> F[update_versions.yml]
     F --> G{Cache changed?}
     G -- No --> H[Exit]
     G -- Yes --> I[Bump version]
@@ -113,7 +113,7 @@ flowchart LR
 
 | Scenario            | Who bumps `.version`? | Who creates release?  | Who uploads zip? |
 | ------------------- | --------------------- | --------------------- | ---------------- |
-| New Python versions | `update_cache` (auto) | `update_cache` (auto) | `publish` (auto) |
+| New Python versions | `update_versions` (auto) | `update_versions` (auto) | `publish` (auto) |
 | Code changes        | Developer (manual)    | `release.yml` (auto)  | `publish` (auto) |
 | Manual release      | Developer (manual)    | Developer (manual)    | `publish` (auto) |
 
@@ -124,7 +124,7 @@ GitHub's `GITHUB_TOKEN` has a built-in safety rule: actions performed with it **
 ```mermaid
 flowchart LR
     subgraph "Cache update path"
-        UC[update_cache.yml] -->|"GITHUB_TOKEN push"| M[master]
+        UC[update_versions.yml] -->|"GITHUB_TOKEN push"| M[master]
         M -.->|"❌ Does NOT trigger"| R[release.yml]
         UC -->|"workflow_run ✅"| P[publish.yml]
     end
@@ -136,5 +136,5 @@ flowchart LR
     end
 ```
 
-- **Cache path:** `update_cache` pushes with `GITHUB_TOKEN`, so `release.yml` does **not** fire (no duplicate release). `publish.yml` runs via `workflow_run`.
+- **Cache path:** `update_versions` pushes with `GITHUB_TOKEN`, so `release.yml` does **not** fire (no duplicate release). `publish.yml` runs via `workflow_run`.
 - **Developer path:** A developer push **does** trigger `release.yml`. The release it creates with `GITHUB_TOKEN` won't trigger `publish.yml`'s `release: created` event, but `publish.yml` still runs via `workflow_run`.
