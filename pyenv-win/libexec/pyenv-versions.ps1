@@ -5,8 +5,8 @@ param()
 if ($args -contains '--help') {
     Write-Output "Usage: pyenv versions [--bare]"
     Write-Output ""
-    Write-Output "Lists all Python versions found in ``\$PYENV_ROOT/versions/*'."
-    Write-Output "The version shown with ``*'' is currently active."
+    Write-Output "Lists all Python versions found in %PYENV_HOME%\versions\."
+    Write-Output "The version shown with * is currently active."
     exit 0
 }
 
