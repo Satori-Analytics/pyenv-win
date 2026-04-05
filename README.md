@@ -2,7 +2,7 @@
 
 [pyenv][1] is an amazing tool used to manage multiple versions of python in your machine. Originally ported to Windows by [Kiran Kumar Kotari](https://github.com/kirankotari), this fork rewrites pyenv-win entirely in PowerShell 7 for modern Windows compatibility.
 
-[![pytest](https://github.com/satori-analytics/pyenv-win/actions/workflows/pytest.yml/badge.svg)](https://github.com/satori-analytics/pyenv-win/actions/workflows/pytest.yml)
+[![Pester](https://github.com/satori-analytics/pyenv-win/actions/workflows/pester.yml/badge.svg)](https://github.com/satori-analytics/pyenv-win/actions/workflows/pester.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub issues open](https://img.shields.io/github/issues/satori-analytics/pyenv-win.svg?)](https://github.com/satori-analytics/pyenv-win/issues)
 [![GitHub pull requests open](https://img.shields.io/github/issues-pr/satori-analytics/pyenv-win.svg?)](https://github.com/satori-analytics/pyenv-win/pulls)
@@ -16,6 +16,7 @@
   - [Validate installation](#validate-installation)
     - [Manually check the settings](#manually-check-the-settings)
   - [Usage](#usage)
+  - [Tab Completion](#tab-completion)
   - [How to update pyenv](#how-to-update-pyenv)
   - [FAQ](#faq)
   - [Changelog](#changelog)
@@ -93,8 +94,8 @@ completions  List available completions for a given command
 Currently we support the following ways, choose any of your comfort:
 
 - [PowerShell](docs/installation.md#powershell) - default and easiest way
-- [Git Commands](docs/installation.md#git-commands) - adding manual settings
 - [Pyenv-win zip](docs/installation.md#pyenv-win-zip) - manual installation
+- [Git Commands](docs/installation.md#git-commands) - adding manual settings
 
 Please see the [Installation](./docs/installation.md) page for more details.
 
@@ -173,12 +174,13 @@ This downloads and runs the latest installer, preserving your installed Python v
 
 Alternatively:
 
-- If installed via Git, navigate to the location where you installed pyenv, usually `%USERPROFILE%\.pyenv\pyenv-win`, and run `git pull`
 - If installed via zip
   - Download the latest [pyenv-win.zip](https://github.com/satori-analytics/pyenv-win/releases/latest/download/pyenv-win.zip) from the [Releases](https://github.com/satori-analytics/pyenv-win/releases) page
   - Extract it and replace the `pyenv-win` folder under `%USERPROFILE%\.pyenv\`
+- If installed via Git, navigate to the location where you installed pyenv, usually `%USERPROFILE%\.pyenv\pyenv-win`, and run `git pull`
 
-> **Note:** `pyenv update` only refreshes the Python versions database. To update pyenv-win itself, use `pyenv upgrade`.
+> [!NOTE]
+> `pyenv update` only refreshes the Python versions database. To update pyenv-win itself, use `pyenv upgrade`.
 
 ## FAQ
 
@@ -194,7 +196,7 @@ Please see the [Changelog](./docs/changelog.md) page.
 - Create an upstream remote and sync your local copy before you branch.
 - Branch for each separate piece of work using the naming convention: `feature/`, `fix/`, `ci/`, `test/`, or `doc/` prefix (e.g. `feature/add-caching`, `fix/shim-regression`).
 - Do the work, write good commit messages. It's good practice to write test cases.
-- Test the changes by running `python -m pytest tests/`
+- Test the changes by running `Invoke-Pester ./tests`
 - Push to your origin repository.
 - Create a new Pull Request in GitHub.
 
@@ -204,9 +206,7 @@ Please see the [Changelog](./docs/changelog.md) page.
 
 ## License and Copyright
 
-- pyenv-win is licensed under [MIT](http://opensource.org/licenses/mit-license.php) _2026_
-
-  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+- pyenv-win is licensed under [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) _2026_
 
 ## Author and Thanks
 

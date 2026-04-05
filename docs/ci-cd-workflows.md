@@ -4,16 +4,16 @@
 
 | Workflow           | Trigger                                                         | Runner  | Purpose                                            |
 | ------------------ | --------------------------------------------------------------- | ------- | -------------------------------------------------- |
-| `pytest.yml`       | Push (any branch), PR to master, manual                         | Windows | Run test suite across Python 3.8–3.12              |
+| `pester.yml`       | Push (any branch), PR to master, manual                         | Windows | Run Pester test suite with code coverage           |
 | `update_versions.yml` | Weekly (Friday 00:05 UTC), manual                               | Windows | Refresh `.versions.xml` via `update-ci`    |
 | `release.yml`      | Push to master that changes `.version`                          | Ubuntu  | Create GitHub Release from version bump            |
 | `publish.yml`      | After `update_versions` or `release` completes, or release created | Ubuntu  | Build and upload `pyenv-win.zip` to GitHub Release |
 
 ## Workflow Details
 
-### pytest.yml — Test Suite
+### pester.yml — Test Suite
 
-Runs on every push and PR. Executes pytest with coverage across a matrix of five Python versions (3.8, 3.9, 3.10, 3.11, 3.12) on Windows. All matrix jobs run independently (`fail-fast: false`).
+Runs on every push and PR. Installs Pester 5.7+ and executes all `*.Tests.ps1` files in `tests/` via `Run-Tests.ps1` on Windows. Produces JaCoCo code coverage and NUnit XML test results, uploaded as workflow artifacts.
 
 ### update_versions.yml — Weekly Version Cache Update
 
@@ -86,8 +86,8 @@ Overview of every CI/CD path — testing, automated cache releases, and develope
 
 ```mermaid
 flowchart LR
-    A[Push / PR] --> B[pytest.yml]
-    B --> C{5x Python matrix}
+    A[Push / PR] --> B[pester.yml]
+    B --> C[Pester tests + coverage]
     C --> D[Tests pass / fail]
 
     E[Cron / Manual] --> F[update_versions.yml]

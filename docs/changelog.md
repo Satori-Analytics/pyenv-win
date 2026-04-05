@@ -10,98 +10,7 @@
 
 - update cached versions to v4.0.1
 
-
 ## 4.0.0
-
-### Bug Fixes
-
-- rehash command was failing tests
-- harden installer for upgrade from older versions
-- enhance backup and restore process for Python installations
-- correct spacing in perennial-strategy configuration
-- use Contains() instead of ContainsKey() for OrderedDictionary
-- detect GraalPy GitHub API URL for JSON parsing
-- preserve global version setting during upgrade
-- suppress New-Item output during install
-- replace exit with return to prevent terminal closure via irm|iex
-- deterministic .versions.xml output to prevent spurious CI releases
-- list all cached items including installer files, not just directories
-- clean up v3 extraction folders from install_cache during upgrade
-- clean up Unix-style escaping in help text
-- replace Unix-style backtick-quote escaping in all help text
-- align test assertions with backtick-quote cleanup
-
-### CI/CD
-
-- replace PyPI publish with zip release pipeline
-- trigger publish after cache update, remove auto_approve
-- add workflow_run trigger and CI/CD documentation
-- auto-create release on .version bump
-- fix publish trigger chain for developer releases
-- rename workflows and convert update_versions to pwsh
-
-### Documentation
-
-- correct typos
-- update env manual
-- update env manual
-- simplify install command to irm | iex
-- remove pip install method from all documentation
-- add cache command and branch naming convention to README
-- update all references from install-pyenv-win.ps1 to install.ps1
-- move upstream note below 4.0.0 section in changelog
-- add headers and descriptions to CI/CD Mermaid diagrams
-- add release scenarios and token anti-recursion to CI docs
-- move CI/CD README to .github/workflows/
-- add CI/CD workflows documentation
-- update README and CI docs for update/upgrade split
-- update 4.0.0 changelog with all recent changes
-
-### Features
-
-- migrate pyenv-update to PowerShell for Windows 11 compatibility
-- add support for arm64 architecture in pyenv-update script
-- migrate pyenv-update to PowerShell for Windows 11 compatibility
-- add support for arm64 architecture in pyenv-update script
-- installer downloads from GitHub Releases and updates cache
-- add pyenv cache command
-- auto-generate changelog with git-cliff on every release
-- compact default output for pyenv update, verbose with -Verbose
-- add local test file to .gitignore
-- split update into download + upgrade commands
-
-### Miscellaneous
-
-- remove setup.py (drop PyPI packaging)
-- update branch naming conventions and configuration
-
-### Refactor
-
-- rename install-pyenv-win.ps1 to install.ps1
-- remove dead versions.xml, write only .versions_cache.xml
-- rename .versions_cache.xml to .versions.xml
-- pyenv cache lists only files, cleans v3 dirs on sync
-- parse installer filenames into structured columns
-- accept --verbose flag (CLI convention) alongside -Verbose
-
-### Testing
-
-- add tests for pyenv cache command
-
-### Doc
-
-- environment variables manually steps
-
-### Install-pyenv-win
-
-- select correct Expand-Archive
-
-### Rename
-
-- update-scrape -> update-ci
-
-
-## New in 4.0.0
 
 - **BREAKING:** Rewritten entirely in PowerShell 7. Requires `pwsh` (PowerShell 7+).
 - **BREAKING:** Dropped X86 (32-bit Windows) OS support — PowerShell 7 does not ship for 32-bit Windows. The `--32only` and `--64only` install flags are preserved for filtering Python versions on 64-bit machines.
@@ -136,6 +45,68 @@
 - Deterministic `.versions.xml` output (filename tiebreaker in sort) to prevent spurious CI releases.
 - Fixed GraalPy GitHub API URL detection for JSON parsing.
 - CI scraping logic moved to hidden `pyenv update-ci` command (not shown in `pyenv commands`).
+
+### Bug Fixes
+
+- rehash command was failing tests
+- harden installer for upgrade from older versions
+- enhance backup and restore process for Python installations
+- correct spacing in perennial-strategy configuration
+- use Contains() instead of ContainsKey() for OrderedDictionary
+- detect GraalPy GitHub API URL for JSON parsing
+- preserve global version setting during upgrade
+- suppress New-Item output during install
+- replace exit with return to prevent terminal closure via irm|iex
+- deterministic .versions.xml output to prevent spurious CI releases
+- list all cached items including installer files, not just directories
+- clean up v3 extraction folders from install_cache during upgrade
+- clean up Unix-style escaping in help text
+- replace Unix-style backtick-quote escaping in all help text
+- align test assertions with backtick-quote cleanup
+
+### CI/CD
+
+- replace PyPI publish with zip release pipeline
+- trigger publish after cache update, remove auto_approve
+- add workflow_run trigger and CI/CD documentation
+- auto-create release on .version bump
+- fix publish trigger chain for developer releases
+- rename workflows and convert update_versions to pwsh
+
+### Features
+
+- migrate pyenv-update to PowerShell for Windows 11 compatibility
+- add support for arm64 architecture in pyenv-update script
+- installer downloads from GitHub Releases and updates cache
+- add pyenv cache command
+- auto-generate changelog with git-cliff on every release
+- compact default output for pyenv update, verbose with -Verbose
+- split update into download + upgrade commands
+
+### Refactor
+
+- rename install-pyenv-win.ps1 to install.ps1
+- remove dead versions.xml, write only .versions_cache.xml
+- rename .versions_cache.xml to .versions.xml
+- pyenv cache lists only files, cleans v3 dirs on sync
+- parse installer filenames into structured columns
+- accept --verbose flag (CLI convention) alongside -Verbose
+
+### Testing
+
+- add tests for pyenv cache command
+
+### Doc
+
+- environment variables manually steps
+
+### Install-pyenv-win
+
+- select correct Expand-Archive
+
+### Rename
+
+- update-scrape -> update-ci
 
 > **Note:** Issues and PRs referenced below version 4.0.0 link to the [upstream repository](https://github.com/pyenv-win/pyenv-win) from which this project was forked.
 
