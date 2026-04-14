@@ -6,8 +6,6 @@ on:
     - cron: "5 0 * * 5"
 
 env:
-  DEPLOY_USER: "Nikolas Demiridis"
-  DEPLOY_EMAIL: "nikolas.demiridis@satorianalytics.com"
   DEPLOY_BRANCH: master
 
 jobs:
@@ -16,6 +14,8 @@ jobs:
     steps:
       - name: Checkout master
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PYENV_WIN_PAT }}
       - name: Scrape and update versions cache
         shell: pwsh
         run: |
@@ -49,8 +49,8 @@ jobs:
         if: steps.changes.outputs.changed == 'true'
         shell: pwsh
         run: |
-          git config user.name "${{ env.DEPLOY_USER }}"
-          git config user.email "${{ env.DEPLOY_EMAIL }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           git commit -m "chore: update cached versions to v${{ env.NEW_VERSION }}"
           git push origin ${{ env.DEPLOY_BRANCH }}
