@@ -206,7 +206,7 @@ Please see the [Changelog](./docs/changelog.md) page.
 
 ## License and Copyright
 
-- pyenv-win is licensed under [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) _2026_
+- pyenv-win is licensed under [MIT](https://opensource.org/licenses/MIT) _2026_
 
 ## Author and Thanks
 
