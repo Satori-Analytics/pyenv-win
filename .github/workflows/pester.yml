@@ -7,11 +7,13 @@ on:
     paths:
       - "pyenv-win/**"
       - "tests/**"
+      - "!pyenv-win/.versions.xml"
   pull_request:
-    branches: [master]
+    branches: [ master ]
     paths:
       - "pyenv-win/**"
       - "tests/**"
+      - "!pyenv-win/.versions.xml"
 
   workflow_dispatch:
 

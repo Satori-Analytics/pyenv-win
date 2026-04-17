@@ -1,21 +1,17 @@
 name: Publish release
-run-name: "Publish ${{ github.event.release.tag_name || github.event.workflow_run.display_title || '' }}"
+run-name: "Publish ${{ github.event.workflow_run.name || '' }}"
 
 on:
   workflow_run:
-    workflows: ["Update versions", "Create release"]
+    workflows: ["Create release"]
     types: [completed]
-  release:
-    types: [created]
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    if: >
-      (github.event_name == 'release') ||
-      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+    if: github.event.workflow_run.conclusion == 'success'
 
     steps:
       - uses: actions/checkout@v4

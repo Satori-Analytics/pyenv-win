@@ -34,6 +34,7 @@ jobs:
             git reset HEAD
           }
       - name: Bump patch version
+        id: bump
         if: steps.changes.outputs.changed == 'true'
         shell: pwsh
         run: |
@@ -45,6 +46,7 @@ jobs:
           Set-Content -Path $versionFile -Value $newVersion -NoNewline
           Write-Host "Bumped version: $current -> $newVersion"
           echo "NEW_VERSION=$newVersion" >> $env:GITHUB_ENV
+          echo "new_version=$newVersion" >> $env:GITHUB_OUTPUT
       - name: Commit and push changes
         if: steps.changes.outputs.changed == 'true'
         shell: pwsh
@@ -52,16 +54,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "chore: update cached versions to v${{ env.NEW_VERSION }}"
+          git commit -m "chore: update cached versions to v${{ steps.bump.outputs.new_version }}"
           git push origin ${{ env.DEPLOY_BRANCH }}
-      - name: Create GitHub Release
-        if: steps.changes.outputs.changed == 'true'
-        shell: pwsh
-        run: |
-          gh release create "v${{ env.NEW_VERSION }}" `
-            --target ${{ env.DEPLOY_BRANCH }} `
-            --title "v${{ env.NEW_VERSION }}" `
-            --notes "Automated release — updated Python versions cache." `
-            --latest
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
