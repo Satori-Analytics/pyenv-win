@@ -7312,6 +7312,11 @@
 	</version>
 	<version x64="false" webInstall="false" msi="false">
 		<code>3.14-win32</code>
+		<file>python-3.14.5-aarch64-linux-android.tar.gz.sigs..&gt;</file>
+		<URL>https://www.python.org/ftp/python/3.14.5/python-3.14.5-aarch64-linux-android.tar.gz.sigstore</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.14-win32</code>
 		<file>python-3.14.5rc1-aarch64-linux-android.tar.gz.s..&gt;</file>
 		<URL>https://www.python.org/ftp/python/3.14.5/python-3.14.5rc1-aarch64-linux-android.tar.gz.sigstore</URL>
 	</version>
@@ -7439,6 +7444,36 @@
 		<code>3.14.4-win32</code>
 		<file>python-3.14.4.exe</file>
 		<URL>https://www.python.org/ftp/python/3.14.4/python-3.14.4.exe</URL>
+	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>3.14.5</code>
+		<file>python-3.14.5-amd64.exe</file>
+		<URL>https://www.python.org/ftp/python/3.14.5/python-3.14.5-amd64.exe</URL>
+	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>3.14.5</code>
+		<file>python-3.14.5-amd64.zip</file>
+		<URL>https://www.python.org/ftp/python/3.14.5/python-3.14.5-amd64.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.14.5-arm64</code>
+		<file>python-3.14.5-arm64.exe</file>
+		<URL>https://www.python.org/ftp/python/3.14.5/python-3.14.5-arm64.exe</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.14.5-arm64</code>
+		<file>python-3.14.5-arm64.zip</file>
+		<URL>https://www.python.org/ftp/python/3.14.5/python-3.14.5-arm64.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.14.5-win32</code>
+		<file>python-3.14.5-win32.zip</file>
+		<URL>https://www.python.org/ftp/python/3.14.5/python-3.14.5-win32.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.14.5-win32</code>
+		<file>python-3.14.5.exe</file>
+		<URL>https://www.python.org/ftp/python/3.14.5/python-3.14.5.exe</URL>
 	</version>
 	<version x64="true" webInstall="false" msi="false">
 		<code>3.14.5rc1</code>
