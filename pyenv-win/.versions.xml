@@ -8580,4 +8580,14 @@
 		<file>graalpy-jvm-25.0.2-windows-amd64.zip</file>
 		<URL>https://github.com/oracle/graalpython/releases/download/graal-25.0.2/graalpy-jvm-25.0.2-windows-amd64.zip</URL>
 	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>25.0.3</code>
+		<file>graalpy-25.0.3-windows-amd64.zip</file>
+		<URL>https://github.com/oracle/graalpython/releases/download/graal-25.0.3/graalpy-25.0.3-windows-amd64.zip</URL>
+	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>25.0.3</code>
+		<file>graalpy-community-25.0.3-windows-amd64.zip</file>
+		<URL>https://github.com/oracle/graalpython/releases/download/graal-25.0.3/graalpy-community-25.0.3-windows-amd64.zip</URL>
+	</version>
 </versions>
