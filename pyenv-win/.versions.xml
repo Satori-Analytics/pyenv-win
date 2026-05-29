@@ -8291,6 +8291,16 @@
 		<URL>https://downloads.python.org/pypy/pypy3.11-v7.3.22-win64.zip</URL>
 	</version>
 	<version x64="true" webInstall="false" msi="false">
+		<code>7.3.23</code>
+		<file>pypy2.7-v7.3.23-win64.zip</file>
+		<URL>https://downloads.python.org/pypy/pypy2.7-v7.3.23-win64.zip</URL>
+	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>7.3.23</code>
+		<file>pypy3.11-v7.3.23-win64.zip</file>
+		<URL>https://downloads.python.org/pypy/pypy3.11-v7.3.23-win64.zip</URL>
+	</version>
+	<version x64="true" webInstall="false" msi="false">
 		<code>23.1.0</code>
 		<file>graalpy-23.1.0-windows-amd64.zip</file>
 		<URL>https://github.com/oracle/graalpython/releases/download/graal-23.1.0/graalpy-23.1.0-windows-amd64.zip</URL>
