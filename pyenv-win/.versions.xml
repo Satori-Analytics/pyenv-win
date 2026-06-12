@@ -6830,6 +6830,36 @@
 		<file>python-3.13.13.exe</file>
 		<URL>https://www.python.org/ftp/python/3.13.13/python-3.13.13.exe</URL>
 	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>3.13.14</code>
+		<file>python-3.13.14-amd64.exe</file>
+		<URL>https://www.python.org/ftp/python/3.13.14/python-3.13.14-amd64.exe</URL>
+	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>3.13.14</code>
+		<file>python-3.13.14-amd64.zip</file>
+		<URL>https://www.python.org/ftp/python/3.13.14/python-3.13.14-amd64.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.13.14-arm64</code>
+		<file>python-3.13.14-arm64.exe</file>
+		<URL>https://www.python.org/ftp/python/3.13.14/python-3.13.14-arm64.exe</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.13.14-arm64</code>
+		<file>python-3.13.14-arm64.zip</file>
+		<URL>https://www.python.org/ftp/python/3.13.14/python-3.13.14-arm64.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.13.14-win32</code>
+		<file>python-3.13.14-win32.zip</file>
+		<URL>https://www.python.org/ftp/python/3.13.14/python-3.13.14-win32.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.13.14-win32</code>
+		<file>python-3.13.14.exe</file>
+		<URL>https://www.python.org/ftp/python/3.13.14/python-3.13.14.exe</URL>
+	</version>
 	<version x64="false" webInstall="false" msi="false">
 		<code>3.14-win32</code>
 		<file>python-3.14.0-aarch64-linux-android.tar.gz.sigs..&gt;</file>
@@ -7325,6 +7355,11 @@
 		<file>python-3.14.5rc1-x86_64-linux-android.tar.gz.si..&gt;</file>
 		<URL>https://www.python.org/ftp/python/3.14.5/python-3.14.5rc1-x86_64-linux-android.tar.gz.sigstore</URL>
 	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.14-win32</code>
+		<file>python-3.14.6-aarch64-linux-android.tar.gz.sigs..&gt;</file>
+		<URL>https://www.python.org/ftp/python/3.14.6/python-3.14.6-aarch64-linux-android.tar.gz.sigstore</URL>
+	</version>
 	<version x64="true" webInstall="false" msi="false">
 		<code>3.14.1</code>
 		<file>python-3.14.1-amd64.exe</file>
@@ -7504,6 +7539,36 @@
 		<code>3.14.5rc1-win32</code>
 		<file>python-3.14.5rc1.exe</file>
 		<URL>https://www.python.org/ftp/python/3.14.5/python-3.14.5rc1.exe</URL>
+	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>3.14.6</code>
+		<file>python-3.14.6-amd64.exe</file>
+		<URL>https://www.python.org/ftp/python/3.14.6/python-3.14.6-amd64.exe</URL>
+	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>3.14.6</code>
+		<file>python-3.14.6-amd64.zip</file>
+		<URL>https://www.python.org/ftp/python/3.14.6/python-3.14.6-amd64.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.14.6-arm64</code>
+		<file>python-3.14.6-arm64.exe</file>
+		<URL>https://www.python.org/ftp/python/3.14.6/python-3.14.6-arm64.exe</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.14.6-arm64</code>
+		<file>python-3.14.6-arm64.zip</file>
+		<URL>https://www.python.org/ftp/python/3.14.6/python-3.14.6-arm64.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.14.6-win32</code>
+		<file>python-3.14.6-win32.zip</file>
+		<URL>https://www.python.org/ftp/python/3.14.6/python-3.14.6-win32.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.14.6-win32</code>
+		<file>python-3.14.6.exe</file>
+		<URL>https://www.python.org/ftp/python/3.14.6/python-3.14.6.exe</URL>
 	</version>
 	<version x64="false" webInstall="false" msi="false">
 		<code>3.15-win32</code>
@@ -7864,6 +7929,46 @@
 		<code>3.15.0b1-win32</code>
 		<file>python-3.15.0b1.exe</file>
 		<URL>https://www.python.org/ftp/python/3.15.0/python-3.15.0b1.exe</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.15-win32</code>
+		<file>python-3.15.0b2-aarch64-linux-android.tar.gz.si..&gt;</file>
+		<URL>https://www.python.org/ftp/python/3.15.0/python-3.15.0b2-aarch64-linux-android.tar.gz.sigstore</URL>
+	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>3.15.0b2</code>
+		<file>python-3.15.0b2-amd64.exe</file>
+		<URL>https://www.python.org/ftp/python/3.15.0/python-3.15.0b2-amd64.exe</URL>
+	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>3.15.0b2</code>
+		<file>python-3.15.0b2-amd64.zip</file>
+		<URL>https://www.python.org/ftp/python/3.15.0/python-3.15.0b2-amd64.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.15.0b2-arm64</code>
+		<file>python-3.15.0b2-arm64.exe</file>
+		<URL>https://www.python.org/ftp/python/3.15.0/python-3.15.0b2-arm64.exe</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.15.0b2-arm64</code>
+		<file>python-3.15.0b2-arm64.zip</file>
+		<URL>https://www.python.org/ftp/python/3.15.0/python-3.15.0b2-arm64.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.15.0b2-win32</code>
+		<file>python-3.15.0b2-win32.zip</file>
+		<URL>https://www.python.org/ftp/python/3.15.0/python-3.15.0b2-win32.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.15-win32</code>
+		<file>python-3.15.0b2-x86_64-linux-android.tar.gz.sig..&gt;</file>
+		<URL>https://www.python.org/ftp/python/3.15.0/python-3.15.0b2-x86_64-linux-android.tar.gz.sigstore</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.15.0b2-win32</code>
+		<file>python-3.15.0b2.exe</file>
+		<URL>https://www.python.org/ftp/python/3.15.0/python-3.15.0b2.exe</URL>
 	</version>
 	<version x64="true" webInstall="false" msi="false">
 		<code>7.3.4</code>
