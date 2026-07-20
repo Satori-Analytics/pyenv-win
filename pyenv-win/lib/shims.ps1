@@ -1,6 +1,6 @@
 #Requires -Version 7
 # pyenv-win shims library
-# Rehash, shim generation (.bat/.lnk/.sh stubs)
+# Rehash, shim generation (.bat/.sh stubs)
 
 function Invoke-Rehash {
     # Ensure shims directory exists
@@ -16,64 +16,24 @@ function Invoke-Rehash {
     foreach ($version in (Get-InstalledVersions)) {
         $versionDir = Join-Path $script:PyenvVersions $version
 
-        # Scan version root directory
-        if (Test-Path $versionDir) {
-            Get-ChildItem $versionDir -File -ErrorAction SilentlyContinue | ForEach-Object {
+        # Scan the version root plus \Scripts and \bin. Every runnable file
+        # (extension in $exts) gets a .bat + shell shim, regardless of location
+        # or extension, so console-scripts like pip are always CLI-runnable.
+        foreach ($dir in @($versionDir, (Join-Path $versionDir 'Scripts'), (Join-Path $versionDir 'bin'))) {
+            if (-not (Test-Path $dir)) { continue }
+            Get-ChildItem $dir -File -ErrorAction SilentlyContinue | ForEach-Object {
                 $ext = $_.Extension.TrimStart('.').ToLower()
-                if ($exts.ContainsKey($ext)) {
-                    $baseName = $_.BaseName
-                    if ($ext -ne 'exe') {
-                        New-ShortcutShim -BaseName $baseName -TargetPath $_.FullName
-                        New-BatchShim -BaseName $baseName
-                        New-ShellShim -BaseName $baseName
-                    }
-                    else {
-                        New-BatchShim -BaseName $baseName
-                        New-ShellShim -BaseName $baseName
-                    }
+                if (-not $exts.ContainsKey($ext)) { return }
+                try {
+                    New-BatchShim -BaseName $_.BaseName
+                    New-ShellShim -BaseName $_.BaseName
                 }
-            }
-        }
-
-        # Scan \Scripts and \bin subdirectories
-        foreach ($subDir in @('Scripts', 'bin')) {
-            $subPath = Join-Path $versionDir $subDir
-            if (Test-Path $subPath) {
-                Get-ChildItem $subPath -File -ErrorAction SilentlyContinue | ForEach-Object {
-                    $ext = $_.Extension.TrimStart('.').ToLower()
-                    if ($exts.ContainsKey($ext)) {
-                        $baseName = $_.BaseName
-                        if ($ext -ne 'exe') {
-                            New-ShortcutShim -BaseName $baseName -TargetPath $_.FullName
-                        }
-                        else {
-                            New-BatchShim -BaseName $baseName
-                            New-ShellShim -BaseName $baseName
-                        }
-                    }
+                catch {
+                    Write-PyenvWarn "Failed to create shim for '$($_.BaseName)': $_"
                 }
             }
         }
     }
-}
-
-function New-ShortcutShim {
-    param(
-        [string]$BaseName,
-        [string]$TargetPath
-    )
-
-    $linkPath = Join-Path $script:PyenvShims "$BaseName.lnk"
-    if (Test-Path $linkPath) { return }
-
-    $shell = New-Object -ComObject WScript.Shell
-    $shortcut = $shell.CreateShortcut($linkPath)
-    $shortcut.TargetPath = $TargetPath
-    $shortcut.Description = $BaseName
-    $shortcut.IconLocation = "$TargetPath, 2"
-    $shortcut.WindowStyle = 1
-    $shortcut.WorkingDirectory = Split-Path $TargetPath -Parent
-    $shortcut.Save()
 }
 
 function New-BatchShim {

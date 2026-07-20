@@ -78,32 +78,6 @@ Describe 'shims.ps1' {
         }
     }
 
-    Describe 'New-ShortcutShim' {
-        BeforeAll {
-            $script:testEnv = New-PyenvTestEnvironment -Versions @('3.9.7')
-            . (Initialize-PyenvLibraries -Env $script:testEnv)
-        }
-
-        It 'creates a .lnk shortcut file' {
-            $targetPath = Join-Path $script:testEnv.VersionsPath '3.9.7' 'Scripts' 'pip3.exe'
-            New-ShortcutShim -BaseName 'pip3' -TargetPath $targetPath
-            $lnkPath = Join-Path $script:testEnv.ShimsPath 'pip3.lnk'
-            Test-Path $lnkPath | Should -BeTrue
-        }
-
-        It 'does not overwrite existing shortcut' {
-            $targetPath = Join-Path $script:testEnv.VersionsPath '3.9.7' 'Scripts' 'pip3.exe'
-            # First call should create
-            New-ShortcutShim -BaseName 'nooverwrite' -TargetPath $targetPath
-            $lnkPath = Join-Path $script:testEnv.ShimsPath 'nooverwrite.lnk'
-            $firstWrite = (Get-Item $lnkPath).LastWriteTime
-            # Second call should skip
-            New-ShortcutShim -BaseName 'nooverwrite' -TargetPath $targetPath
-            $secondWrite = (Get-Item $lnkPath).LastWriteTime
-            $secondWrite | Should -Be $firstWrite
-        }
-    }
-
     Describe 'Invoke-Rehash' {
         It 'creates shims for all installed versions' {
             $script:testEnv = New-PyenvTestEnvironment -Versions @('3.8.6', '3.9.7')
@@ -115,6 +89,53 @@ Describe 'shims.ps1' {
             $shimsPath = $script:testEnv.ShimsPath
             Test-Path (Join-Path $shimsPath 'python.bat') | Should -BeTrue
             Test-Path (Join-Path $shimsPath 'python') | Should -BeTrue
+        }
+
+        It 'creates the pip shim family from the Scripts scan' {
+            $script:testEnv = New-PyenvTestEnvironment -Versions @('3.9.7')
+            . (Initialize-PyenvLibraries -Env $script:testEnv)
+
+            Invoke-Rehash
+
+            # Scripts fixture ships pip.exe, pip3.exe, pip3.9.exe (TestHelper.ps1),
+            # so every member of the pip family must get a .bat and shell shim.
+            $shimsPath = $script:testEnv.ShimsPath
+            foreach ($name in @('pip', 'pip3', 'pip3.9')) {
+                Test-Path (Join-Path $shimsPath "$name.bat") | Should -BeTrue
+                Test-Path (Join-Path $shimsPath $name) | Should -BeTrue
+            }
+        }
+
+        It 'creates real shims for non-exe Scripts entries' {
+            $script:testEnv = New-PyenvTestEnvironment -Versions @('3.9.7')
+            . (Initialize-PyenvLibraries -Env $script:testEnv)
+
+            Invoke-Rehash
+
+            # hello.bat is a non-.exe console script in Scripts (TestHelper.ps1);
+            # it must get a runnable .bat + shell shim, not be skipped.
+            $shimsPath = $script:testEnv.ShimsPath
+            Test-Path (Join-Path $shimsPath 'hello.bat') | Should -BeTrue
+            Test-Path (Join-Path $shimsPath 'hello') | Should -BeTrue
+        }
+
+        It 'continues past a failing file and still creates pip shims' {
+            $script:testEnv = New-PyenvTestEnvironment -Versions @('3.9.7')
+            . (Initialize-PyenvLibraries -Env $script:testEnv)
+
+            # Force one basename to throw; Invoke-Rehash must isolate it and
+            # keep going so a single bad file can never block pip. The default
+            # mock stands in for the real shim write (Pester does not fall back
+            # to the original when a -ParameterFilter mock is present).
+            Mock New-BatchShim -MockWith {
+                New-Item -ItemType File -Path (Join-Path $script:testEnv.ShimsPath "$BaseName.bat") -Force | Out-Null
+            }
+            Mock New-BatchShim -ParameterFilter { $BaseName -eq 'python' } -MockWith { throw 'boom' }
+
+            { Invoke-Rehash } | Should -Not -Throw
+
+            $shimsPath = $script:testEnv.ShimsPath
+            Test-Path (Join-Path $shimsPath 'pip.bat') | Should -BeTrue
         }
 
         It 'clears existing shims before regenerating' {

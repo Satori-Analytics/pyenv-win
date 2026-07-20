@@ -35,6 +35,32 @@ function Invoke-PythonDownload {
     }
 }
 
+function Install-Pip {
+    param(
+        [string]$InstallPath
+    )
+
+    # Embeddable/zip builds ship without Lib\ensurepip; nothing to do here.
+    $ensurepipPath = Join-Path $InstallPath 'Lib' 'ensurepip'
+    if (-not (Test-Path $ensurepipPath)) {
+        Write-PyenvWarn ":: [Warning] :: ensurepip is not available for this build; pip was not installed. Install pip manually if you need it."
+        return
+    }
+
+    $pythonExe = Join-Path $InstallPath 'python.exe'
+    $pipResult = (Start-Process -FilePath $pythonExe -ArgumentList @(
+            '-E', '-s', '-m', 'ensurepip', '-U', '--default-pip'
+        ) -Wait -PassThru -NoNewWindow).ExitCode
+
+    # Verify pip actually landed. ensurepip can exit non-zero, or exit 0 yet
+    # leave no pip.exe (e.g. a partially broken build); either way rehash would
+    # then silently produce no pip shims, so surface it loudly and actionably.
+    $pipExe = Join-Path $InstallPath 'Scripts' 'pip.exe'
+    if ($pipResult -ne 0 -or -not (Test-Path $pipExe)) {
+        Write-PyenvError ":: [Error] :: pip was not installed. Run 'pyenv exec python -m ensurepip --default-pip' then 'pyenv rehash' to retry."
+    }
+}
+
 function Install-PythonMsi {
     param(
         [string]$InstallerPath,
@@ -50,17 +76,7 @@ function Install-PythonMsi {
     # Remove duplicate .msi files from install path
     Get-ChildItem $InstallPath -Filter '*.msi' -File | Remove-Item -Force
 
-    # Run ensurepip if available
-    $ensurepipPath = Join-Path $InstallPath 'Lib' 'ensurepip'
-    if (Test-Path $ensurepipPath) {
-        $pythonExe = Join-Path $InstallPath 'python.exe'
-        $pipResult = (Start-Process -FilePath $pythonExe -ArgumentList @(
-                '-E', '-s', '-m', 'ensurepip', '-U', '--default-pip'
-            ) -Wait -PassThru -NoNewWindow).ExitCode
-        if ($pipResult -ne 0) {
-            Write-PyenvError ":: [Error] :: error installing pip."
-        }
-    }
+    Install-Pip -InstallPath $InstallPath
 
     return 0
 }
@@ -84,17 +100,7 @@ function Install-PythonExe {
 
     if ($exitCode -ne 0) { return $exitCode }
 
-    # Run ensurepip if available
-    $ensurepipPath = Join-Path $InstallPath 'Lib' 'ensurepip'
-    if (Test-Path $ensurepipPath) {
-        $pythonExe = Join-Path $InstallPath 'python.exe'
-        $pipResult = (Start-Process -FilePath $pythonExe -ArgumentList @(
-                '-E', '-s', '-m', 'ensurepip', '-U', '--default-pip'
-            ) -Wait -PassThru -NoNewWindow).ExitCode
-        if ($pipResult -ne 0) {
-            Write-PyenvError ":: [Error] :: error installing pip."
-        }
-    }
+    Install-Pip -InstallPath $InstallPath
 
     return 0
 }
