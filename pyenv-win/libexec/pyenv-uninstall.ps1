@@ -34,7 +34,12 @@ foreach ($arg in $args) {
                 Write-Output "pyenv: Unrecognized python version: $arg"
                 exit 1
             }
-            $uninstallVersions[$arg] = $true
+            # Resolve against installed versions the same way install/global/local
+            # do, so a bare 'pyenv uninstall 3.11.9' matches the arch-suffixed
+            # folder (e.g. '3.11.9-arm64') that a bare 'pyenv install 3.11.9'
+            # created. Falls back to the literal arg when nothing matches.
+            $resolved = Resolve-VersionPrefix -Prefix $arg
+            $uninstallVersions[$resolved] = $true
         }
     }
 }

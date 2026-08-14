@@ -174,12 +174,18 @@ function Invoke-Pyenv {
     $pyenvFile = $Env.PyenvFile
     $pyenvPath = $Env.PyenvPath
 
+    # Defaults to AMD64 but honors an ambient override (e.g. a test that sets
+    # $env:PYENV_FORCE_ARCH = 'ARM64' to exercise arch-suffixed resolution),
+    # so most callers get the existing, unconditional AMD64 behavior for free.
+    $forceArch = $env:PYENV_FORCE_ARCH
+    if ([string]::IsNullOrEmpty($forceArch)) { $forceArch = 'AMD64' }
+
     # Build isolated environment
     $envVars = @{
         'PYENV'           = $pyenvPath
         'PYENV_ROOT'      = $pyenvPath
         'PYENV_HOME'      = $pyenvPath
-        'PYENV_FORCE_ARCH' = 'AMD64'
+        'PYENV_FORCE_ARCH' = $forceArch
     }
 
     # Build PATH: bin + shims + system (minus real python)
