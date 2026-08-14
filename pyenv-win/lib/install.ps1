@@ -129,6 +129,13 @@ function Install-PythonZip {
         }
     }
 
+    # Some "zip" builds (e.g. the CPython arm64 archive) ship Lib\ensurepip
+    # and a pre-seeded site-packages\pip without ever having run pip's own
+    # installer, so Scripts\pip.exe never gets written. Install-Pip already
+    # no-ops (with a warning) when ensurepip truly isn't present, so it's
+    # safe to call unconditionally here, same as the exe/msi paths.
+    Install-Pip -InstallPath $InstallPath
+
     return 0
 }
 
