@@ -259,7 +259,12 @@ function Initialize-PyenvLibraries {
     )
 
     $pyenvPath = $Env.PyenvPath
-    $libPath = Join-Path $pyenvPath 'lib'
+    # Dot-source the real source tree (not the isolated $TestDrive copy) so
+    # Pester's coverage tracer — which matches hits by the literal path used
+    # to dot-source, not by symlink/copy identity — can attribute hits back
+    # to pyenv-win/lib/*.ps1. $env:PYENV_HOME below still points at the
+    # isolated $pyenvPath, so runtime state (versions/shims/etc.) stays sandboxed.
+    $libPath = Join-Path $script:PyenvWinSrc 'lib'
     $initScript = Join-Path $TestDrive '_pyenv-libs-init.ps1'
 
     $lines = @()
