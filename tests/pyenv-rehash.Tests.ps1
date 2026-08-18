@@ -25,6 +25,12 @@ Describe 'pyenv-rehash.ps1' {
         $pythonShim | Should -Not -BeNullOrEmpty
     }
 
+    It 'creates pip shim' {
+        Invoke-Pyenv -Env $script:testEnv 'rehash' | Out-Null
+        $shimsDir = $script:testEnv.ShimsPath
+        Test-Path (Join-Path $shimsDir 'pip.bat') | Should -BeTrue
+    }
+
     It 'shows message when no versions installed' {
         $emptyEnv = New-PyenvTestEnvironment
         $result = Invoke-Pyenv -Env $emptyEnv 'rehash'

@@ -62,6 +62,32 @@ Describe 'install.ps1' {
             $installPath = Join-Path $parentDir 'final-name'
             Install-PythonZip -ZipPath $zipPath -InstallPath $installPath -ZipRootDir 'pypy-root'
         }
+
+        It 'installs pip after a successful extract, same as the exe/msi paths' {
+            Mock Install-Pip -MockWith {}
+
+            $srcDir = Join-Path $TestDrive 'zip-pip-src'
+            New-Item -ItemType Directory -Path $srcDir -Force | Out-Null
+            Set-Content -Path (Join-Path $srcDir 'python.exe') -Value 'fake'
+            $zipPath = Join-Path $TestDrive 'test-pip.zip'
+            Compress-Archive -Path "$srcDir\*" -DestinationPath $zipPath -Force
+
+            $installPath = Join-Path $TestDrive 'install-zip-pip-test'
+            Install-PythonZip -ZipPath $zipPath -InstallPath $installPath
+
+            Should -Invoke Install-Pip -Times 1 -ParameterFilter { $InstallPath -eq $installPath }
+        }
+
+        It 'does not install pip when the install path already existed' {
+            Mock Install-Pip -MockWith {}
+
+            $installPath = Join-Path $TestDrive 'existing-dir-pip'
+            New-Item -ItemType Directory -Path $installPath -Force | Out-Null
+            $zipPath = Join-Path $TestDrive 'dummy-pip.zip'
+            Install-PythonZip -ZipPath $zipPath -InstallPath $installPath
+
+            Should -Invoke Install-Pip -Times 0
+        }
     }
 
     Describe 'New-PythonAliases' {

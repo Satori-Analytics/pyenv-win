@@ -174,12 +174,18 @@ function Invoke-Pyenv {
     $pyenvFile = $Env.PyenvFile
     $pyenvPath = $Env.PyenvPath
 
+    # Defaults to AMD64 but honors an ambient override (e.g. a test that sets
+    # $env:PYENV_FORCE_ARCH = 'ARM64' to exercise arch-suffixed resolution),
+    # so most callers get the existing, unconditional AMD64 behavior for free.
+    $forceArch = $env:PYENV_FORCE_ARCH
+    if ([string]::IsNullOrEmpty($forceArch)) { $forceArch = 'AMD64' }
+
     # Build isolated environment
     $envVars = @{
         'PYENV'           = $pyenvPath
         'PYENV_ROOT'      = $pyenvPath
         'PYENV_HOME'      = $pyenvPath
-        'PYENV_FORCE_ARCH' = 'AMD64'
+        'PYENV_FORCE_ARCH' = $forceArch
     }
 
     # Build PATH: bin + shims + system (minus real python)
@@ -253,7 +259,12 @@ function Initialize-PyenvLibraries {
     )
 
     $pyenvPath = $Env.PyenvPath
-    $libPath = Join-Path $pyenvPath 'lib'
+    # Dot-source the real source tree (not the isolated $TestDrive copy) so
+    # Pester's coverage tracer — which matches hits by the literal path used
+    # to dot-source, not by symlink/copy identity — can attribute hits back
+    # to pyenv-win/lib/*.ps1. $env:PYENV_HOME below still points at the
+    # isolated $pyenvPath, so runtime state (versions/shims/etc.) stays sandboxed.
+    $libPath = Join-Path $script:PyenvWinSrc 'lib'
     $initScript = Join-Path $TestDrive '_pyenv-libs-init.ps1'
 
     $lines = @()

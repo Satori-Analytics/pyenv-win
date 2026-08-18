@@ -103,6 +103,68 @@ Describe 'versions-db.ps1' {
             $result = Import-VersionsCache -XmlPath $xmlPath
             $result['pypy3.9-v7.3.11'][6] | Should -Be 'pypy3.9-v7.3.11-win64'
         }
+
+        It 'prefers the exe/msi entry over the zip entry for the same code, regardless of XML order' -TestCases @(
+            @{ FirstFile = 'python-3.11.9-amd64.exe'; SecondFile = 'python-3.11.9-amd64.zip' }
+            @{ FirstFile = 'python-3.11.9-amd64.zip'; SecondFile = 'python-3.11.9-amd64.exe' }
+        ) {
+            param($FirstFile, $SecondFile)
+            $xmlContent = @"
+<?xml version="1.0" encoding="utf-8"?>
+<versions>
+  <version>
+    <code>3.11.9</code>
+    <file>$FirstFile</file>
+    <URL>https://www.python.org/ftp/python/3.11.9/$FirstFile</URL>
+    <x64>true</x64>
+    <webInstall>false</webInstall>
+    <msi>false</msi>
+  </version>
+  <version>
+    <code>3.11.9</code>
+    <file>$SecondFile</file>
+    <URL>https://www.python.org/ftp/python/3.11.9/$SecondFile</URL>
+    <x64>true</x64>
+    <webInstall>false</webInstall>
+    <msi>false</msi>
+  </version>
+</versions>
+"@
+            $xmlPath = Join-Path $TestDrive "versions-order-$($FirstFile.Length).xml"
+            Set-Content -Path $xmlPath -Value $xmlContent
+            $result = Import-VersionsCache -XmlPath $xmlPath
+
+            $result.Count | Should -Be 1
+            $result['3.11.9'][1] | Should -Be 'python-3.11.9-amd64.exe'
+        }
+
+        It 'prefers an msi entry over a zip entry for the same code' {
+            $xmlContent = @'
+<?xml version="1.0" encoding="utf-8"?>
+<versions>
+  <version>
+    <code>3.0.1-win32</code>
+    <file>python-3.0.1-pdb.zip</file>
+    <URL>https://www.python.org/ftp/python/3.0.1/python-3.0.1-pdb.zip</URL>
+    <x64>false</x64>
+    <webInstall>false</webInstall>
+    <msi>false</msi>
+  </version>
+  <version>
+    <code>3.0.1-win32</code>
+    <file>python-3.0.1.msi</file>
+    <URL>https://www.python.org/ftp/python/3.0.1/python-3.0.1.msi</URL>
+    <x64>false</x64>
+    <webInstall>false</webInstall>
+    <msi>true</msi>
+  </version>
+</versions>
+'@
+            $xmlPath = Join-Path $TestDrive 'versions-msi-vs-zip.xml'
+            Set-Content -Path $xmlPath -Value $xmlContent
+            $result = Import-VersionsCache -XmlPath $xmlPath
+            $result['3.0.1-win32'][1] | Should -Be 'python-3.0.1.msi'
+        }
     }
 
     Describe 'Compare-SemanticVersion' {

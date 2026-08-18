@@ -73,6 +73,19 @@ function Import-VersionsCache {
             $zipRootDir = $version.zipRootDir
         }
 
+        # A real installer (.exe/.msi) must never be shadowed by a .zip entry
+        # sharing the same code — some zip builds ship without ensurepip, or
+        # without a prebuilt pip, so preferring the installer avoids relying
+        # on Install-PythonZip's best-effort pip install (see Install-Pip).
+        # An installer entry always wins over a zip entry for the same code
+        # regardless of XML order; among same-type duplicates, the last one
+        # still wins (unchanged from prior behavior).
+        if ($result.Contains($code)) {
+            $existingIsZip = [System.IO.Path]::GetExtension($result[$code][1]).TrimStart('.').ToLower() -eq 'zip'
+            $newIsZip = [System.IO.Path]::GetExtension($version.file).TrimStart('.').ToLower() -eq 'zip'
+            if (-not $existingIsZip -and $newIsZip) { continue }
+        }
+
         $x64 = $false
         if ($version.x64 -eq 'true') { $x64 = $true }
 
