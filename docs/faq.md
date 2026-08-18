@@ -13,6 +13,9 @@
 - **Question:** I am getting the issue `batch file cannot be found.` while installing python, what should I do?
   - **Answer:** This error was common in pyenv-win versions prior to 4.0. In version 4.0+, pyenv-win uses PowerShell 7 and this error should no longer occur. If you see it, ensure you are running the latest version.
 
+- **Question:** `pip` is missing after installing a Python version, what should I do?
+  - **Answer:** Run `pyenv exec python -m ensurepip --default-pip` to (re)install pip for that version, then `pyenv rehash` to regenerate its shims. This can happen if the installer's `ensurepip` step failed partway through. If you're using a Python zip/embeddable build that doesn't ship `ensurepip` at all, you'll need to install pip manually instead — see [pip's installation docs](https://pip.pypa.io/en/stable/installation/).
+
 - **Question:** System is stuck while uninstalling a python version
   - **Answer:** Navigate to the location where you installed pyenv, open its 'versions' folder (usually `%USERPROFILE%\.pyenv\pyenv-win\versions`), and delete the folder of the version you want removed.
 
