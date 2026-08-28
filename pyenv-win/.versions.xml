@@ -8910,4 +8910,14 @@
 		<file>graalpy3.12-community-25.2.4-windows-amd64.zip</file>
 		<URL>https://github.com/oracle/graalpython/releases/download/graal-25.2.4/graalpy3.12-community-25.2.4-windows-amd64.zip</URL>
 	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>25.3.4</code>
+		<file>graalpy3.13-25.3.4.1-windows-amd64.zip</file>
+		<URL>https://github.com/oracle/graalpython/releases/download/graal-25.3.4.1/graalpy3.13-25.3.4.1-windows-amd64.zip</URL>
+	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>25.3.4</code>
+		<file>graalpy3.13-community-25.3.4.1-windows-amd64.zip</file>
+		<URL>https://github.com/oracle/graalpython/releases/download/graal-25.3.4.1/graalpy3.13-community-25.3.4.1-windows-amd64.zip</URL>
+	</version>
 </versions>
