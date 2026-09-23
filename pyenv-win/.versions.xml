@@ -8631,6 +8631,21 @@
 		<URL>https://downloads.python.org/pypy/pypy3.11-v7.3.23-win64.zip</URL>
 	</version>
 	<version x64="true" webInstall="false" msi="false">
+		<code>8.0.0</code>
+		<file>pypy2.7-v8.0.0-win64.zip</file>
+		<URL>https://downloads.python.org/pypy/pypy2.7-v8.0.0-win64.zip</URL>
+	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>8.0.0</code>
+		<file>pypy3.11-v8.0.0-win64.zip</file>
+		<URL>https://downloads.python.org/pypy/pypy3.11-v8.0.0-win64.zip</URL>
+	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>8.0.0</code>
+		<file>pypy3.12-v8.0.0-win64.zip</file>
+		<URL>https://downloads.python.org/pypy/pypy3.12-v8.0.0-win64.zip</URL>
+	</version>
+	<version x64="true" webInstall="false" msi="false">
 		<code>23.1.0</code>
 		<file>graalpy-23.1.0-windows-amd64.zip</file>
 		<URL>https://github.com/oracle/graalpython/releases/download/graal-23.1.0/graalpy-23.1.0-windows-amd64.zip</URL>
@@ -8959,5 +8974,15 @@
 		<code>25.3.4</code>
 		<file>graalpy3.13-community-25.3.4.1-windows-amd64.zip</file>
 		<URL>https://github.com/oracle/graalpython/releases/download/graal-25.3.4/graalpy3.13-community-25.3.4.1-windows-amd64.zip</URL>
+	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>25.4.4</code>
+		<file>graalpy3.13-25.4.4-windows-amd64.zip</file>
+		<URL>https://github.com/oracle/graalpython/releases/download/graal-25.4.4/graalpy3.13-25.4.4-windows-amd64.zip</URL>
+	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>25.4.4</code>
+		<file>graalpy3.13-community-25.4.4-windows-amd64.zip</file>
+		<URL>https://github.com/oracle/graalpython/releases/download/graal-25.4.4/graalpy3.13-community-25.4.4-windows-amd64.zip</URL>
 	</version>
 </versions>
