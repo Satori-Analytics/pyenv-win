@@ -6890,6 +6890,36 @@
 		<file>python-3.13.15.exe</file>
 		<URL>https://www.python.org/ftp/python/3.13.15/python-3.13.15.exe</URL>
 	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>3.13.16</code>
+		<file>python-3.13.16-amd64.exe</file>
+		<URL>https://www.python.org/ftp/python/3.13.16/python-3.13.16-amd64.exe</URL>
+	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>3.13.16</code>
+		<file>python-3.13.16-amd64.zip</file>
+		<URL>https://www.python.org/ftp/python/3.13.16/python-3.13.16-amd64.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.13.16-arm64</code>
+		<file>python-3.13.16-arm64.exe</file>
+		<URL>https://www.python.org/ftp/python/3.13.16/python-3.13.16-arm64.exe</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.13.16-arm64</code>
+		<file>python-3.13.16-arm64.zip</file>
+		<URL>https://www.python.org/ftp/python/3.13.16/python-3.13.16-arm64.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.13.16-win32</code>
+		<file>python-3.13.16-win32.zip</file>
+		<URL>https://www.python.org/ftp/python/3.13.16/python-3.13.16-win32.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.13.16-win32</code>
+		<file>python-3.13.16.exe</file>
+		<URL>https://www.python.org/ftp/python/3.13.16/python-3.13.16.exe</URL>
+	</version>
 	<version x64="false" webInstall="false" msi="false">
 		<code>3.14-win32</code>
 		<file>python-3.14.0-aarch64-linux-android.tar.gz.sigs..&gt;</file>
@@ -7395,6 +7425,11 @@
 		<file>python-3.14.7-aarch64-linux-android.tar.gz.sigs..&gt;</file>
 		<URL>https://www.python.org/ftp/python/3.14.7/python-3.14.7-aarch64-linux-android.tar.gz.sigstore</URL>
 	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.14-win32</code>
+		<file>python-3.14.8-aarch64-linux-android.tar.gz.sigs..&gt;</file>
+		<URL>https://www.python.org/ftp/python/3.14.8/python-3.14.8-aarch64-linux-android.tar.gz.sigstore</URL>
+	</version>
 	<version x64="true" webInstall="false" msi="false">
 		<code>3.14.1</code>
 		<file>python-3.14.1-amd64.exe</file>
@@ -7634,6 +7669,36 @@
 		<code>3.14.7-win32</code>
 		<file>python-3.14.7.exe</file>
 		<URL>https://www.python.org/ftp/python/3.14.7/python-3.14.7.exe</URL>
+	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>3.14.8</code>
+		<file>python-3.14.8-amd64.exe</file>
+		<URL>https://www.python.org/ftp/python/3.14.8/python-3.14.8-amd64.exe</URL>
+	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>3.14.8</code>
+		<file>python-3.14.8-amd64.zip</file>
+		<URL>https://www.python.org/ftp/python/3.14.8/python-3.14.8-amd64.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.14.8-arm64</code>
+		<file>python-3.14.8-arm64.exe</file>
+		<URL>https://www.python.org/ftp/python/3.14.8/python-3.14.8-arm64.exe</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.14.8-arm64</code>
+		<file>python-3.14.8-arm64.zip</file>
+		<URL>https://www.python.org/ftp/python/3.14.8/python-3.14.8-arm64.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.14.8-win32</code>
+		<file>python-3.14.8-win32.zip</file>
+		<URL>https://www.python.org/ftp/python/3.14.8/python-3.14.8-win32.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.14.8-win32</code>
+		<file>python-3.14.8.exe</file>
+		<URL>https://www.python.org/ftp/python/3.14.8/python-3.14.8.exe</URL>
 	</version>
 	<version x64="false" webInstall="false" msi="false">
 		<code>3.15-win32</code>
