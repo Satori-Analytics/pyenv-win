@@ -7702,6 +7702,41 @@
 	</version>
 	<version x64="false" webInstall="false" msi="false">
 		<code>3.15-win32</code>
+		<file>python-3.15.0-aarch64-linux-android.tar.gz.sigs..&gt;</file>
+		<URL>https://www.python.org/ftp/python/3.15.0/python-3.15.0-aarch64-linux-android.tar.gz.sigstore</URL>
+	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>3.15.0</code>
+		<file>python-3.15.0-amd64.exe</file>
+		<URL>https://www.python.org/ftp/python/3.15.0/python-3.15.0-amd64.exe</URL>
+	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>3.15.0</code>
+		<file>python-3.15.0-amd64.zip</file>
+		<URL>https://www.python.org/ftp/python/3.15.0/python-3.15.0-amd64.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.15.0-arm64</code>
+		<file>python-3.15.0-arm64.exe</file>
+		<URL>https://www.python.org/ftp/python/3.15.0/python-3.15.0-arm64.exe</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.15.0-arm64</code>
+		<file>python-3.15.0-arm64.zip</file>
+		<URL>https://www.python.org/ftp/python/3.15.0/python-3.15.0-arm64.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.15.0-win32</code>
+		<file>python-3.15.0-win32.zip</file>
+		<URL>https://www.python.org/ftp/python/3.15.0/python-3.15.0-win32.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.15.0-win32</code>
+		<file>python-3.15.0.exe</file>
+		<URL>https://www.python.org/ftp/python/3.15.0/python-3.15.0.exe</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.15-win32</code>
 		<file>python-3.15.0a1-aarch64-linux-android.tar.gz.si..&gt;</file>
 		<URL>https://www.python.org/ftp/python/3.15.0/python-3.15.0a1-aarch64-linux-android.tar.gz.sigstore</URL>
 	</version>
@@ -8300,6 +8335,31 @@
 		<file>python-3.15.0rc3.exe</file>
 		<URL>https://www.python.org/ftp/python/3.15.0/python-3.15.0rc3.exe</URL>
 	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.16-win32</code>
+		<file>python-3.16.0a1-aarch64-linux-android.tar.gz.si..&gt;</file>
+		<URL>https://www.python.org/ftp/python/3.16.0/python-3.16.0a1-aarch64-linux-android.tar.gz.sigstore</URL>
+	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>3.16.0a1</code>
+		<file>python-3.16.0a1-amd64.zip</file>
+		<URL>https://www.python.org/ftp/python/3.16.0/python-3.16.0a1-amd64.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.16.0a1-arm64</code>
+		<file>python-3.16.0a1-arm64.zip</file>
+		<URL>https://www.python.org/ftp/python/3.16.0/python-3.16.0a1-arm64.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.16.0a1-win32</code>
+		<file>python-3.16.0a1-win32.zip</file>
+		<URL>https://www.python.org/ftp/python/3.16.0/python-3.16.0a1-win32.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.16-win32</code>
+		<file>python-3.16.0a1-x86_64-linux-android.tar.gz.sig..&gt;</file>
+		<URL>https://www.python.org/ftp/python/3.16.0/python-3.16.0a1-x86_64-linux-android.tar.gz.sigstore</URL>
+	</version>
 	<version x64="true" webInstall="false" msi="false">
 		<code>7.3.4</code>
 		<file>pypy2.7-v7.3.4-win64.zip</file>
@@ -8749,6 +8809,21 @@
 		<code>8.0.0</code>
 		<file>pypy3.12-v8.0.0-win64.zip</file>
 		<URL>https://downloads.python.org/pypy/pypy3.12-v8.0.0-win64.zip</URL>
+	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>8.0.1</code>
+		<file>pypy2.7-v8.0.1-win64.zip</file>
+		<URL>https://downloads.python.org/pypy/pypy2.7-v8.0.1-win64.zip</URL>
+	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>8.0.1</code>
+		<file>pypy3.11-v8.0.1-win64.zip</file>
+		<URL>https://downloads.python.org/pypy/pypy3.11-v8.0.1-win64.zip</URL>
+	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>8.0.1</code>
+		<file>pypy3.12-v8.0.1-win64.zip</file>
+		<URL>https://downloads.python.org/pypy/pypy3.12-v8.0.1-win64.zip</URL>
 	</version>
 	<version x64="true" webInstall="false" msi="false">
 		<code>23.1.0</code>
