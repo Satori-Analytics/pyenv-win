@@ -8535,6 +8535,31 @@
 		<file>python-3.16.0a1-x86_64-linux-android.tar.gz.sig..&gt;</file>
 		<URL>https://www.python.org/ftp/python/3.16.0/python-3.16.0a1-x86_64-linux-android.tar.gz.sigstore</URL>
 	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.16-win32</code>
+		<file>python-3.16.0a2-aarch64-linux-android.tar.gz.si..&gt;</file>
+		<URL>https://www.python.org/ftp/python/3.16.0/python-3.16.0a2-aarch64-linux-android.tar.gz.sigstore</URL>
+	</version>
+	<version x64="true" webInstall="false" msi="false">
+		<code>3.16.0a2</code>
+		<file>python-3.16.0a2-amd64.zip</file>
+		<URL>https://www.python.org/ftp/python/3.16.0/python-3.16.0a2-amd64.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.16.0a2-arm64</code>
+		<file>python-3.16.0a2-arm64.zip</file>
+		<URL>https://www.python.org/ftp/python/3.16.0/python-3.16.0a2-arm64.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.16.0a2-win32</code>
+		<file>python-3.16.0a2-win32.zip</file>
+		<URL>https://www.python.org/ftp/python/3.16.0/python-3.16.0a2-win32.zip</URL>
+	</version>
+	<version x64="false" webInstall="false" msi="false">
+		<code>3.16-win32</code>
+		<file>python-3.16.0a2-x86_64-linux-android.tar.gz.sig..&gt;</file>
+		<URL>https://www.python.org/ftp/python/3.16.0/python-3.16.0a2-x86_64-linux-android.tar.gz.sigstore</URL>
+	</version>
 	<version x64="true" webInstall="false" msi="false">
 		<code>7.3.4</code>
 		<file>pypy2.7-v7.3.4-win64.zip</file>
